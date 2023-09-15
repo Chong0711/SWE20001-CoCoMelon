@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
 <style>
 .split {
   height: 100%;
-  width: 50%;
+  width: 40%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -52,6 +52,7 @@ if (isset($_POST['login'])) {
 /* Control the right side */
 .right {
   right: 0;
+  width:60%;
   background-color: orange;
 }
 
@@ -67,6 +68,7 @@ if (isset($_POST['login'])) {
 
 ---------------------------------------------------------------
 body {font-family: Arial, Helvetica, sans-serif;}
+
 
 input[type=text], input[type=password] {
   width: 100%;
@@ -98,11 +100,11 @@ button:hover {
     background-repeat: repeat;
     padding: 50px;
     width: 70%;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 span.psw {
   float: right;
-  padding-top: 16px;
 }
 
 /* Change styles for span and cancel button on extra small screens */
@@ -128,19 +130,27 @@ span.psw {
   <div class="centered">
     <form action="/action_page.php" method="post">
         <div class="container">
-            <img src="" alt="LoginIcon" width="400px" height="350px">
-            <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname" required>
+            <h2 align="center">Sign In</h2>
+            <center>
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/007/033/146/small/profile-icon-login-head-icon-vector.jpg" alt="LoginIcon" width="100px" height="100px"><br>
+            </center>
+            <label for="uname"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email Address" name="uname" required>
 
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="psw" required>
             
             <label>
             <input type="checkbox" checked="checked" name="remember"> Remember me
+            <span class="psw"><a href="#">Forgot password</a></span>
             </label>
+            <br><br><br>
             <button type="submit">Login</button>
-        </div>
-            <span class="psw">Forgot <a href="#">password?</a></span>
+            <center>
+            <span>Don't have an account? <a href="#">Create account</a></span>
+            </center>
+          </div>
+            
 
     </form>
   </div>
