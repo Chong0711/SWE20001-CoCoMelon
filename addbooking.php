@@ -31,7 +31,7 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html>
 <head>
-<title>SmashIt Badminton Login</title>
+<title>SmashIt Badminton </title>
 <style>
 .split {
   height: 100%;
