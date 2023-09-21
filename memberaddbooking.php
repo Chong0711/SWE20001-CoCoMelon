@@ -126,6 +126,19 @@ button:hover {
 	        <input type="submit" value="Book Appointment">
           </div>
     </form>
+    <script>
+        // JavaScript to show/hide the trainer name dropdown based on radio button selection
+        const trainerYes = document.getElementById("trainerYes");
+        const trainerNameDropdown = document.getElementById("trainerNameDropdown");
+
+        trainerYes.addEventListener("change", function() {
+            if (trainerYes.checked) {
+                trainerNameDropdown.style.display = "block";
+            } else {
+                trainerNameDropdown.style.display = "none";
+            }
+        });
+    </script>
 </div>
 
 </body>
