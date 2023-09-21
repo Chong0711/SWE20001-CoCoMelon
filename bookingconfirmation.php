@@ -30,7 +30,17 @@
         $trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
         $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
 
-        // Output the booking details
+        // Calculate the price
+        $courtPricePerHour = 8; // RM per hour
+        $trainerPricePerHour = 20; // RM per hour
+        $durationInHours = 1; // Default duration is 1 hour
+
+        // Calculate the total price based on the number of courts and trainer selection
+        $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
+        $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
+        $totalPrice = $courtTotalPrice + $trainerTotalPrice;
+
+        // Output the booking details and price
         echo "Name: $name<br>";
         echo "Email: $email<br>";
         echo "Phone: $phone<br>";
@@ -41,7 +51,9 @@
         if ($trainer === "yes") {
             echo "Trainer Name: $trainerName<br>";
         }
+        echo "Total Price: RM $totalPrice<br>";
         ?>
+            
     </div>
 </body>
 </html>
