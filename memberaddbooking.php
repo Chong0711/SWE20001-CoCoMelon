@@ -2,30 +2,6 @@
 session_start();
 // this con is used to connect with the database
 $con=mysqli_connect("localhost", "root", null, "cocomelon");
-//declaration of errors for error validation
-$errors = array();
-if (isset($_POST['login'])) {
-        $user_username = mysqli_real_escape_string($con, $_POST['sname']);
-        $user_password = mysqli_real_escape_string($con, $_POST['spsw']);
-
-
-        if (count($errors) == 0) {
-		// this query is used to track student id and password
-                $query = "SELECT * FROM Login WHERE Username ='$user_username' AND Password ='$user_password'";
-
-                $result = mysqli_query($con, $query);
-                $row = mysqli_fetch_assoc($result);
-				
-                if (mysqli_num_rows($result) == 1) {
-                        
-						//header('location: ILBServer.php');
-                }else {
-                        array_push($errors, "Wrong username/password combination");
-                }
-                mysqli_free_result($result);
-                mysqli_close($con);                        
-        }
-}
 
 ?>
 <!DOCTYPE html>
