@@ -84,9 +84,7 @@ button:hover {
 </style>
 </head>
 <body>
-
-
-  <div class="centered">
+<div class="centered">
     <form action="/bookingdetails_page.php" method="post">
         <div class="container">
             	<label for="name">Name:</label>
@@ -117,10 +115,8 @@ button:hover {
 	        
 	        <input type="submit" value="Book Appointment">
           </div>
-            
-
     </form>
-  </div>
+</div>
 
 </body>
 </html>
