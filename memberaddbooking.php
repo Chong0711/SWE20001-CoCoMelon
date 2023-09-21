@@ -60,7 +60,7 @@ button:hover {
 </style>
 </head>
 <body>
-   <form action="process_booking.php" method="POST">
+   <form action="bookingconfirmation.php" method="POST">
         <label for="name">Name:</label>
         <input type="text" name="name" required><br>
         
