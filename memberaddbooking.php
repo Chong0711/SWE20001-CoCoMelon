@@ -127,12 +127,19 @@ button:hover {
     <script>
         // JavaScript to show/hide the trainer name dropdown based on radio button selection
         const trainerYes = document.getElementById("trainerYes");
+        const trainerNo = document.getElementById("trainerNo");
         const trainerNameDropdown = document.getElementById("trainerNameDropdown");
 
         trainerYes.addEventListener("change", function() {
             if (trainerYes.checked) {
                 trainerNameDropdown.style.display = "block";
             } else {
+                trainerNameDropdown.style.display = "none";
+            }
+        });
+
+        trainerNo.addEventListener("change", function() {
+            if (trainerNo.checked) {
                 trainerNameDropdown.style.display = "none";
             }
         });
