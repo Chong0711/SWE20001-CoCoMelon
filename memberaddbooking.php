@@ -33,29 +33,6 @@ if (isset($_POST['login'])) {
 <head>
 <title>SmashIt Badminton </title>
 <style>
-.split {
-  height: 100%;
-  width: 40%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-/* Control the left side */
-.left {
-  left: 0;
-  background-color: blue;
-}
-
-/* Control the right side */
-.right {
-  right: 0;
-  width:60%;
-  background-color: orange;
-}
-
 /* If you want the content centered horizontally and vertically */
 .centered {
   position: absolute;
@@ -68,16 +45,6 @@ if (isset($_POST['login'])) {
 
 ---------------------------------------------------------------
 body {font-family: Arial, Helvetica, sans-serif;}
-
-
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
 
 button {
   background-color: #04AA6D;
@@ -103,9 +70,6 @@ button:hover {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-span.psw {
-  float: right;
-}
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
@@ -120,38 +84,43 @@ span.psw {
 </style>
 </head>
 <body>
-<div class="split left">
-  <div class="centered">
-  <img src="BmtLogo.png" alt="SmashItBadminton" width="400px" height="350px">
-  </div>
-</div>
 
-<div class="split right">
+
   <div class="centered">
     <form action="/bookingdetails_page.php" method="post">
         <div class="container">
-            <h2 align="center">Booking</h2>
-            <label for="uname"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email Address" name="uname" required>
-
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-            
-            <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-            <span class="psw"><a href="#">Forgot password</a></span>
-            </label>
-            <br><br><br>
-            <button type="submit">Login</button>
-            <center>
-            <span>Don't have an account? <a href="#">Create account</a></span>
-            </center>
+            	<label for="name">Name:</label>
+	        <input type="text" name="name" required><br>
+	        
+	        <label for="email">Email:</label>
+	        <input type="email" name="email" required readonly><br>
+	        
+	        <label for="phone">Phone:</label>
+	        <input type="text" name="phone" required><br>
+	        
+	        <label for="date">Date:</label>
+	        <input type="date" name="date" required><br>
+	        
+	        <label for="time">Time:</label>
+	        <input type="time" name="time" required><br>
+	        
+	        <label for="courts">Number of Booking Court:</label>
+	        <select name="courts">
+	            <option value="1">1</option>
+	            <option value="2">2</option>
+	            <option value="3">3</option>
+	        </select><br>
+	        
+	        <label for="trainer">Trainer:</label>
+	        <input type="radio" name="trainer" value="yes"> Yes
+	        <input type="radio" name="trainer" value="no"> No<br>
+	        
+	        <input type="submit" value="Book Appointment">
           </div>
             
 
     </form>
   </div>
-</div>
 
 </body>
 </html>
