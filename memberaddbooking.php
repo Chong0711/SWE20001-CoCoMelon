@@ -110,8 +110,18 @@ button:hover {
 	        </select><br>
 	        
 	        <label for="trainer">Trainer:</label>
-	        <input type="radio" name="trainer" value="yes"> Yes
-	        <input type="radio" name="trainer" value="no"> No<br>
+            <input type="radio" name="trainer" value="yes" id="trainerYes"> Yes
+            <input type="radio" name="trainer" value="no" id="trainerNo"> No<br>
+        
+            <!-- Additional dropdown for trainer name -->
+            <div id="trainerNameDropdown" style="display:none;">
+                <label for="trainerName">Trainer Name:</label>
+                <select name="trainerName">
+                    <option value="John">John</option>
+                    <option value="Alice">Alice</option>
+                    <option value="Bob">Bob</option>
+                </select><br>
+            </div>
 	        
 	        <input type="submit" value="Book Appointment">
           </div>
