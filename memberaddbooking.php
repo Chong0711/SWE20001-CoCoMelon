@@ -68,7 +68,7 @@ button:hover {
         <input type="email" name="email" required><br>
         
         <label for="phone">Phone:</label>
-        <input type="text" name="phone" readonly><br>
+        <input type="text" name="phone" required><br>
         
         <label for="date">Date:</label>
         <input type="date" name="date" required><br>
