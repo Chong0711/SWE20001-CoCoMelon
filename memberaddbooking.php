@@ -109,7 +109,7 @@ button:hover {
         
         <label for="trainer">Trainer:</label>
         <input type="radio" name="trainer" value="yes" id="trainerYes"> Yes
-        <input type="radio" name="trainer" value="no" id="trainerNo"> No<br>
+        <input type="radio" name="trainer" value="no" id="trainerNo" checked> No<br>
         
         <!-- Additional dropdown for trainer name -->
         <div id="trainerNameDropdown" style="display:none;">
