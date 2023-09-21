@@ -84,48 +84,46 @@ button:hover {
 </style>
 </head>
 <body>
-<div class="centered">
-    <form action="/bookingdetails_page.php" method="post">
-        <div class="container">
-            	<label for="name">Name:</label>
-	        <input type="text" name="name" required><br>
-	        
-	        <label for="email">Email:</label>
-	        <input type="email" name="email" required readonly><br>
-	        
-	        <label for="phone">Phone:</label>
-	        <input type="text" name="phone" required><br>
-	        
-	        <label for="date">Date:</label>
-	        <input type="date" name="date" required><br>
-	        
-	        <label for="time">Time:</label>
-	        <input type="time" name="time" required><br>
-	        
-	        <label for="courts">Number of Booking Court:</label>
-	        <select name="courts">
-	            <option value="1">1</option>
-	            <option value="2">2</option>
-	            <option value="3">3</option>
-	        </select><br>
-	        
-	        <label for="trainer">Trainer:</label>
-            <input type="radio" name="trainer" value="yes" id="trainerYes"> Yes
-            <input type="radio" name="trainer" value="no" id="trainerNo"> No<br>
+   <form action="process_booking.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
         
-            <!-- Additional dropdown for trainer name -->
-            <div id="trainerNameDropdown" style="display:none;">
-                <label for="trainerName">Trainer Name:</label>
-                <select name="trainerName">
-                    <option value="John">John</option>
-                    <option value="Alice">Alice</option>
-                    <option value="Bob">Bob</option>
-                </select><br>
-            </div>
-	        
-	        <input type="submit" value="Book Appointment">
-          </div>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" readonly><br>
+        
+        <label for="date">Date:</label>
+        <input type="date" name="date" required><br>
+        
+        <label for="time">Time:</label>
+        <input type="time" name="time" required><br>
+        
+        <label for="courts">Number of Booking Court:</label>
+        <select name="courts">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select><br>
+        
+        <label for="trainer">Trainer:</label>
+        <input type="radio" name="trainer" value="yes" id="trainerYes"> Yes
+        <input type="radio" name="trainer" value="no" id="trainerNo"> No<br>
+        
+        <!-- Additional dropdown for trainer name -->
+        <div id="trainerNameDropdown" style="display:none;">
+            <label for="trainerName">Trainer Name:</label>
+            <select name="trainerName">
+                <option value="John">John</option>
+                <option value="Alice">Alice</option>
+                <option value="Bob">Bob</option>
+            </select><br>
+        </div>
+        
+        <input type="submit" value="Book Appointment">
     </form>
+
     <script>
         // JavaScript to show/hide the trainer name dropdown based on radio button selection
         const trainerYes = document.getElementById("trainerYes");
@@ -139,7 +137,5 @@ button:hover {
             }
         });
     </script>
-</div>
-
 </body>
 </html>
