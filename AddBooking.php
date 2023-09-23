@@ -390,7 +390,7 @@ body{
 	    		</select>
 	</div>	
 		
-   		 <button type="submit" class="btn">Confirm</button>
+   		 <button type="submit" class="btn">Book Appointment</button>
 	
 </form>
     </div>
