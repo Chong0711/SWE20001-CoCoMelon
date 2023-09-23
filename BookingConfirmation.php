@@ -3,6 +3,10 @@ session_start();
 // this con is used to connect with the database
 $con=mysqli_connect("localhost", "root", null, "cocomelon");
 
+// Check the connection
+    if ($con->connect_error) {
+        die("Connection failed: " . $con->connect_error);
+    }
 // Retrieve user inputs
         $name = $_POST['name'];
         $email = $_POST['email'];
@@ -252,10 +256,26 @@ body{
 				}
 				?>
 				<p><strong>Total Price:</strong> RM <?php echo $totalPrice; ?></p>
+				<button type="submit" name='confirm' class="btn">Confirm</button>
+				<button type="submit" name='cancel' class="btn">Cancel</button>
 			</div>
     </div>
 </div>
+<?php
+// Insert data into the database (replace with your database schema)
+    $sql = "INSERT INTO bookings (name, email, phone, date, time, courts, trainer) VALUES ($name, $email, $phone, $date, $time, $courts, $trainerName)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssss", $name, $email, $phone, $date, $time, $courts, $trainer);
 
+    if ($stmt->execute()) {
+        echo "Booking saved successfully.";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+>
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
