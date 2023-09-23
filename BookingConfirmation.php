@@ -14,8 +14,8 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
 
         // Calculate the price
-        $courtPricePerHour = 8; // RM per hour
-        $trainerPricePerHour = 20; // RM per hour
+        $courtPricePerHour = 8; // court RM per hour
+        $trainerPricePerHour = 20; // trainer RM per hour
         $durationInHours = 1; // Default duration is 1 hour
 
         // Calculate the total price based on the number of courts and trainer selection
