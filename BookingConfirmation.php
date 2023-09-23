@@ -22,7 +22,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
         $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
         $totalPrice = $courtTotalPrice + $trainerTotalPrice;
-?>
+>
 
 <!DOCTYPE html>
 <html lang="en">
