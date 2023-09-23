@@ -3,26 +3,25 @@ session_start();
 // this con is used to connect with the database
 $con=mysqli_connect("localhost", "root", null, "cocomelon");
 
-$name = $_POST['name'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$date = $_POST['date'];
-$time = $_POST['time'];
-$courts = $_POST['courts'];
-$trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
-$trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+// Retrieve user inputs
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $date = $_POST['date'];
+        $time = $_POST['time'];
+        $courts = $_POST['courts'];
+        $trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
+        $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
 
-// Calculate the price (you can adjust this logic as needed)
-$courtPricePerHour = 8; // RM per hour
-$trainerPricePerHour = 20; // RM per hour
-$durationInHours = 1; // Default duration is 1 hour
+        // Calculate the price
+        $courtPricePerHour = 8; // RM per hour
+        $trainerPricePerHour = 20; // RM per hour
+        $durationInHours = 1; // Default duration is 1 hour
 
-// Calculate the total price based on the number of courts and trainer selection
-$courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
-$trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
-$totalPrice = $courtTotalPrice + $trainerTotalPrice;
-
-// You can save the booking details in a database or display them here as needed
+        // Calculate the total price based on the number of courts and trainer selection
+        $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
+        $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
+        $totalPrice = $courtTotalPrice + $trainerTotalPrice;
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +76,7 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
+    background-size: 1550px 800px;
     background-position: center;
 
 }
@@ -138,7 +137,7 @@ body{
 .wrapper {
     position: relative;
     width: 400px;
-    height: 810px;
+    height: 530px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
@@ -195,50 +194,7 @@ body{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
-}
-
-.input-box{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    border-bottom: 2px solid #44561c;
-    margin: 30px 0;  
-}
-
-
-.input-box label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-
-.input-box input{
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 600;
-    padding: 0 35px 0 5px;
-
-}
-
-.input-box .icon{
-    position: absolute;
-    right: 8px;
-    font-size: 1.2em;
-    color: #44561c;
-    line-height: 57px;
-
+	margin-top: -230px;
 }
 
 .btn{
@@ -255,107 +211,48 @@ body{
 	margin-top: 20px;
 }
 
-.input-trainer{
-	position: relative;
+
+.booking-details{
+    position: relative;
     width: 100%;
     height: 50px;
-    margin: 40px 0;
+    margin: 30px 0;  
 }
 
-.input-trainer label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
 
-.input-trainer p{ /*For Total:RM?*/
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-40%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.input-trainer select{
-    margin-top: 20px;
+.booking-details p{
     width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
     font-size: 1em;
-    padding: 5px;
+    color: #44561c;
+    font-weight: 600;
+    padding: 0 60px 0 0;
 }
-
 
 
 </style>
 
 <div class="wrapper">
     <div class="form-box login">
-        <h2>Booking</h2>
-        <form method="post" action="#">
-    <div class="input-box">
-        <input type="text" name="name" required>
-        <label>Name</label>
-    </div>
-
-    <div class="input-box">
-        <input type="email" name="email" required>
-        <label>Email</label>
-    </div>
-
-    <div class="input-box">
-        <input type="tel" name="phone" required>
-        <label>Phone</label>
-    </div>
-
-    <div class="input-box">
-        <input type="date" name="date" required>
-        <label>Date</label>
-    </div>
-
-    <div class="input-box">
-        <input type="text" name="time" required>
-        <label>Time</label>
-    </div>
-
-    <div class="input-box">
-        <input type="text" name="courts" required>
-        <label>Courts</label>
-    </div>
-	
-	<div class="input-trainer">
-	    <label>Do you need a trainer?</label>
-	    <select id="trainer-needed" name="trainer">
-			<option value="no">No</option>
-	        <option value="yes">Yes</option> 
-	    </select>
-	</div>
-	
-	<div class="input-box" id="trainer-name-input" style="display: none;">
-	    <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
-	    <input type="text" id="trainer-name" placeholder="Trainer Name">
-	</div>
-		
-	<div class="input-trainer">
-		<p>Total Price: RM <?php echo $totalPrice; ?></p>
-	</div>
-
-   		 <button type="submit" class="btn">Confirm</button>
-	
-</form>
+        <h2>Booking Confirmation</h2>
+		    <div class="booking-details">
+			    <p><strong>Name:</strong> <?php echo $name; ?></p>
+				<p><strong>Email:</strong> <?php echo $email; ?></p>
+				<p><strong>Phone:</strong> <?php echo $phone; ?></p>
+				<p><strong>Date:</strong> <?php echo $date; ?></p>
+				<p><strong>Time:</strong> <?php echo $time; ?></p>
+				<p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
+				<p><strong>Trainer:</strong> <?php echo $trainer; ?></p>
+				<?php
+				if ($trainer === "yes") {
+				    echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
+				}
+				?>
+				<p><strong>Total Price:</strong> RM <?php echo $totalPrice; ?></p>
+			</div>
     </div>
 </div>
 
