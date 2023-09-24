@@ -1,30 +1,34 @@
 <?php
 session_start();
-// this con is used to connect with the database
+
 $con = mysqli_connect("localhost", "root", null, "cocomelon");
 
-// Check the connection
 if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
 
 $bookingDetails = null; // Initialize variable to hold booking details
 
-if (isset($_POST['bookid']) && isset($_POST['email'])) {
-    $booking_id = $_POST['bookid'];
-    $email = $_POST['email'];
+$bookingNotFound = false; // Initialize a flag to check if booking is not found
 
-    // Connect to the database and select the required details
-    $sql = "SELECT * FROM bookings WHERE booking_id = $booking_id AND email = '$email'";
-    $result = mysqli_query($con, $sql);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['bookid']) && isset($_POST['email'])) {
+        $booking_id = $_POST['bookid'];
+        $email = $_POST['email'];
 
-    if ($result && mysqli_num_rows($result) === 1) {
-        // Booking exists, fetch and store booking details
-        $bookingDetails = mysqli_fetch_assoc($result);
+        // Connect to the database and select the required details
+        $sql = "SELECT * FROM bookings WHERE booking_id = $booking_id AND email = '$email'";
+        $result = mysqli_query($con, $sql);
+
+        if ($result && mysqli_num_rows($result) === 1) {
+            // Booking exists, fetch and store booking details
+            $bookingDetails = mysqli_fetch_assoc($result);
+        } else {
+            $bookingNotFound = true;
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,38 +120,18 @@ body{
     transform: scaleX(1);
 }
 
-.navigation .btnlogin-popup{
-    width: 130px;
-    height: 50px;
-    background: transparent;
-    border: 2px solid #44561c;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #44561c;
-    font-size: 1.1em;
-    font-weight: 500;
-    margin-left: 40px;
-    transition: .5s;
-}
-
-.navigation .btnlogin-popup:hover{
-    background: #fff;
-    color: #162938;
-}
-
 .wrapper {
     position: relative;
     width: 400px;
-    height: 810px;
+    height: 810px; /* Minimum height to avoid resizing */
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
     backdrop-filter: blur(20px);
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center content horizontally */
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
@@ -161,38 +145,15 @@ body{
 .wrapper .form-box{
     width: 100%;
     padding: 40px;
+    overflow: hidden; /* Ensure content doesn't overflow */
 }
 
-
-.wrapper .form-box.login{
-    transition: transform .18s ease;
-    transform: translateX(0);
+.wrapper .form-box p {
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
-
-.wrapper.active .form-box.login{
-    transition: none;
-    transform: translateX(-400px);
-}
-
-.wrapper .icon-close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 45px;
-    height: auto;
-    background: #44561c;
-    font-size: 2em;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    border-bottom-left-radius: 20px;
-    cursor: pointer;
-    z-index: 1;
-
-}
-
-.form-box h2{
+.wrapper .form-box h2{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
@@ -256,60 +217,57 @@ body{
     margin-top: 20px;
 }
 
-/*reschedule booking css*/
-.wrapper .form-box.reschedule {
-    transition: transform .18s ease;
-    transform: translateX(0);
-}
-
-.wrapper.active .form-box.reschedule {
-    transition: none;
-    transform: translateX(-400px);
-}
-/*reschedule booking css*/
 </style>
-
 <div class="wrapper">
-    <!--to check if booking details were found in the database-->
-    <?php if ($bookingDetails) : ?>
+    <!-- Booking Not Found message -->
+    <?php if ($bookingNotFound) : ?>
+        <h2>Booking Not Found</h2>
+        <p id="booking-not-found">Did not find the booking. Please check your Booking ID and Email.</p>
+    <?php endif; ?>
+
+    <!-- Checking booking form -->
+    <h2>Reschedule booking</h2>
+    <form method="post" action="#">
+        <div class="input-box">
+            <input type="text" name="bookid" required>
+            <label>Booking ID</label>
+        </div>
+        <div class="input-box">
+            <input type="email" name="email" required>
+            <label>Email</label>
+        </div>
+        <button type="submit" class="btn">Check Appointment</button>
+    </form>
+</div>
+
+<!-- Display Booking Details -->
+<?php if ($bookingDetails) : ?>
     <div class="form-box reschedule">
-        <h2>Reschedule booking</h2>
-        <!-- Display booking details -->
+        <h2>Booking Details</h2>
         <p>Booking ID: <?php echo $bookingDetails['booking_id']; ?></p>
+        <p>Email: <?php echo $bookingDetails['email']; ?></p>
+        <p>Phone: <?php echo $bookingDetails['phone']; ?></p>
         <p>Name: <?php echo $bookingDetails['name']; ?></p>
         <p>Date: <?php echo $bookingDetails['date']; ?></p>
         <p>Time: <?php echo $bookingDetails['time']; ?></p>
-        <p>Courts: <?php echo $bookingDetails['courts']; ?></p>
+        <p>Court: <?php echo $bookingDetails['court']; ?></p>
         <p>Trainer: <?php echo ($bookingDetails['trainer'] === 'yes') ? $bookingDetails['trainer_name'] : '-'; ?></p>
-        <!-- Add more fields as needed -->
+        <!-- Add more details as needed -->
+    </div>
+<?php endif; ?>
 
-        <!-- Form for rescheduling -->
-        <form method="post" action="reschedule_action.php">
-            <input type="hidden" name="booking_id" value="<?php echo $bookingDetails['booking_id']; ?>">
-            <label for="new_date">New Date:</label>
-            <input type="date" name="new_date" required><br>
-            <label for="new_time">New Time:</label>
-            <input type="time" name="new_time" required><br>
-            <button type="submit" class="btn">Reschedule</button>
-        </form>
-    </div>
-    <?php else : ?>
-    <div class="form-box login">
-        <h2>Reschedule booking</h2>
-        <form method="post" action="#">
-            <div class="input-box">
-                <input type="text" name="bookid" required>
-                <label>Booking ID</label>
-            </div>
-            <div class="input-box">
-                <input type="email" name="email" required>
-                <label>Email</label>
-            </div>	
-            <button type="submit" class="btn">Check Appointment</button>
-        </form>
-    </div>
-    <?php endif; ?>
-</div>
+<script>
+    // Function to adjust form box height based on content
+    function adjustFormBoxHeight() {
+        var formBox = document.querySelector(".form-box.reschedule");
+        var contentHeight = formBox.scrollHeight; // Get the content's scroll height
+        formBox.style.height = contentHeight + "px"; // Set the form box's height
+    }
+
+    // Call the function when the page loads and when it resizes (optional)
+    window.onload = adjustFormBoxHeight;
+    window.onresize = adjustFormBoxHeight; // Optional: Update height on window resize
+</script>
 
 </body>
 </html>
