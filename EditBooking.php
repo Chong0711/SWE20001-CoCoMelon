@@ -226,7 +226,7 @@ body{
     <?php endif; ?>
 
     <!-- Checking booking form -->
-    <h2>Reschedule booking</h2>
+    <h2>Check booking</h2>
     <form method="post" action="#">
         <div class="input-box">
             <input type="text" name="bookid" required>
@@ -252,11 +252,56 @@ body{
         <p>Time: <?php echo $bookingDetails['time']; ?></p>
         <p>Court: <?php echo $bookingDetails['court']; ?></p>
         <p>Trainer: <?php echo ($bookingDetails['trainer'] === 'yes') ? $bookingDetails['trainer_name'] : '-'; ?></p>
-        <!-- Add more details as needed -->
-    </div>
+        <button type="button" onclick="editBooking()">Edit Booking</button>
+        <button type="button" onclick="cancelBooking()">Cancel Booking</button>
+   </div>
 <?php endif; ?>
 
 <script>
+     // Function to edit the booking
+    function editBooking() {
+        // Disable the edit button to prevent multiple clicks
+        document.querySelector(".reschedule button:first-child").disabled = true;
+
+        // Enable the date and time fields for editing
+        var dateInput = document.querySelector("input[name='new_date']");
+        var timeInput = document.querySelector("input[name='new_time']");
+        dateInput.removeAttribute("readonly");
+        timeInput.removeAttribute("readonly");
+
+        // Create a button to save the changes
+        var saveButton = document.createElement("button");
+        saveButton.textContent = "Save Changes";
+        saveButton.addEventListener("click", function() {
+            // Collect the updated date and time
+            var newDate = dateInput.value;
+            var newTime = timeInput.value;
+
+            // Validate and update the booking in the database (you will need to implement this)
+            // Example: You can send an AJAX request to a PHP script to update the booking
+        });
+
+        // Add the save button to the form
+        var form = document.querySelector(".form-box.reschedule form");
+        form.appendChild(saveButton);
+    }
+
+    // Function to cancel the booking
+    function cancelBooking() {
+        // Confirm cancellation with the user
+        var confirmCancel = confirm("Are you sure you want to cancel this booking?");
+        if (confirmCancel) {
+            // Update the booking status to "Cancelled" in the database (you will need to implement this)
+            // Example: You can send an AJAX request to a PHP script to update the booking status
+
+            // Disable the cancel button to prevent multiple clicks
+            document.querySelector(".reschedule button:last-child").disabled = true;
+
+            // Display a message to the user
+            var formBox = document.querySelector(".form-box.reschedule");
+            formBox.innerHTML = "<p>Your booking has been cancelled.</p>";
+        }
+    }
     // Function to adjust form box height based on content
     function adjustFormBoxHeight() {
         var formBox = document.querySelector(".form-box.reschedule");
