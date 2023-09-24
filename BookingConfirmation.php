@@ -26,7 +26,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
         $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
         $totalPrice = $courtTotalPrice + $trainerTotalPrice;
->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -275,7 +275,7 @@ body{
 
     $stmt->close();
     $conn->close();
->
+?>
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -319,4 +319,3 @@ body{
 
 </body>
 </html>
-
