@@ -8,24 +8,41 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         die("Connection failed: " . $con->connect_error);
     }
 // Retrieve user inputs
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $phone = $_POST['phone'];
-        $date = $_POST['date'];
-        $time = $_POST['time'];
-        $courts = $_POST['courts'];
-        $trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
-        $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $date = $_POST['date'];
+    $startTime = $_POST['stime'];
+    $endTime = $_POST['etime'];
+    $courts = $_POST['court'];
+    $trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
+    $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+    $startTimeStamp = strtotime($startTime);
+    $endTimeStamp = strtotime($endTime);
 
-        // Calculate the price
-        $courtPricePerHour = 8; // court RM per hour
-        $trainerPricePerHour = 20; // trainer RM per hour
-        $durationInHours = 1; // Default duration is 1 hour
+    if ($startTimeStamp === false || $endTimeStamp === false) {
+        echo "Invalid time format.";
+    } else {
+        // Calculate the time difference in seconds
+        $timeDifferenceInSeconds = $endTimeStamp - $startTimeStamp;
 
-        // Calculate the total price based on the number of courts and trainer selection
+        // Convert the time difference to hours
+        $durationInHours = $timeDifferenceInSeconds / 3600; // 3600 seconds in an hour
+    }
+
+    // Calculate the price
+    $courtPricePerHour = 8; // court RM per hour
+    $trainerPricePerHour = 20; // trainer RM per hour
+
+    // Calculate the total price based on the number of courts and trainer selection
+    if ($durationInHours <= 0)
+        echo "Error! Please check your start time and end time.";
+    else {
         $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
         $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
         $totalPrice = $courtTotalPrice + $trainerTotalPrice;
+    }
+        
 ?>
 
 <!DOCTYPE html>
@@ -247,7 +264,8 @@ body{
 				<p><strong>Email:</strong> <?php echo $email; ?></p>
 				<p><strong>Phone:</strong> <?php echo $phone; ?></p>
 				<p><strong>Date:</strong> <?php echo $date; ?></p>
-				<p><strong>Time:</strong> <?php echo $time; ?></p>
+				<p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
+                <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
 				<p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
 				<p><strong>Trainer:</strong> <?php echo $trainer; ?></p>
 				<?php
@@ -262,19 +280,43 @@ body{
     </div>
 </div>
 <?php
-// Insert data into the database (replace with your database schema)
-    $sql = "INSERT INTO bookings (name, email, phone, date, time, courts, trainer) VALUES ($name, $email, $phone, $date, $time, $courts, $trainerName)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssss", $name, $email, $phone, $date, $time, $courts, $trainer);
+// Check if the email exists in the customer database
+$sqlCheckEmail = "SELECT Customer_ID FROM customer WHERE Email = $email";
+$stmtCheckEmail = $con->prepare($sqlCheckEmail);
+$stmtCheckEmail->bind_param("s", $email);
+$stmtCheckEmail->execute();
+$resultCheckEmail = $stmtCheckEmail->get_result();
 
-    if ($stmt->execute()) {
-        echo "Booking saved successfully.";
+if ($resultCheckEmail->num_rows > 0) {
+    // Email exists in the customer database, retrieve the customer ID
+    $row = $resultCheckEmail->fetch_assoc();
+    $customerID = $row['Customer_ID'];
+} else {
+    // Email doesn't exist, create a new customer entry and retrieve the generated customer ID
+    $sqlInsertCustomer = "INSERT INTO customer (Name, Email, Phone) VALUES ($name, $email, $phone)";
+    $stmtInsertCustomer = $con->prepare($sqlInsertCustomer);
+    $stmtInsertCustomer->bind_param("sss", $name, $email, $phone);
+    if ($stmtInsertCustomer->execute()) {
+        $customerID = $stmtInsertCustomer->insert_id;
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error creating a new customer.";
+        exit; // Exit the script
     }
+}
 
-    $stmt->close();
-    $conn->close();
+// Insert data into the database (replace with your database schema)
+    $sql = "INSERT INTO booking (Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount) VALUES ($customerID, $trainerName, $date, $startTime, $endTime, 'Booked', $courts, $totalPrice)";
+        $stmt = $con->prepare($sql);
+        $stmt->bind_param("ssssssss", $email, $trainerName, $date, $startTime, $endTime, 'Booked', $courts, $totalPrice);
+
+        if ($stmt->execute()) {
+            echo "Booking saved successfully.";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $con->close();
 ?>
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
