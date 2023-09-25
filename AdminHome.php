@@ -21,12 +21,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
     <nav class="navigation">
         <a href="#"><b>Home</b></a>
         <a href="#"><b>About</b></a>
-        <a href="#" class="drop-service"><b>Services</b></a>
-        <div class="dropdown-content">
-          <a href="#">Add</a>
-          <a href="#">Check</a>
-          <a href="#">Trainer Timetable</a>
-        </div>
+        <a href="#" ><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
         <a href="#"><b>User Profile</b></a>
     </nav>
@@ -118,7 +113,9 @@ body{
     background: #fff;
     color: #162938;
 }
+/*dropdown button*/
 
+/*dropdown button
 /*navigation bar*/
 
 .wrapper {
@@ -145,86 +142,23 @@ body{
 
 .wrapper .form-box{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 400px;
     padding: 40px;
 }
 
-
-.wrapper .form-box.login{
-    transition: transform .18s ease;
-    transform: translateX(0);
+span {
+  width: 50px;
+  height: 50px;
 }
 
-
-.wrapper.active .form-box.login{
-    transition: none;
-    transform: translateX(-400px);
-}
-
-.wrapper .icon-close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 45px;
-    height: 45px;
-    background: #44561c;
-    font-size: 2em;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    border-bottom-left-radius: 20px;
-    cursor: pointer;
-    z-index: 1;
-
-}
 
 .form-box h2{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
-}
-
-.input-box{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    border-bottom: 2px solid #44561c;
-    margin: 30px 0;  
-}
-
-
-.input-box label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-
-.input-box input{
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 600;
-    padding: 0 35px 0 5px;
-
-}
-
-.input-box .icon{
-    position: absolute;
-    right: 8px;
-    font-size: 1.2em;
-    color: #44561c;
-    line-height: 57px;
-
 }
 
 .btn{
@@ -241,6 +175,44 @@ body{
 	margin-top: 20px;
 }
 
-
-
 </style>
+<!-- Admin Dashboard -->
+<span></span>
+<div class="wrapper">
+    <div class="form-box addbooking">
+        <form method="post" action="/cocomelon/addbooking.php">
+            <h2>Add Booking</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+<div class="wrapper">
+    <div class="form-box editbooking">
+        <form method="post" action="/cocomelon/editbooking.php">
+            <h2>Check Booking</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+<div class="wrapper">
+    <div class="form-box membership">
+        <form method="post" action="/cocomelon/membership.php">
+            <h2>Membership Management</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+<div class="wrapper">
+    <div class="form-box timetable">
+        <form method="post" action="/cocomelon/trainertimetable.php">
+            <h2>Trainer Timetable</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+</body>
+</html>
