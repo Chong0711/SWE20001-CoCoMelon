@@ -178,16 +178,10 @@ body{
     text-align: center;
 }
 
-.input-box{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    border-bottom: 2px solid #44561c;
-    margin: 30px 0;  
-}
 
 
-.input-box label{
+
+/* .input-box label{
     position: absolute;
     top: 50%;
     left: 5px;
@@ -197,7 +191,7 @@ body{
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
-}
+} */
 
 
 .input-box input{
@@ -341,34 +335,34 @@ body{
     <div class="form-box login">
         <h2>Booking</h2>
         <form method="post" action="/cocomelon/bookingconfirmation.php">
-    <div class="input-box">
-        <input type="text" name="name" required>
         <label>Name</label>
+        <div class="input-box">
+        <input type="text" name="name" required>
     </div>
 
+    <label>Email</label>
     <div class="input-box">
         <input type="email" name="email" required>
-        <label>Email</label>
     </div>
 
+    <label>Phone</label>
     <div class="input-box">
         <input type="tel" name="phone" required>
-        <label>Phone</label>
     </div>
 
+    <label>Date</label>
     <div class="input-box">
         <input type="date" name="date" required>
-        <label>Date</label>
     </div>
 
+    <label>Start Time</label>
     <div class="input-box">
         <input type="time" name="stime" required>
-        <label>Start Time</label>
     </div>
 
+    <label>End Time</label>
     <div class="input-box">
         <input type="time" name="etime" required>
-        <label>End Time</label>
     </div>
 
     <div class="input-court">

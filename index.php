@@ -98,17 +98,17 @@ if (isset($_POST['login'])) {
 
     <div class="form-box login">
         <h2>Login</h2>
-        <form action="login.php" method="post">
+        <form action="index.php" method="post">
+            <label>Email</label>
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
                 <input type="email" name="loginemail" required>
-                <label>Email</label>
             </div>
 
+            <label>Password</label>
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                 <input type="password" name="loginpsw" required>
-                <label>Password</label>
             </div>
 
             <div class="remember-forgot">
@@ -130,24 +130,24 @@ if (isset($_POST['login'])) {
 
     <div class="form-box register">
         <h2>Registration</h2>
-        <form action="login.php" method="post">
+        <form action="index.php" method="post">
             
+            <label>Name</label>
             <div class="input-box">
                 <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
                 <input type="text" name="name" required>
-                <label>Name</label>
             </div>
 
+            <label>Email</label>
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
                 <input type="email" name="email" required>
-                <label>Email</label>
             </div>
-            
+
+            <label>Password</label>
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                 <input type="password" name="psw" required>
-                <label>Password</label>
             </div>
 
             <div class="remember-forgot">
