@@ -36,7 +36,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 }
 
 header{
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -47,7 +47,6 @@ header{
     align-items: center;
     justify-content: space-between;
     font-size: 1em;
-
 }
 
 body{
@@ -66,6 +65,7 @@ body{
     justify-content: space-between;
 }
 
+/*navigation bar*/
 .navigation a{
     position: relative;
     font-size: 1.1em;
@@ -114,10 +114,12 @@ body{
     color: #162938;
 }
 
+/*navigation bar*/
+
 .wrapper {
     position: relative;
     width: 400px;
-    height: 810px;
+    height: auto; /*changed the form box's height as auto*/
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
@@ -399,7 +401,10 @@ body{
 	
 </form>
     </div>
+    <br><br><br><br>
 </div>
+
+
 
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
