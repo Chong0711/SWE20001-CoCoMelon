@@ -338,7 +338,7 @@ body{
 <div class="wrapper">
     <div class="form-box login">
         <h2>Booking</h2>
-        <form method="post" action="#">
+        <form method="post" action="/cocomelon/bookingconfirmation.php">
     <div class="input-box">
         <input type="text" name="name" required>
         <label>Name</label>
@@ -360,8 +360,13 @@ body{
     </div>
 
     <div class="input-box">
-        <input type="time" name="time" required>
-        <label>Time</label>
+        <input type="time" name="stime" required>
+        <label>Start Time</label>
+    </div>
+
+    <div class="input-box">
+        <input type="time" name="etime" required>
+        <label>End Time</label>
     </div>
 
     <div class="input-court">
@@ -403,10 +408,10 @@ body{
 
 <script>
 	const wrapper = document.querySelector('.wrapper');
-	const loginLink = document.querySelector('.login-link');
-	const registerLink = document.querySelector('.register-link');
-	const btnPopup = document.querySelector('.btnlogin-popup');
-	const iconClose = document.querySelector('.icon-close');
+	// const loginLink = document.querySelector('.login-link');
+	// const registerLink = document.querySelector('.register-link');
+	// const btnPopup = document.querySelector('.btnlogin-popup');
+	// const iconClose = document.querySelector('.icon-close');
 	
 	const trainerNeededSelect = document.getElementById('trainer-needed');
 	const trainerNameInput = document.getElementById('trainer-name-input');
@@ -419,24 +424,23 @@ body{
 	    }
 	});
 	
-	registerLink.addEventListener('click', () => {
-	    wrapper.classList.add('active');
-	});
+	// registerLink.addEventListener('click', () => {
+	//     wrapper.classList.add('active');
+	// });
 	
-	loginLink.addEventListener('click', () => {
-	    wrapper.classList.remove('active');
-	});
+	// loginLink.addEventListener('click', () => {
+	//     wrapper.classList.remove('active');
+	// });
 	
-	btnPopup.addEventListener('click', () => {
-	    wrapper.classList.add('active-popup');
-	});
+	// btnPopup.addEventListener('click', () => {
+	//     wrapper.classList.add('active-popup');
+	// });
 	
-	iconClose.addEventListener('click', () => {
-	    wrapper.classList.remove('active-popup');
-	});
+	// iconClose.addEventListener('click', () => {
+	//     wrapper.classList.remove('active-popup');
+	// });
 
 </script>
 
 </body>
 </html>
-
