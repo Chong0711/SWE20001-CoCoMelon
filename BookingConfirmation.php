@@ -77,7 +77,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 }
 
 header{
-    position: fixed;
+    position: absolute; /*navigation bar wont stick at above*/
     top: 0;
     left: 0;
     width: 100%;
@@ -158,7 +158,7 @@ body{
 .wrapper {
     position: relative;
     width: 400px;
-    height: 530px;
+    height: auto; /*changed the form box's height as auto*/
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
