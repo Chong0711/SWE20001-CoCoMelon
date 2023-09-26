@@ -242,26 +242,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Invalid search option.";
     }
 
-
     if (isset($sql)) {
         $result = mysqli_query($con, $sql);
 
         if ($result) {
-            // Start creating the HTML for the results
-            $html = "<table>";
-            $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Action</th></tr>";
-            while ($row = mysqli_fetch_assoc($result)) {
-                $html .= "<tr>";
-                $html .= "<td>{$row['customer_id']}</td>";
-                $html .= "<td>{$row['membership_status']}</td>";
-                $html .= "<td>{$row['total_purchases']}</td>";
-                $html .= "<td><button onclick=\"activateDeactivate({$row['customer_id']})\">Activate/Deactivate</button></td>";
-                $html .= "</tr>";
-            }
-            $html .= "</table>";
+            // Check if there are any rows in the result set
+            if (mysqli_num_rows($result) > 0) {
+                // Start creating the HTML for the results
+                $html = "<table>";
+                $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Action</th></tr>";
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $html .= "<tr>";
+                    $html .= "<td>{$row['customer_id']}</td>";
+                    $html .= "<td>{$row['membership_status']}</td>";
+                    $html .= "<td>{$row['total_purchases']}</td>";
+                    $html .= "<td><button onclick=\"activateDeactivate({$row['customer_id']})\">Activate/Deactivate</button></td>";
+                    $html .= "</tr>";
+                }
+                $html .= "</table>";
 
-            // Display the HTML in the search-results container
-            echo "<div class='search-results'>$html</div>";
+                // Display the HTML in the search-results container
+                echo "<div class='search-results'>$html</div>";
+            } else {
+                // No results found, display a message
+                echo "<div class='search-results'>Did not find any results.</div>";
+            }
         } else {
             echo "Error: " . mysqli_error($con);
         }
