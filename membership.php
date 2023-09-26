@@ -203,7 +203,7 @@ th {
 
 <div class="search-container">
         <!-- Create a container for the search form -->
-        <form method="post" action="search_results.php">
+        <form method="post" action="#">
             <label for="search">Search by:</label>
             <select name="search_option" id="search_option" class="search-option">
                 <option value="year">Year</option>
@@ -221,7 +221,27 @@ th {
 <?php
 // Handle the search based on the selected option
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // ... (previous code for handling the search)
+    $search_option = $_POST["search_option"];
+    $search_query = $_POST["search_query"];
+
+    // Perform the search query based on the selected option
+    switch ($search_option) {
+        case "year":
+            // Perform a query to get customer info for a specific year
+            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE YEAR(purchase_date) = '$search_query' GROUP BY customer_id";
+            break;
+        case "email":
+            // Perform a query to get customer info by email
+            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE customer_email = '$search_query'";
+            break;
+        case "phone":
+            // Perform a query to get customer info by phone number
+            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE customer_phone = '$search_query'";
+            break;
+        default:
+            echo "Invalid search option.";
+    }
+
 
     if (isset($sql)) {
         $result = mysqli_query($con, $sql);
