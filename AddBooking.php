@@ -155,8 +155,10 @@ body{
    position: absolute;
    background-color: transparent; /* Set dropdown background to transparent */
    min-width: 160px;
-   /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
    z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
 }
 
 /* Links inside the dropdown */
@@ -177,7 +179,6 @@ body{
 .dropdown:hover .dropdown-content {
    display: block;
 }
-
 /*Dropdown Menu*/
 
 .wrapper {
