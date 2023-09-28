@@ -23,7 +23,16 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+		
+        <div class="dropdown">
+        <button class="dropbtn"><b>User Profile</b></button>
+        	<div class="dropdown-content">
+	            <!-- Add links or content for the dropdown here -->
+	            <a href="#">Profile</a>
+	            <a href="#">Settings</a>
+	            <a href="#">Logout</a>
+        	</div>
+    	</div>	
     </nav>
 </header>
 
@@ -64,6 +73,52 @@ body{
 	margin-right: 100px;
     justify-content: space-between;
 }
+
+/*Dropdown Menu*/
+/* Dropdown button */
+.navigation a:nth-child(4) {
+   margin-right: 30px;
+
+.dropbtn {
+   background-color: transparent;
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+   display: flex; 
+   align-items: center;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent;
+   min-width: 160px;
+   z-index: 1;
+   left: -50%; 
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
 
 /*navigation bar*/
 .navigation a{
