@@ -32,7 +32,8 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 	            <a href="#">Settings</a>
 	            <a href="#">Logout</a>
         	</div>
-    	</div>	
+    	</div>
+		
     </nav>
 </header>
 
@@ -73,52 +74,6 @@ body{
 	margin-right: 100px;
     justify-content: space-between;
 }
-
-/*Dropdown Menu*/
-/* Dropdown button */
-.navigation a:nth-child(4) {
-   margin-right: 30px;
-
-.dropbtn {
-   background-color: transparent;
-   border: none;
-   cursor: pointer;
-   color: #44561c;
-   font-size: 1.1em;
-   font-weight: 500;
-   display: flex; 
-   align-items: center;
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-   display: none;
-   position: absolute;
-   background-color: transparent;
-   min-width: 160px;
-   z-index: 1;
-   left: -50%; 
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-   color: #44561c;
-   padding: 12px 16px;
-   text-decoration: none;
-   display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-   background-color: #44561c;
-   color: white;
-}
-
-/* Show the dropdown content when the dropdown button is hovered over */
-.dropdown:hover .dropdown-content {
-   display: block;
-}
-/*Dropdown Menu*/
 
 /*navigation bar*/
 .navigation a{
@@ -170,6 +125,60 @@ body{
 }
 
 /*navigation bar*/
+
+/*Dropdown Menu*/
+/* Dropdown container */
+
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+   z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+
+/*Dropdown Menu*/
 
 .wrapper {
     position: relative;
@@ -233,10 +242,7 @@ body{
     text-align: center;
 }
 
-
-
-
-/* .input-box label{
+/*.input-box label{
     position: absolute;
     top: 50%;
     left: 5px;
