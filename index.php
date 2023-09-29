@@ -1,39 +1,5 @@
 <?php
 session_start();
-$errors = array();
-if(isset($_POST["signup"]))
-{
-    $servername = "localhost";
-    $username = "root";
-    $password = null;
-    $dbname = "cocomelon";
-
-    $name=$_POST["name"]; $email=$_POST["email"]; $psw=$_POST["psw"];
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-    }
-
-    $sql = "INSERT INTO personal_details (User_ID,Name, Email, Password, Roles)
-    VALUES ('','$name', '$email', '$psw','user'); 
-    UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
-    if (mysqli_multi_query($conn, $sql)) {
-        do {
-            /* store first result set */
-            if ($result = mysqli_store_result($conn)) {
-                while ($row = mysqli_fetch_row($result)) {
-                }
-                mysqli_free_result($conn);
-            }
-            /* print divider */
-            if (mysqli_more_results($conn)) {
-            }
-        } while (mysqli_next_result($conn));
-    }
-    $conn->close();
-}
 
 if (isset($_POST['login'])) {
     $servername = "localhost";

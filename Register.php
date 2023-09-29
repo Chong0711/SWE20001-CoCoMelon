@@ -1,3 +1,7 @@
+<?php
+session_start();
+$errors = array();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -238,33 +242,85 @@ body{
 .guest-login p a:hover{
     text-decoration: underline;
 }
+
+.error {
+	color: #D8000C;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.success {
+	color: green;
+    border-radius: 5px;
+    padding: 10px;
+}
 </style>
 
 <div class="wrapper">
     <div class="form-box register">
-        <h2>Registration</h2>
-        <form action="#">
+        <h2>Registration</h2><br>
+        <?php
+        if(isset($_POST["signup"]))
+        {
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
+        
+            $name=$_POST["name"]; $email=$_POST["email"]; $hpnum=$_POST["hpnum"]; $psw=$_POST["pass"];
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+            }
+            try {
+                $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
+                VALUES ('','$name', '$email','$hpnum', '$psw','user'); 
+                UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
+                if (mysqli_multi_query($conn, $sql)) {
+                    do {
+                        /* store first result set */
+                        if ($result = mysqli_store_result($conn)) {
+                            while ($row = mysqli_fetch_row($result)) {
+                            }
+                            mysqli_free_result($conn);
+                        }
+                        /* print divider */
+                        if (mysqli_more_results($conn)) {
+                        }
+                    } while (mysqli_next_result($conn));
+                }
+                echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+            }
+            catch (mysqli_sql_exception $e) {
+                echo "<div class='error'><center><b>Error: Duplicated Email</b></center></div>";
+            }
+            $conn->close();
+        }
+        ?>
+        <form action="register.php" method="post">
             <div class="input-box">
                 <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
-                <input type="text"required>
-                <label>Username</label>
+                <input type="text" name="name" required>
+                <label>Name</label>
             </div>
 
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
-                <input type="email"required>
+                <input type="email" name="email" required>
                 <label>Email</label>
             </div>
 			
 			<div class="input-box">
                 <span class="icon"><ion-icon name="phone-portrait-outline"></ion-icon></span>
-                <input type="number"required>
+                <input type="text" name="hpnum" required>
                 <label>Phone Number</label>
             </div>
             
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                <input type="password"required>
+                <input type="password" name="pass" required>
                 <label>Password</label>
             </div>
 
@@ -273,13 +329,13 @@ body{
                 
 
             </div>
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn" name="signup">Register</button>
             <div class="login-register">
                 <p>Already be our member? <a href="LoginPage.php" class="login-link">Login here!</a></p>                 
             </div>
 
             <div class="guest-login">
-                <p> <a href="#" class="guest-link"><u>Login as Guest</u></a></p>                 
+                <p> <a href="index.php" class="guest-link"><u>Login as Guest</u></a></p>                 
             </div>
         </form>
     </div>
