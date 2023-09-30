@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -239,21 +241,54 @@ body{
 .guest-login p a:hover{
     text-decoration: underline;
 }
+
+.error {
+	color: #D8000C;
+    border-radius: 5px;
+    padding: 10px;
+}
 </style>
 
 <div class="wrapper">
     <div class="form-box login">
-        <h2>Login</h2>
-        <form action="#">
+        <h2>Login</h2><br>
+        <?php
+            if (isset($_POST['login'])) {
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                $user_username = mysqli_real_escape_string($conn, $_POST["loginemail"]);
+                $user_password = mysqli_real_escape_string($conn, $_POST["loginpsw"]);
+
+                
+                // this query is used to track student id and password
+                $query = "SELECT * FROM personal_details WHERE Email ='$user_username' AND Password ='$user_password'";
+
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                
+                if (mysqli_num_rows($result) == 1) {
+                    echo'<script>window.location.replace("index.php");</script>';
+                }else {
+                    echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
+                }
+                mysqli_free_result($result);
+                mysqli_close($conn);
+            }
+        ?>
+        <form action="login.php" method="POST">
             <div class="input-box">
                 <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
-                <input type="email"required>
+                <input type="email" name="loginemail" required>
                 <label>Email</label>
             </div>
 
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                <input type="password"required>
+                <input type="password" name="loginpsw" required>
                 <label>Password</label>
             </div>
 
@@ -262,13 +297,13 @@ body{
                 <a href="#">Forgot Password?</a>
 
             </div>
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn" name="login">Login</button>
             <div class="login-register">
                 <p>Not member yet? <a href="register.php" class="register-link">Register here!</a></p>                 
             </div>
 
             <div class="guest-login">
-                <p> <a href="#" class="guest-link"><u>Login as Guest</u></a></p>                 
+                <p> <a href="index.php" class="guest-link"><u>Login as Guest</u></a></p>                 
             </div>
 
         </form>

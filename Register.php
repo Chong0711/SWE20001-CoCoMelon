@@ -1,6 +1,5 @@
 <?php
 session_start();
-$errors = array();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -291,7 +290,8 @@ body{
                         }
                     } while (mysqli_next_result($conn));
                 }
-                echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                //echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                echo'<script>window.location.replace("login.php");</script>';
             }
             catch (mysqli_sql_exception $e) {
                 echo "<div class='error'><center><b>Error: Duplicated Email</b></center></div>";

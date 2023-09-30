@@ -1,35 +1,3 @@
-<?php
-session_start();
-
-if (isset($_POST['login'])) {
-    $servername = "localhost";
-    $username = "root";
-    $password = null;
-    $dbname = "cocomelon";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    $user_username = mysqli_real_escape_string($conn, $_POST["loginemail"]);
-    $user_password = mysqli_real_escape_string($conn, $_POST["loginpsw"]);
-
-
-    if (count($errors) == 0) {
-    // this query is used to track student id and password
-            $query = "SELECT * FROM personal_details WHERE Email ='$user_username' AND Password ='$user_password'";
-
-            $result = mysqli_query($conn, $query);
-            $row = mysqli_fetch_assoc($result);
-            
-            if (mysqli_num_rows($result) == 1) {
-                    
-                    header('location: https://www.google.com');
-            }else {
-                    array_push($errors, "Wrong username/password combination");
-            }
-            mysqli_free_result($result);
-            mysqli_close($conn);                        
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
