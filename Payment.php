@@ -1,5 +1,83 @@
 <?php
 session_start();
+// this con is used to connect with the database
+$con=mysqli_connect("localhost", "root", null, "cocomelon");
+
+// Check the connection
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
+
+if (isset($_POST['confirm'])) 
+{
+    //get the information
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+    $phone = $_SESSION['phone'];
+    $date = $_SESSION['date'];
+    $startTime = $_SESSION['startTime'];
+    $endTime = $_SESSION['endTime'];
+    $courts = $_SESSION['courts'];
+    $trainer = $_SESSION['trainer'];
+    $trainerID = $_SESSION['trainerID'];
+    $totalPrice = $_SESSION['totalPrice'];
+
+    // //Check if the email exists in the customer database
+    // $sqlCheckEmail = "SELECT User_ID FROM personal_details WHERE Email = $email";
+    // $stmtCheckEmail = $con->prepare($sqlCheckEmail);
+    // $stmtCheckEmail->execute();
+    // $resultCheckEmail = $stmtCheckEmail->get_result();
+
+    // if ($resultCheckEmail->num_rows > 0) {
+    //     // Email exists in the customer database, retrieve the customer ID
+    //     $row = $resultCheckEmail->fetch_assoc();
+    //     $customerID = $row['User_ID'];
+    // } else {
+    //     // Email doesn't exist, create a new customer entry and retrieve the generated customer ID
+    //     $userId = "";
+    //     $guest = "guest";
+    //     $sqlInsertCustomer = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles) VALUES ('','$name', '$email','$hpnum', '$psw','user'); 
+    //         UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
+    //     $stmtInsertCustomer = $con->prepare($sqlInsertCustomer);
+    //     if ($stmtInsertCustomer->execute()) {
+    //         $customerID = $stmtInsertCustomer->insert_id;
+    //     } else {
+    //         echo "Error creating a new customer.";
+    //         exit; // Exit the script
+    //     }
+    // }
+        // Insert data into the database (replace with your database schema)
+        // $sql = "INSERT INTO booking (Book_ID, Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount) VALUES ('', 'U8', 'T2', '$date', '$startTime', '$endTime', 'Booked', '$courts', '$totalPrice');
+        //     UPDATE booking SET Book_ID = concat( Book_Str, Book_No )";
+            // $stmt = $con->prepare($sql);
+
+            // if ($stmt->execute()) {
+            //     echo "Booking saved successfully.";
+            // } else {
+            //     echo "Error: " . $stmt->error;
+            // }
+     try { //insert to database
+            $sql = "INSERT INTO booking (Book_ID, Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount) VALUES ('', 'U8', 'T2', '$date', '$startTime', '$endTime', 'Booked', '$courts', '$totalPrice');
+            UPDATE booking SET Book_ID = concat( Book_Str, Book_No )";
+            if (mysqli_multi_query($con, $sql)) {
+                do {
+                    /* store first result set */
+                    if ($result = mysqli_store_result($con)) {
+                        while ($row = mysqli_fetch_row($result)) {
+                        }
+                        mysqli_free_result($con);
+                    }
+                    /* print divider */
+                    if (mysqli_more_results($con)) {
+                    }
+                } while (mysqli_next_result($con));
+            }
+        }
+        catch (mysqli_sql_exception $e) {
+            echo "<div class='error'>Error: e.message()</div>";
+        }
+        $con->close();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,7 +97,18 @@ session_start();
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+        <!--non-member view
+        <a href="#"><b>User Profile</b></a>-->
+        <!-- member view-->
+        <div class="dropdown">
+        <button class="dropbtn"><b>User Profile</b></button>
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
     </nav>
 </header>
 <style>
@@ -181,7 +270,60 @@ table, th, td {
 .container-fluid{
 	margin: 40px 0px 0px 0px;
 }
+/*Dropdown Menu*/
+/* Dropdown container */
 
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
 </style>
 
 </div>
