@@ -11,13 +11,14 @@ $bookingDetails = null; // Initialize variable to hold booking details
 
 $bookingNotFound = false; // Initialize a flag to check if booking is not found
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+/*if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['bookid']) && isset($_POST['email'])) {
         $booking_id = $_POST['bookid'];
-        $email = $_POST['email'];
+        //$email = $_POST['email'];
 
         // Connect to the database and select the required details
-        $sql = "SELECT * FROM booking WHERE Book_ID = $booking_id AND user.email = '$email'";
+        //AND user.email = '$email'
+        $sql = "SELECT * FROM booking WHERE Book_ID = '$booking_id'";
         $result = mysqli_query($con, $sql);
 
         if ($result && mysqli_num_rows($result) === 1) {
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookingNotFound = true;
         }
     }
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -223,24 +224,25 @@ body{
     <!-- Checking booking form -->
     <div class="form-box login">
         <h2>Check Booking</h2>
-        <form method="post" action="#">
+        <form method="post" action="editbooking.php">
             <div class="input-box">
                 <input type="text" name="bookid" required>
                 <label>Booking ID</label>
             </div>
             <div class="input-box">
-                <input type="email" name="email" required>
+                <input type="email" name="email" >
                 <label>Email</label>
             </div>
-                 <button type="submit" class="btn" name="check">Check Appointment</button>
+                 <button type="submit" class="btn" name="search">Check Appointment</button>
             
         </form>
     </div>
 </div>
 
 <?php 
+/*
 //After click Check Appointment button
-if(isset($_POST['check'])) {
+    if(isset($_POST['check'])) {
     $check = $_POST['check'];
     if ($bookingNotFound== true) { ?>
     <!-- Booking Not Found message -->
@@ -264,8 +266,67 @@ if(isset($_POST['check'])) {
             <button type="button" onclick="editBooking()">Edit Booking</button>
             <button type="button" onclick="cancelBooking()">Cancel Booking</button>
        </div>
-    <?php endif; }}?>
+    <?php endif; }}
+    */
+    ?>
 
+<?php
+    if(isset($_POST["search"])){
+        $id=$_POST["bookid"];
+        $search = $id; 
+        $con=mysqli_connect("localhost", "root", null, "cocomelon");
+        $query="select * from booking where Book_ID= '$search'";
+        $result=mysqli_query($con, $query);
+        if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
+        else {
+            $row=mysqli_fetch_array($result); 
+                echo "<div class='wrapper'>";
+                echo "<div class='form-box reschedule'>";
+                echo "<h2>Booking Details</h2><br>";
+                echo "<form action=editbooking.php method=post>";
+                echo "<input type=hidden name=mid value=".$row['Book_ID'].">";
+                echo "<p>Booking ID: ".$row['Book_ID']."</p>";
+                echo "<p>Customer ID: ".$row['Cust_ID']."</p>";
+                echo "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
+                echo "<p>Date: <input type=date name=mdate value=".$row['Book_Date']."></p>";
+                echo "<p>Start Time: <input type=time name=mstarttime value=".$row['Book_StartTime']."></p>";
+                echo "<p>End Time: <input type=time name=mendtime value=".$row['Book_EndTime']."></p>";
+                echo "<p>Court: ".$row['Court']."</p>";
+                echo "<p>Status: ".$row['Status']."</p>";
+                echo "<p>Amount: ".$row['Amount']."</p>";
+                echo "<button type='submit' class='btn' name='update'>Update Appointment</button>";
+                echo "<button type='submit' class='btn' name='delete'>Delete Appointment</button>";
+                echo "</form>";
+                echo "</div>";
+                echo "</div>";	
+                    
+                mysqli_close($con);
+        }
+    }
+?>
+
+    <?php
+        if(isset($_POST["update"])){
+            $mid=$_POST["mid"]; $mdate=$_POST["mdate"]; $mstarttime=$_POST["mstarttime"]; $mendtime=$_POST["mendtime"];
+            $con=mysqli_connect("localhost", "root", null, "cocomelon");
+            $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
+                $result=mysqli_query($con, $sql);
+                echo "<p>Record is updated.</p>";
+            }
+	?>
+
+    <?php
+        if(isset($_POST["delete"])){
+        $del=$_POST["mid"];
+        $con=mysqli_connect("localhost", "root", null, "cocomelon");
+        $query="delete from booking where Book_ID='$del'";
+        $result=mysqli_query($con, $query);
+        echo "<p>Booking for ID <b>$del</b> has been deleted.</p>";
+        mysqli_close($con);
+        }
+    ?>
+
+<!--
 <script>
      // Function to edit the booking
     function editBooking() {
@@ -322,6 +383,7 @@ if(isset($_POST['check'])) {
     window.onload = adjustFormBoxHeight;
     window.onresize = adjustFormBoxHeight; // Optional: Update height on window resize
 </script>
+-->
 
 </body>
 </html>
