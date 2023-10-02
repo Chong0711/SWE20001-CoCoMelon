@@ -23,17 +23,19 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-		
+        <!--non-member view
+        <a href="#"><b>User Profile</b></a>-->
+        <!-- member view-->
         <div class="dropdown">
         <button class="dropbtn"><b>User Profile</b></button>
-        	<div class="dropdown-content">
-	            <!-- Add links or content for the dropdown here -->
-	            <a href="#">Profile</a>
-	            <a href="#">Settings</a>
-	            <a href="#">Logout</a>
-        	</div>
-    	</div>
-		
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        
     </nav>
 </header>
 
@@ -71,7 +73,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -196,7 +198,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin-top: 150px;
 }
 
 .wrapper.active{
@@ -289,12 +291,12 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 /*Do you need a trainer?*/
 .input-trainer{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -327,7 +329,7 @@ body{
 
 /*Trainer Name*/
 .input-NTrainer{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -360,7 +362,7 @@ body{
 
 /*Trainer Name*/
 .input-court{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -428,33 +430,32 @@ body{
     </div>
 
     <div class="input-court">
-	    <label>Number of Court:</label>
-	    <select id="court" name="court">
-			<option value="1">1</option>
-	        <option value="2">2</option> 
-			<option value="3">3</option> 
-	    </select>
+        <label>Number of Court:</label>
+        <select id="court" name="court">
+            <option value="1">1</option>
+            <option value="2">2</option> 
+            <option value="3">3</option> 
+        </select>
     </div>
-	
-	<div class="input-trainer">
-	    <label>Do you need a trainer?</label>
-	    <select id="trainer-needed" name="trainer">
-			<option value="no">No</option>
-	        <option value="yes">Yes</option> 
-	    </select>
-	</div>
-	
-	<div class="input-NTrainer" id="trainer-name-input" style="display: none;">
-	    	    <label>Trainers:</label>
-	    		<select id="trainer-needed" name="trainer">
-					<option value="Ali">Ali</option> 
-					<option value="Lina">Lina</option>
-	       			<option value="John">John</option> 
-	    		</select>
-	</div>	
-		
-   		 <button type="submit" class="btn">Book Appointment</button>
-	
+    
+    <div class="input-trainer">
+        <label>Do you need a trainer?</label >
+        <select id="trainer-needed" name="trainer">
+            <option value="no">No</option>
+            <option value="yes">Yes</option> 
+        </select>
+    </div>
+    
+    <div class="input-NTrainer" id="trainer-name-input" style="display: none;">
+        <label>Trainers:</label>
+        <select id="trainer-name" name="trainer" >
+            <option value="Ali">Ali</option> 
+            <option value="Lina">Lina</option>
+            <option value="John">John</option> 
+        </select>
+    </div>
+         <button type="submit" class="btn">Book Appointment</button>
+    
 </form>
     </div>
     <br><br><br><br>
@@ -468,39 +469,18 @@ body{
 
 
 <script>
-	const wrapper = document.querySelector('.wrapper');
-	// const loginLink = document.querySelector('.login-link');
-	// const registerLink = document.querySelector('.register-link');
-	// const btnPopup = document.querySelector('.btnlogin-popup');
-	// const iconClose = document.querySelector('.icon-close');
-	
-	const trainerNeededSelect = document.getElementById('trainer-needed');
-	const trainerNameInput = document.getElementById('trainer-name-input');
-	
-	trainerNeededSelect.addEventListener('change', () => {
-	    if (trainerNeededSelect.value === 'yes') {
-	        trainerNameInput.style.display = 'block';
-	    } else {
-	        trainerNameInput.style.display = 'none';
-	    }
-	});
-	
-	// registerLink.addEventListener('click', () => {
-	//     wrapper.classList.add('active');
-	// });
-	
-	// loginLink.addEventListener('click', () => {
-	//     wrapper.classList.remove('active');
-	// });
-	
-	// btnPopup.addEventListener('click', () => {
-	//     wrapper.classList.add('active-popup');
-	// });
-	
-	// iconClose.addEventListener('click', () => {
-	//     wrapper.classList.remove('active-popup');
-	// });
+    const wrapper = document.querySelector('.wrapper');
+    const trainerNeededSelect = document.getElementById('trainer-needed');
+    const trainerNameInput = document.getElementById('trainer-name-input');
+    const trainerNameSelect = document.getElementById('trainer-name'); // Added this line
 
+    trainerNeededSelect.addEventListener('change', () => {
+        if (trainerNeededSelect.value === "yes") {
+            trainerNameInput.style.display = 'block';
+        } else {
+            trainerNameInput.style.display = 'none';
+        }
+    });
 </script>
 
 </body>
