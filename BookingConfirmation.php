@@ -4,19 +4,29 @@ session_start();
 $con=mysqli_connect("localhost", "root", null, "cocomelon");
 
 // Check the connection
-    if ($con->connect_error) {
-        die("Connection failed: " . $con->connect_error);
-    }
+if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+}
 // Retrieve user inputs
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $date = $_POST['date'];
-    $startTime = $_POST['stime'];
-    $endTime = $_POST['etime'];
-    $courts = $_POST['court'];
-    $trainer = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
-    $trainerName = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+    $_SESSION['name'] = $_POST['name'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['phone'] = $_POST['phone'];
+    $_SESSION['date'] = $_POST['date'];
+    $_SESSION['startTime'] = $_POST['stime'];
+    $_SESSION['endTime'] = $_POST['etime'];
+    $_SESSION['courts'] = $_POST['court'];
+    $_SESSION['trainer'] = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
+    $_SESSION['trainerID'] = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+
+    $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+    $phone = $_SESSION['phone'];
+    $date = $_SESSION['date'];
+    $startTime = $_SESSION['startTime'];
+    $endTime = $_SESSION['endTime'];
+    $courts = $_SESSION['courts'];
+    $trainer = $_SESSION['trainer'];
+    $trainerID = $_SESSION['trainerID'];
     $startTimeStamp = strtotime($startTime);
     $endTimeStamp = strtotime($endTime);
 
@@ -38,11 +48,12 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
     if ($durationInHours <= 0)
         echo "Error! Please check your start time and end time.";
     else {
+
         $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
         $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
-        $totalPrice = $courtTotalPrice + $trainerTotalPrice;
+        $_SESSION['totalPrice'] = $courtTotalPrice + $trainerTotalPrice;
     }
-        
+
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +63,6 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -64,7 +74,18 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+        <!--non-member view
+        <a href="#"><b>User Profile</b></a>-->
+        <!-- member view-->
+        <div class="dropdown">
+        <button class="dropbtn"><b>User Profile</b></button>
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -77,7 +98,7 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 }
 
 header{
-    position: absolute; /*navigation bar wont stick at above*/
+    position: absolute; /*navigation bar wont fixed at above*/
     top: 0;
     left: 0;
     width: 100%;
@@ -154,7 +175,7 @@ body{
     background: #fff;
     color: #162938;
 }
-
+/* Box*/
 .wrapper {
     position: relative;
     width: 400px;
@@ -165,7 +186,6 @@ body{
     backdrop-filter: blur(20px);
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
     display: flex;
-    justify-content: center;
     align-items: center;
     overflow: hidden;
     transform: scale(1);
@@ -173,49 +193,16 @@ body{
 	margin-top: 150px;
 }
 
-.wrapper.active{
-    height: 520px;
-}
-
 .wrapper .form-box{
     width: 100%;
     padding: 40px;
-}
-
-
-.wrapper .form-box.login{
-    transition: transform .18s ease;
-    transform: translateX(0);
-}
-
-
-.wrapper.active .form-box.login{
-    transition: none;
-    transform: translateX(-400px);
-}
-
-.wrapper .icon-close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 45px;
-    height: 45px;
-    background: #44561c;
-    font-size: 2em;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    border-bottom-left-radius: 20px;
-    cursor: pointer;
-    z-index: 1;
-
 }
 
 .form-box h2{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
-	margin-top: -230px;
+	margin-top: 15px;
 }
 
 .btn{
@@ -236,7 +223,7 @@ body{
 .booking-details{
     position: relative;
     width: 100%;
-    height: 50px;
+    height: auto;
     margin: 30px 0;  
 }
 
@@ -247,115 +234,114 @@ body{
     background: transparent;
     border: none;
     outline: none;
-    font-size: 1em;
+    font-size: 20px;
     color: #44561c;
     font-weight: 600;
     padding: 0 60px 0 0;
 }
+/* Box*/
 
+/*Dropdown Menu*/
+/* Dropdown container */
 
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
+/*Block*/
+span {
+  width: 50px;
+  height: 50px;
+}
+/*Block*/
 </style>
 
 <div class="wrapper">
-    <div class="form-box login">
+    <div class="form-box booking">
         <h2>Booking Confirmation</h2>
 		    <div class="booking-details">
-			    <p><strong>Name:</strong> <?php echo $name; ?></p>
-				<p><strong>Email:</strong> <?php echo $email; ?></p>
-				<p><strong>Phone:</strong> <?php echo $phone; ?></p>
-				<p><strong>Date:</strong> <?php echo $date; ?></p>
-				<p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
-                <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
-				<p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
-				<p><strong>Trainer:</strong> <?php echo $trainer; ?></p>
-				<?php
-				if ($trainer === "yes") {
-				    echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
-				}
-				?>
-				<p><strong>Total Price:</strong> RM <?php echo $totalPrice; ?></p>
-				<button type="submit" name='confirm' class="btn">Confirm</button>
-				<button type="submit" name='cancel' class="btn">Cancel</button>
+                <form action="payment.php" method="post">
+                    <p><strong>Name:</strong> <?php echo $name; ?></p>
+                    <p><strong>Email:</strong> <?php echo $email; ?></p>
+                    <p><strong>Phone:</strong> <?php echo $phone; ?></p>
+                    <p><strong>Date:</strong> <?php echo $date; ?></p>
+                    <p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
+                    <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
+                    <p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
+                    <p><strong>Trainer:</strong> <?php echo $trainer; ?></p>
+                    <?php
+                    if ($trainer === "yes") {
+                        echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
+                    }
+                    ?>
+                    <p><strong>Total Price:</strong> RM <?php echo $_SESSION['totalPrice']; ?></p>
+                  <button type="submit" name='confirm' id='confirmbtn' class="btn">Confirm</button>
+                    <button type="submit" name='cancel' id='cancelbtn' class="btn">Cancel</button>
+                </form>
 			</div>
     </div>
+    
 </div>
-<?php
-// Check if the email exists in the customer database
-$sqlCheckEmail = "SELECT Customer_ID FROM customer WHERE Email = $email";
-$stmtCheckEmail = $con->prepare($sqlCheckEmail);
-$stmtCheckEmail->bind_param("s", $email);
-$stmtCheckEmail->execute();
-$resultCheckEmail = $stmtCheckEmail->get_result();
 
-if ($resultCheckEmail->num_rows > 0) {
-    // Email exists in the customer database, retrieve the customer ID
-    $row = $resultCheckEmail->fetch_assoc();
-    $customerID = $row['Customer_ID'];
-} else {
-    // Email doesn't exist, create a new customer entry and retrieve the generated customer ID
-    $sqlInsertCustomer = "INSERT INTO customer (Name, Email, Phone) VALUES ($name, $email, $phone)";
-    $stmtInsertCustomer = $con->prepare($sqlInsertCustomer);
-    $stmtInsertCustomer->bind_param("sss", $name, $email, $phone);
-    if ($stmtInsertCustomer->execute()) {
-        $customerID = $stmtInsertCustomer->insert_id;
-    } else {
-        echo "Error creating a new customer.";
-        exit; // Exit the script
-    }
-}
-
-// Insert data into the database (replace with your database schema)
-    $sql = "INSERT INTO booking (Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount) VALUES ($customerID, $trainerName, $date, $startTime, $endTime, 'Booked', $courts, $totalPrice)";
-        $stmt = $con->prepare($sql);
-        $stmt->bind_param("ssssssss", $email, $trainerName, $date, $startTime, $endTime, 'Booked', $courts, $totalPrice);
-
-        if ($stmt->execute()) {
-            echo "Booking saved successfully.";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-        $stmt->close();
-        $con->close();
-?>
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+<script type="text/javascript">
+    document.getElementById("cancelbtn").onclick = function () {
+        location.href = "addbooking.php";
+    };
+</script>
 
 <script>
 	const wrapper = document.querySelector('.wrapper');
-	const loginLink = document.querySelector('.login-link');
-	const registerLink = document.querySelector('.register-link');
-	const btnPopup = document.querySelector('.btnlogin-popup');
-	const iconClose = document.querySelector('.icon-close');
-	
-	const trainerNeededSelect = document.getElementById('trainer-needed');
-	const trainerNameInput = document.getElementById('trainer-name-input');
-	
-	trainerNeededSelect.addEventListener('change', () => {
-	    if (trainerNeededSelect.value === 'yes') {
-	        trainerNameInput.style.display = 'block';
-	    } else {
-	        trainerNameInput.style.display = 'none';
-	    }
-	});
-	
-	registerLink.addEventListener('click', () => {
-	    wrapper.classList.add('active');
-	});
-	
-	loginLink.addEventListener('click', () => {
-	    wrapper.classList.remove('active');
-	});
-	
-	btnPopup.addEventListener('click', () => {
-	    wrapper.classList.add('active-popup');
-	});
-	
-	iconClose.addEventListener('click', () => {
-	    wrapper.classList.remove('active-popup');
-	});
 
 </script>
 
