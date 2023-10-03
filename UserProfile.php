@@ -379,7 +379,14 @@ body{
 		</div>
 
 
-		<?php
+	<?php
+		if (isset($_POST['login'])) 
+		{
+		    //get the information
+		    $name = $_SESSION['name'];
+		    $email = $_SESSION['email'];
+		    $phnum = $_SESSION['phnum'];
+		    $psw = $_SESSION['pass'];
 			if (isset($_FILES["file"])) {
 			    $uploadDir = "profile_pictures/"; // Directory to store profile pictures
 			    $uploadFile = $uploadDir . basename($_FILES["file"]["name"]);
