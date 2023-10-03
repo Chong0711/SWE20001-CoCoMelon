@@ -226,11 +226,11 @@ body{
         <h2>Check Booking</h2>
         <form method="post" action="editbooking.php">
             <div class="input-box">
-                <input type="text" name="bookid" required>
+                <input type="text" name="bookid">
                 <label>Booking ID</label>
             </div>
             <div class="input-box">
-                <input type="email" name="email" >
+                <input type="email" name="email">
                 <label>Email</label>
             </div>
                  <button type="submit" class="btn" name="search">Check Appointment</button>
@@ -272,10 +272,9 @@ body{
 
 <?php
     if(isset($_POST["search"])){
-        $id=$_POST["bookid"];
-        $search = $id; 
+        $id=$_POST["bookid"]??null; $email=$_POST["email"]??null; 
         $con=mysqli_connect("localhost", "root", null, "cocomelon");
-        $query="select * from booking where Book_ID= '$search'";
+        $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id' or personal_details.Email = '$email'";
         $result=mysqli_query($con, $query);
         if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
         else {
@@ -287,6 +286,7 @@ body{
                 echo "<input type=hidden name=mid value=".$row['Book_ID'].">";
                 echo "<p>Booking ID: ".$row['Book_ID']."</p>";
                 echo "<p>Customer ID: ".$row['Cust_ID']."</p>";
+                echo "<p>Customer Name: ".$row['Name']."</p>";
                 echo "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
                 echo "<p>Date: <input type=date name=mdate value=".$row['Book_Date']."></p>";
                 echo "<p>Start Time: <input type=time name=mstarttime value=".$row['Book_StartTime']."></p>";
