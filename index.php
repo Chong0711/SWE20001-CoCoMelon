@@ -20,7 +20,18 @@
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <button class="btnlogin-popup"><b>Login</b></button>
+        <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            $query = "SELECT * FROM personal_details WHERE User_ID ='U12'";
+            $result = mysqli_query($conn, $query);
+            $row = mysqli_fetch_assoc($result);
+            echo "<button class='btnlogin-popup'><b>".$row['Name']."</b></button>";
+        ?>
     </nav>
 </header>
 
