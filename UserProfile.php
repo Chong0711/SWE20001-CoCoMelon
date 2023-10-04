@@ -23,17 +23,17 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-		
+        
         <div class="dropdown">
         <button class="dropbtn"><b>User Profile</b></button>
-        	<div class="dropdown-content">
-	            <!-- Add links or content for the dropdown here -->
-	            <a href="#">Profile</a>
-	            <a href="#">Settings</a>
-	            <a href="#">Logout</a>
-        	</div>
-    	</div>
-		
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        
     </nav>
 </header>
 
@@ -71,7 +71,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -196,7 +196,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin-top: 150px;
 }
 
 .wrapper.active{
@@ -237,12 +237,12 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 /*Do you need a trainer?*/
 .input-trainer{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -275,7 +275,7 @@ body{
 
 /*Trainer Name*/
 .input-NTrainer{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -308,7 +308,7 @@ body{
 
 /*Trainer Name*/
 .input-court{
-	position: relative;
+    position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
@@ -343,7 +343,7 @@ body{
 .profile-picture {
     width: 150px; 
     height: 150px; 
-	border: 3px solid #44561c;
+    border: 3px solid #44561c;
     border-radius: 50%; 
     overflow: hidden; 
     margin: 0 auto;
@@ -369,48 +369,51 @@ body{
 <div class="wrapper">
     <div class="form-box login">
         <h2>User Profile</h2>
-		<br>
+        <br>
         <form method="post" action="/cocomelon/bookingconfirmation.php">
-		
-		<!--Profile Picture-->
-		<div class="profile-picture">
-    		 <img src="path_to_user_profile_picture.jpg">
-   			 <div class="plus-symbol">+</div>
-		</div>
+        
+        <!--Profile Picture-->
+        <div class="profile-picture">
+             <img src="path_to_user_profile_picture.jpg">
+             <div class="plus-symbol">+</div>
+        </div>
 
 
-	<?php
-		if (isset($_POST['login'])) 
-		{
-		    //get the information
-		    $name = $_SESSION['name'];
-		    $email = $_SESSION['email'];
-		    $phnum = $_SESSION['phnum'];
-		    $psw = $_SESSION['pass'];
-			if (isset($_FILES["file"])) {
-			    $uploadDir = "profile_pictures/"; // Directory to store profile pictures
-			    $uploadFile = $uploadDir . basename($_FILES["file"]["name"]);
-			
-			    if (move_uploaded_file($_FILES["file"]["tmp_name"], $uploadFile)) {
-			        // Update the user's profile picture path in your database
-			        // Example: $newProfilePicturePath = $uploadFile;
-			        // Save $newProfilePicturePath to the user's profile in the database
-			    } else {
-			        // Handle upload failure
-			        echo "Error uploading file.";
-			    }
-			}
-		?>
+    <?php
+        if (isset($_POST['login'])) 
+        {
+            //get the information
+            $namesql = "SELECT Name FROM personal_details WHERE Email = $email";
+            $nameresult = mysqli_query($con, $namesql);
+            $namerow = mysqli_fetch_assoc($nameresult);
+            $email = $_SESSION['email'];
+            $phnum = $_SESSION['phnum'];
+            $psw = $_SESSION['pass'];
+            if (isset($_FILES["file"])) {
+                $uploadDir = "profile_pictures/"; // Directory to store profile pictures
+                $uploadFile = $uploadDir . basename($_FILES["file"]["name"]);
+            
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $uploadFile)) {
+                    // Update the user's profile picture path in your database
+                    // Example: $newProfilePicturePath = $uploadFile;
+                    // Save $newProfilePicturePath to the user's profile in the database
+                } else {
+                    // Handle upload failure
+                    echo "Error uploading file.";
+                }
+            }
+        }
+        ?>
 
-		<!--Profile Picture-->
-		
-           <p>Name:<?php echo $name['name']; ?></p>
-	        <p>Email:<?php echo $email['email']; ?></p>
-	        <p>Phone Number:<?php echo $$hpnum['hpnum']; ?></p>
-			<p>Password:<?php echo $psw['pass']; ?></p>
-		
-   		 <button type="submit" class="btn">Edit Profile</button>
-	
+        <!--Profile Picture-->
+        
+           <p>Name:<?php echo $nameresult; ?></p>
+            <p>Email:<?php echo $email['email']; ?></p>
+            <p>Phone Number:<?php echo $$hpnum['hpnum']; ?></p>
+            <p>Password:<?php echo $psw['pass']; ?></p>
+        
+         <button type="submit" class="btn">Edit Profile</button>
+
 </form>
     </div>
     <br><br><br><br>
@@ -440,19 +443,19 @@ body{
     });
 /*Profile Picture*/
 
-	const wrapper = document.querySelector('.wrapper');
-	
-	const trainerNeededSelect = document.getElementById('trainer-needed');
-	const trainerNameInput = document.getElementById('trainer-name-input');
-	
-	trainerNeededSelect.addEventListener('change', () => {
-	    if (trainerNeededSelect.value === 'yes') {
-	        trainerNameInput.style.display = 'block';
-	    } else {
-	        trainerNameInput.style.display = 'none';
-	    }
-	});
-	
+    const wrapper = document.querySelector('.wrapper');
+    
+    const trainerNeededSelect = document.getElementById('trainer-needed');
+    const trainerNameInput = document.getElementById('trainer-name-input');
+    
+    trainerNeededSelect.addEventListener('change', () => {
+        if (trainerNeededSelect.value === 'yes') {
+            trainerNameInput.style.display = 'block';
+        } else {
+            trainerNameInput.style.display = 'none';
+        }
+    });
+    
 </script>
 
 </body>
