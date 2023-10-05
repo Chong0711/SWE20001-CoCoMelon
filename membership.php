@@ -70,9 +70,9 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(Background_SWE2.jpg)no-repeat;
+    /*background: url(Background_SWE2.jpg)no-repeat;
     background-size: 1550px 1200px;
-    background-position: center;
+    background-position: center;*/
 
 }
 
@@ -242,7 +242,7 @@ th {
 
 /*pop out form*/
 /* Button used to open the contact form - fixed at the bottom of the page */
-.openbtn {
+.editbtn {
     width: 100%;
     height: 45px;
     background: #44561c;
@@ -310,6 +310,28 @@ th {
 }
 /*pop out form*/
 
+.heading{
+    text-align:center;
+    font-size: 2.5em;
+    color: #44561C;
+    padding: 1em;
+    margin: 5em 50;
+    width: auto;
+    background: rgba(90, 132, 85, 0.415);
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(badminton.jpg) no-repeat;
+    background-size: cover;
+    background-position: center center;
+    z-index: -1; /* Place the background behind the content */
+}
+
 .section{
     padding: 2rem 0%;
 }
@@ -357,9 +379,9 @@ html{
     </form>
 </div>
 </section>
-<span>
+
 <section>
-    <div class='search-results' id="result">
+    <div class='search-results' id='result'>
         <?php $html?>
     </div>
 </section>
@@ -414,7 +436,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if there are any rows in the result set
             if (mysqli_num_rows($result) > 0) {
                 // Start creating the HTML for the results
-                $html = "<h2>Results</h2><br><table>";
+                $html = "<h1 class='heading'>Results</h1><br><table>";
                 $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Active Date</th><th>End Date</th><th>Action</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
@@ -423,18 +445,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<td>{$row['Total_Purchases']}</td>";
                     $html .= "<td>{$row['Active_Date']}</td>";
                     $html .= "<td>{$row['End_Date']}</td>";
-                    //$html .= "<td><button class='btn' onclick=\"edit({$row['User_ID']})\">Edit</button>";
-                    // $html .="<td><button class='openbtn' onclick=\"openForm({$row['User_ID']}, '{$row['Status']}', '{$row['Active_Date']}', '{$row['End_Date']}')\">Edit</button></td>";
-                     $html .="<td><button class='openbtn' onclick=\"openForm()\">Edit</button></td>";
+                     $html .="<td><button name class='editbtn' action= 'membershipedit'>Edit</button></td>";
                     $html .= "</tr>";
                 }
                 $html .= "</table>";
 
                 // Display the HTML in the search-results container
-                echo "<div class='search-results'>$html</div>";
+                echo "<div class='search-results' id='result'>$html</div>";
             } else {
                 // No results found, display a message
-                echo "<div class='search-results'>Did not find any results.</div>";
+                echo "<div class='search-results' id='result'>Did not find any results.</div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
@@ -479,6 +499,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // }
 function openForm() {
   document.getElementById("myForm").style.display = "block";
+  console.log("Opening form for User ID: " + userId);
 }
 
 function closeForm() {
