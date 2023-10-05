@@ -201,6 +201,10 @@ body{
     margin-top: 150px;
 }
 
+.wrapper label{
+    color: #44561c;
+}
+
 .wrapper.active{
     height: 520px;
 }
@@ -245,7 +249,15 @@ body{
     text-align: center;
 }
 
-/*.input-box label{
+.input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #44561c;
+    margin-bottom: 30px;  
+}
+
+.input-box label{
     position: absolute;
     top: 50%;
     left: 5px;
@@ -255,10 +267,9 @@ body{
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
-} */
+}
 
-
-.input-box input{
+ .input-box input{
     width: 100%;
     height: 100%;
     background: transparent;
@@ -269,7 +280,7 @@ body{
     font-weight: 600;
     padding: 0 35px 0 5px;
 
-}
+} 
 
 .input-box .icon{
     position: absolute;
