@@ -264,54 +264,35 @@ section{
 
 .heading{
     text-align: center;
+    font-size: 25px;
 }
 
-/*Scroll smooth*/
-html{
-    scroll-padding-top: 6rem;
+label{
+    font-size: 20px;
 }
 
-@media(max-width:991px){
-
-
-    html{
-        font-size: 55%;
-    }
-    header{
-        padding:2rem;
-    }
-
-}
-
-@media(max-width:991px){
-
-
-    html{
-        font-size: 50%;
-    }
-}
-/*Scroll smooth*/
 </style>
 <section>
-<section>
-<div class="search-container">
-    <h2>Search Records</h2><br>
-    <!-- Create a container for the search form -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-        <label>Year: </label>
-        <input type="text" name="year" id="search_year" class="search-option" required>
-        <label for="search">Search by:</label>
-        <select name="search_option" id="search_option" class="search-option">
-            <option value="email">Email</option>
-            <option value="phone">Phone Number</option>
-        </select>
-        <input type="text" name="search_query" id="search_query" class="search-option">
-        <button type="submit" class="btn" a href="#result">Search</button>
-    </form>
-</div>
-</section>
-<span></span>
-<section>
+    <section>
+    <div class="search-container">
+        <h2 class='heading'>Search Records</h2><br>
+        <!-- Create a container for the search form -->
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <label>Year: </label>
+            <input type="text" name="year" id="search_year" class="search-option" required>
+
+            <label for="search">Search by:</label>
+            <select name="search_option" id="search_option" class="search-option">
+                <option value="email">Email</option>
+                <option value="phone">Phone Number</option>
+            </select>
+            <input type="text" name="search_query" id="search_query" class="search-option">
+            <button type="submit" class="btn" a href="#result">Search</button>
+        </form>
+    </div>
+    </section>
+
+    <section>
     <div class='search-results' id="result">
         <?php $html?>
     </div>
@@ -379,7 +360,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<td>{$row['Total_Purchases']}</td>";
                     $html .= "<td>{$row['Active_Date']}</td>";
                     $html .= "<td>{$row['End_Date']}</td>";
-                    $html .="<td><form action='membershipedit.php' method='post'><button name class='editbtn'>Edit</button></form></td>";
+                    $html .= "<td>
+                    <form action='1backup.php' method='POST'>
+                    <input type='hidden' name='user_id' value='{$row['User_ID']}'>
+                    <input type='hidden' name='status' value='{$row['Status']}'>
+                    <input type='hidden' name='total_purchases' value='{$row['Total_Purchases']}'>
+                    <input type='hidden' name='active_date' value='{$row['Active_Date']}'>
+                    <input type='hidden' name='end_date' value='{$row['End_Date']}'>
+                    <button type='submit' class='editbtn'>Edit</button>
+                    </form>
+                    </td>";
                     $html .= "</tr>";
                 }
 
