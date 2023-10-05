@@ -272,7 +272,7 @@ body{
                 
                 if (mysqli_num_rows($result) == 1) {
                     $_SESSION['User_ID']=$row['User_ID'];
-                    echo'<script>window.location.replace("index.php");</script>';
+                    echo'<script>window.location.replace("homepage.php");</script>';
                 }else {
                     echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
                 }

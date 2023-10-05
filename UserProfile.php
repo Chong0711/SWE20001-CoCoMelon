@@ -1,7 +1,14 @@
 <?php
 session_start();
 // this con is used to connect with the database
-$con=mysqli_connect("localhost", "root", null, "cocomelon");
+    $servername = "localhost";
+    $username = "root";
+    $password = null;
+    $dbname = "cocomelon";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -343,7 +350,6 @@ body{
 .profile-picture {
     width: 150px; 
     height: 150px; 
-    border: 3px solid #44561c;
     border-radius: 50%; 
     overflow: hidden; 
     margin: 0 auto;
@@ -351,17 +357,9 @@ body{
 
 .profile-picture img {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
-.plus-symbol {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 36px; /* Adjust the font size as needed */
-    color: #44561c; /* Adjust the color as needed */
-}
 /*Profile Picture*/
 
 </style>
@@ -370,53 +368,44 @@ body{
     <div class="form-box login">
         <h2>User Profile</h2>
         <br>
-        <form method="post" action="/cocomelon/bookingconfirmation.php">
         
         <!--Profile Picture-->
-        <div class="profile-picture">
-             <img src="path_to_user_profile_picture.jpg">
-             <div class="plus-symbol">+</div>
-        </div>
-
-
-    <?php
-        if (isset($_POST['login'])) 
+        <?php
+        if($row['Profile_Pic'] == null)
         {
-            //get the information
-            $namesql = "SELECT Name FROM personal_details WHERE Email = $email";
-            $nameresult = mysqli_query($con, $namesql);
-            $namerow = mysqli_fetch_assoc($nameresult);
-            $email = $_SESSION['email'];
-            $phnum = $_SESSION['phnum'];
-            $psw = $_SESSION['pass'];
-            if (isset($_FILES["file"])) {
-                $uploadDir = "profile_pictures/"; // Directory to store profile pictures
-                $uploadFile = $uploadDir . basename($_FILES["file"]["name"]);
-            
-                if (move_uploaded_file($_FILES["file"]["tmp_name"], $uploadFile)) {
-                    // Update the user's profile picture path in your database
-                    // Example: $newProfilePicturePath = $uploadFile;
-                    // Save $newProfilePicturePath to the user's profile in the database
-                } else {
-                    // Handle upload failure
-                    echo "Error uploading file.";
-                }
-            }
+             echo'<div class="profile-picture">
+             <img src="https://cdn-icons-png.flaticon.com/512/3106/3106921.png" class="profile-picture">
+             </div>';
         }
-        ?>
-
-        <!--Profile Picture-->
+        else{
+            echo '<div class="profile-picture"> <img src='.$row['Profile_Pic'].'></div>';
+        }
         
-           <p>Name:<?php echo $nameresult; ?></p>
-            <p>Email:<?php echo $email['email']; ?></p>
-            <p>Phone Number:<?php echo $$hpnum['hpnum']; ?></p>
-            <p>Password:<?php echo $psw['pass']; ?></p>
-        
-         <button type="submit" class="btn">Edit Profile</button>
+            echo "<div class='form-box reschedule'>";
+            echo "<form action=userprofile.php method=post>";
+            echo "<input type=hidden name=muid value=".$_SESSION['User_ID'].">";
+            echo "<p>User ID: ".$row['User_ID']."</p>";
+            echo "<p>Customer Name: <input type=text name=muname value =\"" . $row['Name'] . "\"></p>";
+            echo "<p>Email: <input type=email name=muemail value=".$row['Email']."></p>";
+            echo "<p>Phone Number: <input type=text name=muphonenum value=".$row['Phone_Num']."></p>";
+            echo "<p>Password: <input type=password name=mupsw value=".$row['Password']."></p>";
+            echo "<p>Profile Image: <input type=file name=img value=".$row['Profile_Pic']."></p>";
+            echo "<button type='submit' class='btn' name='updateprofile'>Edit Profile</button>";
+            echo "</form>";
+            echo "</div>";
 
-</form>
-    </div>
-    <br><br><br><br>
+        if(isset($_POST["updateprofile"])){
+            $muname=$_POST["muname"]; $muemail=$_POST["muemail"]; $muphonenum=$_POST["muphonenum"]; $mupsw=$_POST["mupsw"]; $mupic=$_POST["img"]??null;
+            $con=mysqli_connect("localhost", "root", null, "cocomelon");
+            if($mupic != null)
+            $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw', Profile_Pic='$mupic' WHERE User_ID='".$_SESSION['User_ID']."'";
+            else
+            $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw' WHERE User_ID='".$_SESSION['User_ID']."'";
+                $result=mysqli_query($con, $sql);
+                echo'<script>window.location.replace("userprofile.php");</script>';
+            }
+        
+	    ?>
 </div>
 
 

@@ -1,3 +1,9 @@
+<?php
+	session_start();
+	if(!ISSET($_SESSION['User_ID'])){
+		header('location:login.php');
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,8 +32,7 @@
             $password = null;
             $dbname = "cocomelon";
             $conn = new mysqli($servername, $username, $password, $dbname);
-
-            $query = "SELECT * FROM personal_details WHERE User_ID ='U12'";
+            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
             $result = mysqli_query($conn, $query);
             $row = mysqli_fetch_assoc($result);
             echo "<button class='btnlogin-popup'><b>".$row['Name']."</b></button>";

@@ -1,3 +1,7 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -439,7 +443,7 @@ section{
             <button class="dropbtn"><b>User Profile</b></button>
                 <div class="dropdown-content">
                     <!-- Add links or content for the dropdown here -->
-                    <a href="#">Profile</a>
+                    <a href="UserProfile.php">Profile</a>
                     <a href="#">Settings</a>
                     <a href="#">Logout</a>
                 </div>
