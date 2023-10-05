@@ -6,7 +6,6 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -28,10 +27,21 @@ if (!$con) {
         <a href="#"><b>About</b></a>
         <a href="#" ><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+        <!--non-member view
+        <a href="#"><b>User Profile</b></a>-->
+        <!-- member view-->
+        <div class="dropdown">
+        <button class="dropbtn"><b>User Profile</b></button>
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
     </nav>
 </header>
-
+<title>Membership Management</title>
 <style>
 * {
     margin: 0;
@@ -66,7 +76,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -118,48 +128,61 @@ body{
     background: #fff;
     color: #162938;
 }
-/*dropdown button*/
+/*Dropdown Menu*/
+/* Dropdown container */
 
-/*dropdown button
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
 /*navigation bar*/
-
-.wrapper {
-    position: relative;
-    width: 400px;
-    height: auto; /*changed the form box's height as auto*/
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transform: scale(1);
-    transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
-}
-
-.wrapper.active{
-    height: 520px;
-}
-
-.wrapper .form-box{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    max-width: 400px;
-    padding: 40px;
-}
-
-.form-box h2{
-    font-size: 2em;
-    color:#44561c ;
-    text-align: center;
-}
-
 .btn{
     width: 100%;
     height: 45px;
@@ -171,9 +194,25 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
+.search-container {
+    padding: 0px 0px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+    margin-bottom: 20px; /* Add margin at the bottom to separate from search results */
+}
+.search-result
+{
+    width: 100%; /* Ensure the table takes the full width of the container */
+    overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
+    overflow-y: auto;
+    margin-top: 20px;
+}
 .search-option
 {
     width: auto;
@@ -193,53 +232,135 @@ table, th, td {
 th, td {
     padding: 10px;
     text-align: left;
+    text-align: center;
 }
 
 th {
     background-color: #f2f2f2;
 }
 /* table view */
+span {
+  width: 50px;
+  height: 50px;
+}
+/* Button used to open the contact form - fixed at the bottom of the page */
+.editbtn {
+    width: 100%;
+    height: 45px;
+    background: #44561c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+section{
+    padding: 2rem 0%;
+    overflow: auto;
+}
+
+.heading{
+    text-align: center;
+}
+
+/*Scroll smooth*/
+html{
+    scroll-padding-top: 6rem;
+}
+
+@media(max-width:991px){
+
+
+    html{
+        font-size: 55%;
+    }
+    header{
+        padding:2rem;
+    }
+
+}
+
+@media(max-width:991px){
+
+
+    html{
+        font-size: 50%;
+    }
+}
+/*Scroll smooth*/
 </style>
-
+<section>
+<section>
 <div class="search-container">
-        <!-- Create a container for the search form -->
-        <form method="post" action="#">
-            <label for="search">Search by:</label>
-            <select name="search_option" id="search_option" class="search-option">
-                <option value="year">Year</option>
-                <option value="email">Email</option>
-                <option value="phone">Phone Number</option>
-            </select>
-            <input type="text" name="search_query" id="search_query" class="search-option" required>
-            <button type="submit" class="btn">Search</button>
-        </form>
+    <h2>Search Records</h2><br>
+    <!-- Create a container for the search form -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <label>Year: </label>
+        <input type="text" name="year" id="search_year" class="search-option" required>
+        <label for="search">Search by:</label>
+        <select name="search_option" id="search_option" class="search-option">
+            <option value="email">Email</option>
+            <option value="phone">Phone Number</option>
+        </select>
+        <input type="text" name="search_query" id="search_query" class="search-option">
+        <button type="submit" class="btn" a href="#result">Search</button>
+    </form>
+</div>
+</section>
+<span></span>
+<section>
+    <div class='search-results' id="result">
+        <?php $html?>
     </div>
+</section>
 
-    <div class="search-results">
-        <!-- This div will contain the search results -->
-    </div>
 <?php
 // Handle the search based on the selected option
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $search_option = $_POST["search_option"];
-    $search_query = $_POST["search_query"];
+    if (isset($_POST["search_option"]) && isset($_POST["search_query"]) && isset($_POST["year"])) {
+    $_SESSION['search_option'] = $_POST["search_option"];
+    $_SESSION['search_query'] = $_POST["search_query"];
+    $_SESSION['year'] = $_POST["year"];
 
-    // Perform the search query based on the selected option
-    switch ($search_option) {
-        case "year":
-            // Perform a query to get customer info for a specific year
-            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE YEAR(purchase_date) = '$search_query' GROUP BY customer_id";
-            break;
-        case "email":
-            // Perform a query to get customer info by email
-            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE customer_email = '$search_query'";
-            break;
-        case "phone":
-            // Perform a query to get customer info by phone number
-            $sql = "SELECT customer_id, membership_status, COUNT(*) AS total_purchases FROM purchases WHERE customer_phone = '$search_query'";
-            break;
-        default:
-            echo "Invalid search option.";
+    $search_option =$_SESSION['search_option'];
+    $search_query = $_SESSION['search_query'];
+    $year = $_SESSION['year'];
+
+    if (!empty($year)) {
+        if ($search_option === "email" && !empty($search_query)) {
+            // If both year and email are provided, get records for that user in that year
+            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM payment p
+            JOIN membership m ON p.Cust_ID = m.User_ID 
+            JOIN personal_details u ON p.Cust_ID = u.User_ID
+            WHERE YEAR(p.Payment_Date) = '$year' 
+                AND u.Email = '$search_query'
+            GROUP BY Cust_ID
+            ORDER BY Total_Purchases";
+        } elseif ($search_option === "phone" && !empty($search_query)) {
+            // If both year and phone number are provided, get records for that user in that year
+            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM payment p
+            JOIN membership m ON p.Cust_ID = m.User_ID 
+            JOIN personal_details u ON p.Cust_ID = u.User_ID
+            WHERE YEAR(p.Payment_Date) = '$year' 
+                AND u.Phone_Num = '$search_query'
+            GROUP BY Cust_ID
+            ORDER BY Total_Purchases";
+        } else {
+            // If only year is provided or if year and email/phone are provided but email/phone is empty
+            // Get records for all users in that year
+            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM payment p
+            JOIN membership m ON p.Cust_ID = m.User_ID 
+            JOIN personal_details u ON p.Cust_ID = u.User_ID
+            WHERE YEAR(p.Payment_Date) = '$year'
+            GROUP BY Cust_ID
+            ORDER BY Total_Purchases";
+        }
     }
 
     if (isset($sql)) {
@@ -249,16 +370,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if there are any rows in the result set
             if (mysqli_num_rows($result) > 0) {
                 // Start creating the HTML for the results
-                $html = "<table>";
-                $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Action</th></tr>";
+                $html = "<h2 class='heading'>Results</h2><br><table>";
+                $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Active Date</th><th>End Date</th><th>Action</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
-                    $html .= "<td>{$row['customer_id']}</td>";
-                    $html .= "<td>{$row['membership_status']}</td>";
-                    $html .= "<td>{$row['total_purchases']}</td>";
-                    $html .= "<td><button onclick=\"activateDeactivate({$row['customer_id']})\">Activate/Deactivate</button></td>";
+                    $html .= "<td>{$row['User_ID']}</td>";
+                    $html .= "<td>{$row['Status']}</td>";
+                    $html .= "<td>{$row['Total_Purchases']}</td>";
+                    $html .= "<td>{$row['Active_Date']}</td>";
+                    $html .= "<td>{$row['End_Date']}</td>";
+                    $html .="<td><form action='membershipedit.php' method='post'><button name class='editbtn'>Edit</button></form></td>";
                     $html .= "</tr>";
                 }
+
+
                 $html .= "</table>";
 
                 // Display the HTML in the search-results container
@@ -275,15 +400,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the database connection
     mysqli_close($con);
 }
+}
 ?>
 
+</section>
 <script>
-    function activateDeactivate(customerId) {
-        // Send an AJAX request to update the customer's status in the database
-        // You will need to implement this part using JavaScript and PHP
-        // After successfully updating the status, you can update the UI as needed
-        alert(`Customer ${customerId} status updated.`);
+ function toggleTables() {
+    var year = document.getElementById('search_year').value;
+    var searchOption = document.getElementById('search_option').value;
+    var searchQuery = document.getElementById('search_query').value;
+    var resultsqlTable = document.getElementById('resultsql');
+    var resultyearTable = document.getElementById('resultyear');
+
+    if (year && (searchOption === "email" || searchOption === "phone")) {
+        // User entered year and either email or phone number
+        resultsqlTable.style.display = 'block'; // Hide result 1 table
+        resultyearTable.style.display = 'none'; // Show result 2 table
+    } else {
+        // User didn't enter year or entered a different search option
+        resultsqlTable.style.display = 'none'; // Show result 1 table
+        resultyearTable.style.display = 'block'; // Hide result 2 table
     }
+}
+
+// Call the function when the page loads to initialize table visibility
+window.onload = toggleTables;
 </script>
 </body>
 </html>

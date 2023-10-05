@@ -434,8 +434,8 @@ section{
             <button class="dropbtn"><b>Services</b></button>
                 <div class="dropdown-content">
                     <!-- Add links or content for the dropdown here -->
-                    <a href="#">Booking Search</a>
-                    <a href="#">Book Court Now!</a>
+                    <a href="customertimetable.php">Trainer Timetable</a>
+                    <a href="addbooking.php">Book Court Now!</a>
                     <a href="#">I dont know</a>
                 </div>
             </div>
@@ -443,8 +443,8 @@ section{
             <button class="dropbtn"><b>User Profile</b></button>
                 <div class="dropdown-content">
                     <!-- Add links or content for the dropdown here -->
-                    <a href="UserProfile.php">Profile</a>
-                    <a href="#">Settings</a>
+                    <a href="userporfile.php">Profile</a>
+                    <a href="#">Booking History</a>
                     <a href="#">Logout</a>
                 </div>
             </div>
