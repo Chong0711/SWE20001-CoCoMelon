@@ -1,3 +1,14 @@
+<?php
+session_start();
+// this con is used to connect with the database
+$con=mysqli_connect("localhost", "root", null, "cocomelon");
+
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -154,7 +165,7 @@ body{
    color: #44561c;
    padding: 14px 16px;
    text-decoration: none;
-   width: 120px;
+   width: 1px;
    display: block;
 }
 
@@ -223,8 +234,7 @@ body{
     font-size: 2.6rem;
     color: #44561C;
 }
-
-
+  
 .heading{
     text-align:center;
     font-size: 2.5em;
@@ -238,6 +248,130 @@ body{
 .section{
 	padding: 2rem 0%;
 }
+
+
+/*Add Space Between Timetable and Form*/
+.TimeTable {
+    margin-bottom: 20px;
+}
+
+/* Search Form Styles */
+.search-container {
+    padding: 0px 0px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+    margin-bottom: 20px; /* Add margin at the bottom to separate from search results */
+}
+
+/* Result Table Styles */
+.search-results {
+    width: 100%; /* Ensure the table takes the full width of the container */
+    overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
+    margin-top: 20px;
+    margin-bottom: 50px; 
+}
+/*Add Space Between Timetable and Form*/
+
+.search-option
+{
+    width: auto;
+    height: 30px;
+}
+
+/* table view */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+/* table view */
+
+/*pop out form*/
+/* Button used to open the contact form - fixed at the bottom of the page */
+.editbtn {
+    width: 100%;
+    height: 45px;
+    background: #44561c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+/*pop out form*/
 
 /*Scroll smooth*/
 html{
@@ -281,6 +415,85 @@ html{
 		</div>
 	</section>
 
+<section>
+
+<section>
+<div class="search-container">
+    <h2>Search Records</h2><br>
+    <!-- Create a container for the search form -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <label>Date: </label>
+        <input type="date" name="date" id="search_date" class="search-option" required>
+        <button type="submit" class="btn" a href="#result">Search</button>
+    </form>
+</div>
+</section>
+
+<section>
+    <div class='search-results' id='result'>
+        <?php $html?>
+    </div>
+</section>
+
+<?php
+// Handle the search based on the selected date
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search_date = $_POST["date"]; // Change "search_date" to "date"
+
+    if (!empty($search_date)) {
+        // Ensure that the date format is valid (you can customize the format)
+        $date_format = "Y-m-d"; // Example format: "2023-09-27"
+        $parsed_date = date_create_from_format($date_format, $search_date);
+
+        if ($parsed_date !== false) {
+            $formatted_date = $parsed_date->format($date_format);
+
+            // Now, search the database for Trainer details for the specified date
+            $sql = "SELECT Trainer_ID, Trainer_Name, Date, Time, Status FROM Timetable WHERE Date = '$formatted_date'";
+            
+            $result = mysqli_query($con, $sql);
+
+            if ($result) {
+                // Check if there are any rows in the result set
+                if (mysqli_num_rows($result) > 0) {
+                    // Start creating the HTML for the results
+                    $html = "<h1 class='heading'>Results</h1><br><table>";
+                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>Time</th><th>Status</th></tr>";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $html .= "<tr>";
+                        $html .= "<td>{$row['Trainer_ID']}</td>";
+                        $html .= "<td>{$row['Trainer_Name']}</td>";
+                        $html .= "<td>{$row['Date']}</td>";
+                        $html .= "<td>{$row['Time']}</td>";
+                        $html .= "<td>{$row['Status']}</td>";
+                        $html .= "</tr>";
+                    }
+                    $html .= "</table>";
+
+                    // Display the HTML in the search-results container
+                    echo "<div class='search-results' id='result'>$html</div>";
+                } else {
+                    // No results found for the specified date, display a message
+                    echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
+                }
+            } else {
+                echo "Error: " . mysqli_error($con);
+            }
+        } else {
+            echo "Invalid date format. Please use the format: $date_format";
+        }
+    } else {
+        echo "Date is required for this search.";
+    }
+
+    // Close the database connection
+    mysqli_close($con);
+}
+
+?>
+
+</section>
+
 </section>
 
 
@@ -290,7 +503,25 @@ html{
 
 
 <script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  console.log("Opening form for User ID: " + userId);
+}
 
+function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+}
+
+ function toggleTables() {
+    var year = document.getElementById('date').value;
+    var searchOption = document.getElementById('search_option').value;
+    var searchQuery = document.getElementById('search_query').value;
+    var resultsqlTable = document.getElementById('resultsql');
+    var resultyearTable = document.getElementById('resultyear');
+}
+
+// Call the function when the page loads to initialize table visibility
+window.onload = toggleTables;
 </script>
 
 </body>
