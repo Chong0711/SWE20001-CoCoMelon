@@ -16,12 +16,10 @@
     <nav class="navigation">
         <a href="#home"><b>Home</b></a>
         <a href="#time"><b>Timetable</b></a>
-        <a href="#book"><b>Booking</b></a>
 		
         <div class="dropdown">
         <button class="dropbtn"><b>User Profile</b></button>
         	<div class="dropdown-content">
-	            <!-- Add links or content for the dropdown here -->
 	            <a href="#">Profile</a>
 	            <a href="#">Settings</a>
 	            <a href="#">Logout</a>
@@ -120,7 +118,7 @@ body{
 
 /*Dropdown Menu*/
 /* Dropdown container */
-.navigation a:nth-child(3) {
+.navigation a:nth-child(2) {
    margin-right: 35px; /* Adjust the margin value as needed */
 }
 
@@ -145,7 +143,6 @@ body{
    display: none;
    position: absolute;
    background-color: transparent; 
-   min-width: 160px;
    z-index: 1;
    top: 100%;
    left: 0; 
@@ -157,6 +154,7 @@ body{
    color: #44561c;
    padding: 14px 16px;
    text-decoration: none;
+   width: 120px;
    display: block;
 }
 
@@ -226,6 +224,7 @@ body{
     color: #44561C;
 }
 
+
 .heading{
     text-align:center;
     font-size: 2.5em;
@@ -278,13 +277,7 @@ html{
 
 	<section>
 		<div class="TimeTable" id="time">
-			<h1 class="heading">Timetable</h1>
-		</div>
-	</section>
-
-	<section>
-		<div class="Booking" id="book">
-			<h1 class="heading">Booking</h1>
+			<h1 class="heading">View Timetable</h1>
 		</div>
 	</section>
 
