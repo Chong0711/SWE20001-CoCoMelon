@@ -1,9 +1,3 @@
-<?php
-session_start();
-// this con is used to connect with the database
-$con=mysqli_connect("localhost", "root", null, "cocomelon");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +5,8 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -19,23 +14,18 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
+        <a href="#home"><b>Home</b></a>
+        <a href="#time"><b>Timetable</b></a>
+		
         <div class="dropdown">
         <button class="dropbtn"><b>User Profile</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        
+        	<div class="dropdown-content">
+	            <a href="#">Profile</a>
+	            <a href="#">Settings</a>
+	            <a href="#">Logout</a>
+        	</div>
+    	</div>
+		
     </nav>
 </header>
 
@@ -44,7 +34,8 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    scroll-behavior: smooth;
 }
 
 header{
@@ -66,14 +57,11 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
-    background-position: center;
 
 }
 
 .logo{
-    margin-right: 100px;
+	margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -130,9 +118,8 @@ body{
 
 /*Dropdown Menu*/
 /* Dropdown container */
-
-.navigation a:nth-child(4) {
-   margin-right: 30px; /* Adjust the margin value as needed */
+.navigation a:nth-child(2) {
+   margin-right: 35px; /* Adjust the margin value as needed */
 }
 
 .dropdown {
@@ -155,8 +142,7 @@ body{
 .dropdown-content {
    display: none;
    position: absolute;
-   background-color: transparent; /* Set dropdown background to transparent */
-   min-width: 160px;
+   background-color: transparent; 
    z-index: 1;
    top: 100%;
    left: 0; 
@@ -166,8 +152,9 @@ body{
 /* Links inside the dropdown */
 .dropdown-content a {
    color: #44561c;
-   padding: 12px 16px;
+   padding: 14px 16px;
    text-decoration: none;
+   width: 120px;
    display: block;
 }
 
@@ -183,112 +170,10 @@ body{
 }
 /*Dropdown Menu*/
 
-.wrapper {
-    position: relative;
-    width: 400px;
-    height: auto; /*changed the form box's height as auto*/
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transform: scale(1);
-    transition: transform .5s ease, height .2s ease;
-    margin-top: 150px;
-}
-
-.wrapper label{
-    color: #44561c;
-}
-
-.wrapper.active{
-    height: 520px;
-}
-
-.wrapper .form-box{
-    width: 100%;
-    padding: 40px;
-}
-
-
-.wrapper .form-box.login{
-    transition: transform .18s ease;
-    transform: translateX(0);
-}
-
-
-.wrapper.active .form-box.login{
-    transition: none;
-    transform: translateX(-400px);
-}
-
-.wrapper .icon-close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 45px;
-    height: 45px;
-    background: #44561c;
-    font-size: 2em;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    border-bottom-left-radius: 20px;
-    cursor: pointer;
-    z-index: 1;
-
-}
-
 .form-box h2{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
-}
-
-.input-box{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    border-bottom: 2px solid #44561c;
-    margin-bottom: 30px;  
-}
-
-.input-box label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
- .input-box input{
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 600;
-    padding: 0 35px 0 5px;
-
-} 
-
-.input-box .icon{
-    position: absolute;
-    right: 8px;
-    font-size: 1.2em;
-    color: #44561c;
-    line-height: 57px;
-
 }
 
 .btn{
@@ -302,176 +187,101 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
-/*Do you need a trainer?*/
-.input-trainer{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
+.home {
+    font-family: Quicksand;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
 }
 
-.input-trainer label{
+.background-image {
     position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.input-trainer select{
-    margin-top: 20px;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
-}
-/*Do you need a trainer?*/
-
-/*Trainer Name*/
-.input-NTrainer{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
+    height: 100%;
+    background: url(badminton.jpg) no-repeat;
+    background-size: cover;
+    background-position: center center;
+    z-index: -1; /* Place the background behind the content */
 }
 
-.input-NTrainer label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
+.content {
+    z-index: 1; /* Place the content in front of the background */
 }
 
-.input-NTrainer select{
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
-}
-/*Trainer Name*/
-
-/*Trainer Name*/
-.input-court{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
+.home .content{
+    max-width: 40rem;
 }
 
-.input-court label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
+.home .content h2{
+    font-size: 2.6rem;
+    color: #44561C;
 }
 
-.input-court select{
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
+
+.heading{
+    text-align:center;
+    font-size: 2.5em;
+    color: #44561C;
+    padding: 1em;
+    margin: 1em 0;
+    width: 1519px;
+    background: rgba(90, 132, 85, 0.415);
 }
-/*Trainer Name*/
+
+.section{
+	padding: 2rem 0%;
+}
+
+/*Scroll smooth*/
+html{
+	scroll-padding-top: 6rem;
+}
+
+@media(max-width:991px){
+
+
+    html{
+        font-size: 55%;
+    }
+    header{
+        padding:2rem;
+    }
+
+}
+
+@media(max-width:991px){
+
+
+    html{
+        font-size: 50%;
+    }
+}
+/*Scroll smooth*/
 
 </style>
 
-<div class="wrapper">
-    <div class="form-box login">
-        <h2>Booking</h2>
-        <form method="post" action="/cocomelon/bookingconfirmation.php">
-        <label>Name</label>
-        <div class="input-box">
-        <input type="text" name="name" required>
-    </div>
+<section>
+	<section class="home">
+	    <div class="background-image" id="home"></div>
+	    <div class="content">
+	        <h2>Welcome To Trainer Homepage !</h2>
+	    </div>
+	</section>
 
-    <label>Email</label>
-    <div class="input-box">
-        <input type="email" name="email" required>
-    </div>
+	<section>
+		<div class="TimeTable" id="time">
+			<h1 class="heading">View Timetable</h1>
+		</div>
+	</section>
 
-    <label>Phone</label>
-    <div class="input-box">
-        <input type="tel" name="phone" required>
-    </div>
-
-    <label>Date</label>
-    <div class="input-box">
-        <input type="date" name="date" required>
-    </div>
-
-    <label>Start Time</label>
-    <div class="input-box">
-        <input type="time" name="stime" required>
-    </div>
-
-    <label>End Time</label>
-    <div class="input-box">
-        <input type="time" name="etime" required>
-    </div>
-
-    <div class="input-court">
-        <label>Number of Court:</label>
-        <select id="court" name="court">
-            <option value="1">1</option>
-            <option value="2">2</option> 
-            <option value="3">3</option> 
-        </select>
-    </div>
-    
-    <div class="input-trainer">
-        <label>Do you need a trainer?</label >
-        <select id="trainer-needed" name="trainer">
-            <option value="no">No</option>
-            <option value="yes">Yes</option> 
-        </select>
-    </div>
-    
-    <div class="input-NTrainer" id="trainer-name-input" style="display: none;">
-        <label>Trainers:</label>
-        <select id="trainer-name" name="trainer" >
-            <option value="Ali">Ali</option> 
-            <option value="Lina">Lina</option>
-            <option value="John">John</option> 
-        </select>
-    </div>
-         <button type="submit" class="btn">Book Appointment</button>
-    
-</form>
-    </div>
-    <br><br><br><br>
-</div>
-
+</section>
 
 
 <script src="script.js"></script>
@@ -480,19 +290,10 @@ body{
 
 
 <script>
-    const wrapper = document.querySelector('.wrapper');
-    const trainerNeededSelect = document.getElementById('trainer-needed');
-    const trainerNameInput = document.getElementById('trainer-name-input');
-    const trainerNameSelect = document.getElementById('trainer-name'); // Added this line
 
-    trainerNeededSelect.addEventListener('change', () => {
-        if (trainerNeededSelect.value === "yes") {
-            trainerNameInput.style.display = 'block';
-        } else {
-            trainerNameInput.style.display = 'none';
-        }
-    });
 </script>
 
 </body>
 </html>
+
+
