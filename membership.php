@@ -6,7 +6,6 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -70,9 +69,9 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /*background: url(Background_SWE2.jpg)no-repeat;
+    background: url(Background_SWE2.jpg)no-repeat;
     background-size: 1550px 1200px;
-    background-position: center;*/
+    background-position: center;
 
 }
 
@@ -211,6 +210,7 @@ body{
 {
     width: 100%; /* Ensure the table takes the full width of the container */
     overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
+    overflow-y: auto;
     margin-top: 20px;
 }
 .search-option
@@ -239,8 +239,10 @@ th {
     background-color: #f2f2f2;
 }
 /* table view */
-
-/*pop out form*/
+span {
+  width: 50px;
+  height: 50px;
+}
 /* Button used to open the contact form - fixed at the bottom of the page */
 .editbtn {
     width: 100%;
@@ -255,85 +257,13 @@ th {
     font-weight: 500;
 }
 
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
+section{
+    padding: 2rem 0%;
+    overflow: auto;
 }
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-/*pop out form*/
 
 .heading{
-    text-align:center;
-    font-size: 2.5em;
-    color: #44561C;
-    padding: 1em;
-    margin: 5em 50;
-    width: auto;
-    background: rgba(90, 132, 85, 0.415);
-}
-
-.background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(badminton.jpg) no-repeat;
-    background-size: cover;
-    background-position: center center;
-    z-index: -1; /* Place the background behind the content */
-}
-
-.section{
-    padding: 2rem 0%;
+    text-align: center;
 }
 
 /*Scroll smooth*/
@@ -363,6 +293,7 @@ html{
 /*Scroll smooth*/
 </style>
 <section>
+<section>
 <div class="search-container">
     <h2>Search Records</h2><br>
     <!-- Create a container for the search form -->
@@ -379,9 +310,9 @@ html{
     </form>
 </div>
 </section>
-
+<span></span>
 <section>
-    <div class='search-results' id='result'>
+    <div class='search-results' id="result">
         <?php $html?>
     </div>
 </section>
@@ -389,9 +320,14 @@ html{
 <?php
 // Handle the search based on the selected option
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $search_option = $_POST["search_option"];
-    $search_query = $_POST["search_query"];
-    $year = $_POST["year"];
+    if (isset($_POST["search_option"]) && isset($_POST["search_query"]) && isset($_POST["year"])) {
+    $_SESSION['search_option'] = $_POST["search_option"];
+    $_SESSION['search_query'] = $_POST["search_query"];
+    $_SESSION['year'] = $_POST["year"];
+
+    $search_option =$_SESSION['search_option'];
+    $search_query = $_SESSION['search_query'];
+    $year = $_SESSION['year'];
 
     if (!empty($year)) {
         if ($search_option === "email" && !empty($search_query)) {
@@ -425,8 +361,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             GROUP BY Cust_ID
             ORDER BY Total_Purchases";
         }
-    } else {
-        echo "Year is required for this search option.";
     }
 
     if (isset($sql)) {
@@ -436,7 +370,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if there are any rows in the result set
             if (mysqli_num_rows($result) > 0) {
                 // Start creating the HTML for the results
-                $html = "<h1 class='heading'>Results</h1><br><table>";
+                $html = "<h2 class='heading'>Results</h2><br><table>";
                 $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Active Date</th><th>End Date</th><th>Action</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
@@ -445,16 +379,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<td>{$row['Total_Purchases']}</td>";
                     $html .= "<td>{$row['Active_Date']}</td>";
                     $html .= "<td>{$row['End_Date']}</td>";
-                     $html .="<td><button name class='editbtn' action= 'membershipedit'>Edit</button></td>";
+                    $html .="<td><form action='membershipedit.php' method='post'><button name class='editbtn'>Edit</button></form></td>";
                     $html .= "</tr>";
                 }
+
+
                 $html .= "</table>";
 
                 // Display the HTML in the search-results container
-                echo "<div class='search-results' id='result'>$html</div>";
+                echo "<div class='search-results'>$html</div>";
             } else {
                 // No results found, display a message
-                echo "<div class='search-results' id='result'>Did not find any results.</div>";
+                echo "<div class='search-results'>Did not find any results.</div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
@@ -464,48 +400,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the database connection
     mysqli_close($con);
 }
+}
 ?>
-<!-- The form -->
-<div class="form-popup" id="myForm">
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-container">
-    <h1>Edit User Data</h1>
 
-    <!-- Add hidden fields for User ID -->
-    <input type="hidden" id="user_id" name="user_id" value="">
-
-    <label for="status"><b>Status</b></label>
-    <input type="text" placeholder="Enter Status" name="edit_status" id="edit_status" required>
-
-    <label for="active_date"><b>Active Date</b></label>
-    <input type="text" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" required>
-
-    <label for="end_date"><b>End Date</b></label>
-    <input type="text" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" required>
-
-    <button type="submit" class="btn">Update</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-</form>
-</div>
-
+</section>
 <script>
-// function openForm(userId, status, activeDate, endDate) {
-//     console.log("Opening form for User ID: " + userId);
-//     document.getElementById("myForm").style.display = "block";
-//     // Populate the form fields with the data
-//     document.getElementById("user_id").value = userId;
-//     document.getElementById("edit_status").value = status;
-//     document.getElementById("edit_active_date").value = activeDate;
-//     document.getElementById("edit_end_date").value = endDate;
-// }
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-  console.log("Opening form for User ID: " + userId);
-}
-
-function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-}
-
  function toggleTables() {
     var year = document.getElementById('search_year').value;
     var searchOption = document.getElementById('search_option').value;
