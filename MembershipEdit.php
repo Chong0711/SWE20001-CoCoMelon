@@ -235,67 +235,61 @@ section{
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
     flex-direction: column;
-    margin-bottom: 20px;
-    padding-bottom: 0px;
+    margin: 100px 0px 0px 0px;
+    padding: 100px 0px 100px 0px;
 }
 </style>
 <body>
 <section>
-<?php
-// Check if the form was submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
-    // Retrieve and validate the data from the form
-    $user_id = (int)$_POST["user_id"]; // Ensure it's an integer
-    $edit_status = mysqli_real_escape_string($con, $_POST["edit_status"]);
-    $edit_active_date = mysqli_real_escape_string($con, $_POST["edit_active_date"]);
-    $edit_end_date = mysqli_real_escape_string($con, $_POST["edit_end_date"]);
+    <section>
+    <?php
+    // Ensure that the form was submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Retrieve the data from the form
+        $user_id = $_POST["user_id"];
+        $status = $_POST["status"];
+        $total_purchases = $_POST["total_purchases"];
+        $active_date = $_POST["active_date"];
+        $end_date = $_POST["end_date"];
 
-    // Calculate the end date based on the active date
-    $active_date_obj = new DateTime($edit_active_date);
-    $new_end_date_obj = clone $active_date_obj;
-    $new_end_date_obj->add(new DateInterval('P1Y'));
-    $new_end_date = $new_end_date_obj->format('Y-m-d');
-
-    // Check if the duration is one year
-    if ($new_end_date !== $edit_end_date) {
-        echo "Error: The duration between the active date and end date must be one year.";
-    } else {
-        // Update the user's status, active date, and end date in the database
-        $sql = "UPDATE membership SET Status = '$edit_status', Active_Date = '$edit_active_date', End_Date = '$edit_end_date' WHERE User_ID = $user_id";
-
-        $result = mysqli_query($con, $sql);
-        if ($result) {
-            echo "Update successful.";
-        } else {
-            echo "Error updating record: " . mysqli_error($con);
-        }
+        echo "<div class='wrapper'>";
+        echo "<h2 class='heading'> The Member You Want to Edit!</h2><br>";
+        echo "User ID: " . $user_id . "<br>";
+        echo "Status: " . $status . "<br>";
+        echo "Total Purchases: " . $total_purchases . "<br>";
+        echo "Active Date: " . $active_date . "<br>";
+        echo "End Date: " . $end_date . "<br>";
+        echo "</div><br>";
     }
-}
-?>
-    <!-- Add your HTML content, including the form, here -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form">
-        <h2 class="heading">Edit Member Status</h2><br>
+    ?>
+    </section>
+        
+    <section>
+        <!-- Add your HTML content, including the form, here -->
+        <form action="membership.php" method="post" class="form">
+            <h2 class="heading">Edit Member Status</h2><br>
 
-        <!-- Add hidden fields for User ID -->
-        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>">
+            <!-- Add hidden fields for User ID -->
+            <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>">
 
-        <label for="status">Status:</label>
-        <select id="edit_status" name="edit_status" class="input">
-            <option value="Inactive">Inactive</option>
-            <option value="Active">Active</option>
-        </select>
+            <label for="status">Status:</label>
+            <select id="edit_status" name="edit_status" class="input">
+                <option value="Inactive">Inactive</option>
+                <option value="Active">Active</option>
+            </select>
 
-        <label for="active_date">Active Date:</label>
-        <input type="date" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" class="input" required>
+            <label for="active_date">Active Date:</label>
+            <input type="date" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" class="input" required>
 
-        <label for="end_date">End Date:</label>
-        <input type="date" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" class="input" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" class="input" required>
 
-        <center>
-            <button type="submit" name="update" class="btn">Update</button>
-            <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Return</button>
-        </center>
-    </form>
+            <center>
+                <button type="submit" name="update" class="btn">Update</button>
+                <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Return</button>
+            </center>
+        </form>
+    </section>
 </section>
 
 <script type="text/javascript">
