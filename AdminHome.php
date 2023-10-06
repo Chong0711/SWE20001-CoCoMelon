@@ -23,7 +23,18 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <a href="#"><b>About</b></a>
         <a href="#" ><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+        <!--non-member view
+        <a href="#"><b>User Profile</b></a>-->
+        <!-- member view-->
+        <div class="dropdown">
+        <button class="dropbtn"><b>User Profile</b></button>
+            <div class="dropdown-content">
+                <!-- Add links or content for the dropdown here -->
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -113,9 +124,60 @@ body{
     background: #fff;
     color: #162938;
 }
-/*dropdown button*/
+/*Dropdown Menu*/
+/* Dropdown container */
 
-/*dropdown button
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
 /*navigation bar*/
 
 .wrapper {
@@ -136,10 +198,6 @@ body{
 	margin-top: 150px;
 }
 
-.wrapper.active{
-    height: 520px;
-}
-
 .wrapper .form-box{
     width: 100%;
     display: flex;
@@ -153,7 +211,6 @@ span {
   width: 50px;
   height: 50px;
 }
-
 
 .form-box h2{
     font-size: 2em;
@@ -180,7 +237,7 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box addbooking">
-        <form method="post" action="/cocomelon/addbooking.php">
+        <form method="post" action="addbooking.php">
             <h2>Add Booking</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
@@ -189,7 +246,7 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box editbooking">
-        <form method="post" action="/cocomelon/editbooking.php">
+        <form method="post" action="editbooking.php">
             <h2>Check Booking</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
@@ -198,7 +255,7 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box membership">
-        <form method="post" action="/cocomelon/membership.php">
+        <form method="post" action="membership.php">
             <h2>Membership Management</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
@@ -207,8 +264,17 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box timetable">
-        <form method="post" action="/cocomelon/trainertimetable.php">
+        <form method="post" action="trainertimetable.php">
             <h2>Trainer Timetable</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+<div class="wrapper">
+    <div class="form-box timetable">
+        <form method="post" action="admincreateacc.php">
+            <h2>Create Account</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
     </div>
