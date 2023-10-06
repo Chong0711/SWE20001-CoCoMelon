@@ -409,7 +409,7 @@ body{
 <div class="wrapper">
     <div class="form-box login">
         <h2>Booking</h2>
-        <form method="post" action="/cocomelon/bookingconfirmation.php">
+        <form method="post" action="bookingconfirmation.php">
         <label>Name</label>
         <div class="input-box">
         <input type="text" name="name" required>
@@ -448,16 +448,16 @@ body{
             <option value="3">3</option> 
         </select>
     </div>
-    
+
     <div class="input-trainer">
-        <label>Do you need a trainer?</label >
-        <select id="trainer-needed" name="trainer">
+        <label>Do you need a trainer?</label>
+        <select onchange="yesnoCheck(this);">
             <option value="no">No</option>
             <option value="yes">Yes</option> 
         </select>
     </div>
-    
-    <div class="input-NTrainer" id="trainer-name-input" style="display: none;">
+   
+    <div id="ifYes" class="input-NTrainer" style="display: none;">
         <label>Trainers:</label>
         <select id="trainer-name" name="trainer" >
             <option value="Ali">Ali</option> 
@@ -465,6 +465,7 @@ body{
             <option value="John">John</option> 
         </select>
     </div>
+
          <button type="submit" class="btn">Book Appointment</button>
     
 </form>
@@ -474,24 +475,25 @@ body{
 
 
 
-<script src="script.js"></script>
+<!--<script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>-->
 
 
 <script>
-    const wrapper = document.querySelector('.wrapper');
-    const trainerNeededSelect = document.getElementById('trainer-needed');
-    const trainerNameInput = document.getElementById('trainer-name-input');
-    const trainerNameSelect = document.getElementById('trainer-name'); // Added this line
+    //const wrapper = document.querySelector('.wrapper');
+    //const trainerNeededSelect = document.getElementById('trainer-needed');
+    //const trainerNameInput = document.getElementById('trainer-name-input');
+    //const trainerNameSelect = document.getElementById('trainer-name'); // Added this line
 
-    trainerNeededSelect.addEventListener('change', () => {
-        if (trainerNeededSelect.value === "yes") {
-            trainerNameInput.style.display = 'block';
+    
+    function yesnoCheck(that) {
+        if (that.value == "yes") {
+            document.getElementById("ifYes").style.display = "block";
         } else {
-            trainerNameInput.style.display = 'none';
+            document.getElementById("ifYes").style.display = "none";
         }
-    });
+    }
 </script>
 
 </body>
