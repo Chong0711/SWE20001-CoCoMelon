@@ -112,7 +112,7 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
+    background-size: 1550px 1550px;
     background-position: center;
 
 }
@@ -165,7 +165,6 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-    margin-top: 150px;
 }
 
 .wrapper.active{
@@ -187,6 +186,12 @@ body{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
+}
+.wrapper.search{
+     margin-top: 150px;
+}
+.wrapper.edit{
+     margin-top: 50px;
 }
 
 .input-box{
@@ -221,7 +226,6 @@ body{
     color: #44561c;
     font-weight: 600;
     padding: 0 35px 0 5px;
-
 }
 
 .input-box .icon{
@@ -230,7 +234,6 @@ body{
     font-size: 1.2em;
     color: #44561c;
     line-height: 57px;
-
 }
 
 .btn{
@@ -300,172 +303,92 @@ body{
    display: block;
 }
 /*Dropdown Menu*/
+
+section{
+    padding: 10px 0px 10 px 0px;
+    overflow: auto;
+}
+
 </style>
-
-<div class="wrapper">
-    <!-- Checking booking form -->
-    <div class="form-box login">
-        <h2>Check Booking</h2>
-        <form method="post" action="editbooking.php">
-            <div class="input-box">
-                <input type="text" name="bookid">
-                <label>Booking ID</label>
-            </div>
-            <div class="input-box">
-                <input type="email" name="email">
-                <label>Email</label>
-            </div>
-                 <button type="submit" class="btn" name="search">Check Appointment</button>
-            
-        </form>
-    </div>
-</div>
-
-<?php 
-/*
-//After click Check Appointment button
-    if(isset($_POST['check'])) {
-    $check = $_POST['check'];
-    if ($bookingNotFound== true) { ?>
-    <!-- Booking Not Found message -->
-        <?php if ($bookingNotFound== true) { ?>
-            <h2>Booking Not Found</h2>
-            <p id="booking-not-found">Did not find the booking. Please check your Booking ID and Email.</p>
-        <?php } ?>
-
-    <!-- Display Booking Details -->
-    <?php if ($bookingNotFound== false) : ?>
-        <div class="form-box reschedule">
-            <h2>Booking Details</h2>
-            <p>Booking ID: <?php echo $bookingDetails['booking_id']; ?></p>
-            <p>Email: <?php echo $bookingDetails['email']; ?></p>
-            <p>Phone: <?php echo $bookingDetails['phone']; ?></p>
-            <p>Name: <?php echo $bookingDetails['name']; ?></p>
-            <p>Date: <?php echo $bookingDetails['date']; ?></p>
-            <p>Time: <?php echo $bookingDetails['time']; ?></p>
-            <p>Court: <?php echo $bookingDetails['court']; ?></p>
-            <p>Trainer: <?php echo ($bookingDetails['trainer'] === 'yes') ? $bookingDetails['trainer_name'] : '-'; ?></p>
-            <button type="button" onclick="editBooking()">Edit Booking</button>
-            <button type="button" onclick="cancelBooking()">Cancel Booking</button>
-       </div>
-    <?php endif; }}
-    */
-    ?>
-
-<?php
-    if(isset($_POST["search"])){
-        $id=$_POST["bookid"]??null; $email=$_POST["email"]??null; 
-        $con=mysqli_connect("localhost", "root", null, "cocomelon");
-        $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id' or personal_details.Email = '$email'";
-        $result=mysqli_query($con, $query);
-        if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
-        else {
-            $row=mysqli_fetch_array($result); 
-                echo "<div class='wrapper'>";
-                echo "<div class='form-box reschedule'>";
-                echo "<h2>Booking Details</h2><br>";
-                echo "<form action=editbooking.php method=post>";
-                echo "<input type=hidden name=mid value=".$row['Book_ID'].">";
-                echo "<p>Booking ID: ".$row['Book_ID']."</p>";
-                echo "<p>Customer ID: ".$row['Cust_ID']."</p>";
-                echo "<p>Customer Name: ".$row['Name']."</p>";
-                echo "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
-                echo "<p>Date: <input type=date name=mdate value=".$row['Book_Date']."></p>";
-                echo "<p>Start Time: <input type=time name=mstarttime value=".$row['Book_StartTime']."></p>";
-                echo "<p>End Time: <input type=time name=mendtime value=".$row['Book_EndTime']."></p>";
-                echo "<p>Court: ".$row['Court']."</p>";
-                echo "<p>Status: ".$row['Status']."</p>";
-                echo "<p>Amount: ".$row['Amount']."</p>";
-                echo "<button type='submit' class='btn' name='update'>Update Appointment</button>";
-                echo "<button type='submit' class='btn' name='delete'>Delete Appointment</button>";
-                echo "</form>";
-                echo "</div>";
-                echo "</div>";  
+<section>
+    <section>
+        <div class="wrapper search">
+            <!-- Checking booking form -->
+            <div class="form-box login">
+                <h2>Check Booking</h2>
+                <form method="post" action="editbooking.php">
+                    <div class="input-box">
+                        <input type="text" name="bookid">
+                        <label>Booking ID</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email">
+                        <label>Email</label>
+                    </div>
+                         <button type="submit" class="btn" name="search">Check Appointment</button>
                     
-                mysqli_close($con);
-        }
-    }
-?>
-
-    <?php
-        if(isset($_POST["update"])){
-            $mid=$_POST["mid"]; $mdate=$_POST["mdate"]; $mstarttime=$_POST["mstarttime"]; $mendtime=$_POST["mendtime"];
+                </form>
+            </div>
+        </div>
+    </section>
+    <section>
+        <?php
+        if(isset($_POST["search"])){
+            $id=$_POST["bookid"]??null; $email=$_POST["email"]??null; 
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
-                $result=mysqli_query($con, $sql);
-                echo "<p>Record is updated.</p>";
+            $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id' or personal_details.Email = '$email'";
+            $result=mysqli_query($con, $query);
+            if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
+            else {
+                $row=mysqli_fetch_array($result); 
+                    echo "<div class='wrapper edit'>";
+                    echo "<div class='form-box reschedule'>";
+                    echo "<h2>Booking Details</h2><br>";
+                    echo "<form action=editbooking.php method=post>";
+                    echo "<input type=hidden name=mid value=".$row['Book_ID'].">";
+                    echo "<p>Booking ID: ".$row['Book_ID']."</p>";
+                    echo "<p>Customer ID: ".$row['Cust_ID']."</p>";
+                    echo "<p>Customer Name: ".$row['Name']."</p>";
+                    echo "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
+                    echo "<p>Date: <input type=date name=mdate value=".$row['Book_Date']."></p>";
+                    echo "<p>Start Time: <input type=time name=mstarttime value=".$row['Book_StartTime']."></p>";
+                    echo "<p>End Time: <input type=time name=mendtime value=".$row['Book_EndTime']."></p>";
+                    echo "<p>Court: ".$row['Court']."</p>";
+                    echo "<p>Status: ".$row['Status']."</p>";
+                    echo "<p>Amount: ".$row['Amount']."</p>";
+                    echo "<button type='submit' class='btn' name='update'>Update Appointment</button>";
+                    echo "<button type='submit' class='btn' name='delete'>Delete Appointment</button>";
+                    echo "</form>";
+                    echo "</div>";
+                    echo "</div>";  
+                        
+                    mysqli_close($con);
             }
-    ?>
-
-    <?php
-        if(isset($_POST["delete"])){
-        $del=$_POST["mid"];
-        $con=mysqli_connect("localhost", "root", null, "cocomelon");
-        $query="delete from booking where Book_ID='$del'";
-        $result=mysqli_query($con, $query);
-        echo "<p>Booking for ID <b>$del</b> has been deleted.</p>";
-        mysqli_close($con);
         }
     ?>
+    </section>
 
-<!--
-<script>
-     // Function to edit the booking
-    function editBooking() {
-        // Disable the edit button to prevent multiple clicks
-        document.querySelector(".reschedule button:first-child").disabled = true;
+    <section>
 
-        // Enable the date and time fields for editing
-        var dateInput = document.querySelector("input[name='new_date']");
-        var timeInput = document.querySelector("input[name='new_time']");
-        dateInput.removeAttribute("readonly");
-        timeInput.removeAttribute("readonly");
+        <?php
+            if(isset($_POST["update"])){
+                $mid=$_POST["mid"]; $mdate=$_POST["mdate"]; $mstarttime=$_POST["mstarttime"]; $mendtime=$_POST["mendtime"];
+                $con=mysqli_connect("localhost", "root", null, "cocomelon");
+                $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
+                    $result=mysqli_query($con, $sql);
+                    echo "<p>Record is updated.</p>";
+                }
 
-        // Create a button to save the changes
-        var saveButton = document.createElement("button");
-        saveButton.textContent = "Save Changes";
-        saveButton.addEventListener("click", function() {
-            // Collect the updated date and time
-            var newDate = dateInput.value;
-            var newTime = timeInput.value;
-
-            // Validate and update the booking in the database (you will need to implement this)
-            // Example: You can send an AJAX request to a PHP script to update the booking
-        });
-
-        // Add the save button to the form
-        var form = document.querySelector(".form-box.reschedule form");
-        form.appendChild(saveButton);
-    }
-
-    // Function to cancel the booking
-    function cancelBooking() {
-        // Confirm cancellation with the user
-        var confirmCancel = confirm("Are you sure you want to cancel this booking?");
-        if (confirmCancel) {
-            // Update the booking status to "Cancelled" in the database (you will need to implement this)
-            // Example: You can send an AJAX request to a PHP script to update the booking status
-
-            // Disable the cancel button to prevent multiple clicks
-            document.querySelector(".reschedule button:last-child").disabled = true;
-
-            // Display a message to the user
-            var formBox = document.querySelector(".form-box.reschedule");
-            formBox.innerHTML = "<p>Your booking has been cancelled.</p>";
-        }
-    }
-    // Function to adjust form box height based on content
-    function adjustFormBoxHeight() {
-        var formBox = document.querySelector(".form-box.reschedule");
-        var contentHeight = formBox.scrollHeight; // Get the content's scroll height
-        formBox.style.height = contentHeight + "px"; // Set the form box's height
-    }
-
-    // Call the function when the page loads and when it resizes (optional)
-    window.onload = adjustFormBoxHeight;
-    window.onresize = adjustFormBoxHeight; // Optional: Update height on window resize
-</script>
--->
-
+            if(isset($_POST["delete"])){
+            $del=$_POST["mid"];
+            $con=mysqli_connect("localhost", "root", null, "cocomelon");
+            $query="delete from booking where Book_ID='$del'";
+            $result=mysqli_query($con, $query);
+            echo "<p>Booking for ID <b>$del</b> has been deleted.</p>";
+            mysqli_close($con);
+            }
+        ?>
+    </section>
+</section>
 </body>
 </html>
