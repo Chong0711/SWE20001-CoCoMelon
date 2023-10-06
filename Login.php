@@ -16,11 +16,9 @@ session_start();
 <header>
     <h2 class="logo"><img src="Greenlogo1.png" style="width:270px;height:270px;"></h2>
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <a href="#"><b>User Profile</b></a>
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>
     </nav>
 </header>
 
