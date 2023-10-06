@@ -29,7 +29,7 @@ session_start();
         <?php
             if (mysqli_num_rows($result) == 1) {
                 $_SESSION['User_ID']=$row['User_ID'];
-                if($row['Roles'] == 'member'){
+                if($row['Roles'] == 'member' || $row['Roles'] == 'guest'){
                     echo "<a href='homepage.php#home'><b>Home</b></a>";
                     echo "<a href='homepage.php#about'><b>About</b></a>";
                     echo "<a href='homepage.php#contact'><b>Contact</b></a>";
