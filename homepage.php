@@ -3,28 +3,29 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE-edg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="https://fonts.google.com/specimen/Quicksand?query=quicksand"/>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https">
-</head>
-
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE-edg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>SmashIt Badminton Academy</title>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https">
+    </head>
 <style>
+
   @import url();
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Quicksand;
+    font-family: 'Quicksand', sans-serif;
     transition: 2s linear;
     text-transform: capitalize;
     outline: none;
     border: none;
     scroll-behavior: smooth;
+
 }
 
 html{
@@ -92,6 +93,9 @@ body{
     transform-origin: left;
     transform: scaleX(1);
 }
+
+
+
 
 /*Homepage design*/
 section{
@@ -346,19 +350,19 @@ section{
     text-align: center;
 }
 
- /*Dropdown Menu*/
-/*dropdown button menu*/
-.navigation a:nth-child(3) {
+<--*dropdown button menu*--->
+.navigation a:nth-child(5) {
     margin-right: 40px; /* Adjust the margin value as needed */
  }
 
- /* Dropdown button */
- .dropdown {
+
+.dropdown {
     margin-right: 20px;
     position: relative;
     display: inline-block;
  }
-
+ 
+ /* Dropdown button */
  .dropbtn {
     background-color: transparent; /* Set button background to transparent */
     border: none;
@@ -418,7 +422,7 @@ section{
   
 <body>
 
-<!-- Website Navigation -->
+        <! -- Website Navigation -->
 <header>
     <h2 class="logo"><img src="Greenlogo1.png" style="width:210px;height:210px;"></h2>
     <nav class="navigation">
@@ -426,43 +430,40 @@ section{
         <a href="#about"><b>About</b></a>
         <a href="#contact"><b>Contact</b></a>  
         <div class="dropdown">
-        <button class="dropbtn"><b>Services</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="customertimetable.php">Trainer Timetable</a>
-                <a href="addbooking.php">Book Court Now!</a>
-                <a href="#">I dont know</a>
+            <button class="dropbtn"><b>Services</b></button>
+                <div class="dropdown-content">
+                    <!-- Add links or content for the dropdown here -->
+                    <a href="customertimetable.php">Trainer Timetable</a>
+                    <a href="addbooking.php">Book Court Now!</a>
+                    <a href="#">I dont know</a>
+                </div>
             </div>
-        </div>
-        <?php 
-        if(!ISSET($_SESSION['User_ID'])){
-            echo "<a href='login.php'><b>Login</b></a>";
-        }else{
-            $servername = "localhost";
-            $username = "root";
-            $password = null;
-            $dbname = "cocomelon";
-            $conn = new mysqli($servername, $username, $password, $dbname);
-            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-            $result = mysqli_query($conn, $query);
-            $row = mysqli_fetch_assoc($result);
-            echo "<div class='dropdown'>
-            <button class='dropbtn'><b>".$row['Name']."</b></button>
-            <div class='dropdown-content'>
-            <a href='userprofile.php'>Profile</a>
-            <a href='#'>Booking History</a>
-            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+            <?php 
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='bookinghistory.php'>Booking History</a>
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
-            echo "</div> </div>";
-        }
-        ?>
+                echo "</div> </div>";
+            }
+            ?>
+        
+         
+        </div>
        </nav>
-       <script type="text/javascript">
-            document.getElementById("logout").onclick = function () {
-                location.href = "login.php";
-                <?php session_destroy();?>
-            };
-        </script>
 </header>
 
 <section>
@@ -554,6 +555,17 @@ section{
 
 </section>
 </body>
+
+<script type="text/javascript">
+    document.getElementById("logout").onclick = function () {
+        location.href = "login.php";
+        <?php if(isset($_POST['logout']))
+        {
+            session_destroy();
+        }
+        ?>
+    };
+</script>
 
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
