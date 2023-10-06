@@ -19,23 +19,47 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#" ><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
         <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
+        <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
+                <a href="addbooking.php">Add Booking</a>
+                <a href="editbooking.php">Check Booking</a>
+                <a href="membership.php">Membership Management</a>
+                <a href="edittimetable.php">Trainer Timetable</a>
+                <a href="adminmanageacc.php">Manage Account</a>
             </div>
         </div>
+
+        <?php 
+        if(!ISSET($_SESSION['User_ID'])){
+            echo "<a href='login.php'><b>Login</b></a>";
+        }else{
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+            $result = mysqli_query($conn, $query);
+            $row = mysqli_fetch_assoc($result);
+            echo "<div class='dropdown'>
+            <button class='dropbtn'><b>".$row['Name']."</b></button>
+            <div class='dropdown-content'>
+            <a href='userprofile.php'>Profile</a>
+            <a href='#'>Booking History</a>
+            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+
+            echo "</div> </div>";
+        }
+        ?>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php session_destroy();?>
+        };
+    </script>
 </header>
 
 <style>
@@ -124,60 +148,61 @@ body{
     background: #fff;
     color: #162938;
 }
-/*Dropdown Menu*/
-/* Dropdown container */
 
-.navigation a:nth-child(4) {
-   margin-right: 30px; /* Adjust the margin value as needed */
-}
+ /*Dropdown Menu*/
+/*dropdown button menu*/
+.navigation a:nth-child(1) {
+    margin-right: 40px; /* Adjust the margin value as needed */
+ }
 
-.dropdown {
-   margin-right: 20px;
-   position: relative;
-   display: inline-block;
-}
+ /* Dropdown button */
+ .dropdown {
+    margin-right: 20px;
+    position: relative;
+    display: inline-block;
+ }
 
-/* Dropdown button */
-.dropbtn {
-   background-color: transparent; /* Set button background to transparent */
-   border: none;
-   cursor: pointer;
-   color: #44561c;
-   font-size: 1.1em;
-   font-weight: 500;
-}
+ .dropbtn {
+    background-color: transparent; /* Set button background to transparent */
+    border: none;
+    cursor: pointer;
+    color: #44561c;
+    font-size: 1.1em;
+    font-weight: 500;
+ }
+ 
+ /* Dropdown content (hidden by default) */
+ .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent; /* Set dropdown background to transparent */
+    min-width: 160px;
+    z-index: 1;
+    top: 100%;
+    left: 0; 
+    margin-left: -50px;
+ }
+ 
+ /* Links inside the dropdown */
+ .dropdown-content a {
+    color: #44561c;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+ }
+ 
+ /* Change color of dropdown links on hover */
+ .dropdown-content a:hover {
+    background-color: #44561c;
+    color: white;
+ }
+ 
+ /* Show the dropdown content when the dropdown button is hovered over */
+ .dropdown:hover .dropdown-content {
+    display: block;
+ }
+ /*Dropdown Menu*/
 
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-   display: none;
-   position: absolute;
-   background-color: transparent; /* Set dropdown background to transparent */
-   min-width: 160px;
-   z-index: 1;
-   top: 100%;
-   left: 0; 
-   margin-left: -50px;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-   color: #44561c;
-   padding: 12px 16px;
-   text-decoration: none;
-   display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-   background-color: #44561c;
-   color: white;
-}
-
-/* Show the dropdown content when the dropdown button is hovered over */
-.dropdown:hover .dropdown-content {
-   display: block;
-}
-/*Dropdown Menu*/
 /*navigation bar*/
 
 .wrapper {
