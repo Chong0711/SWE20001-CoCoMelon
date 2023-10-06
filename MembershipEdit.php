@@ -25,23 +25,47 @@ if (!$con) {
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#" ><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
         <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
+        <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
+                <a href="addbooking.php">Add Booking</a>
+                <a href="editbooking.php">Check Booking</a>
+                <a href="membership.php">Membership Management</a>
+                <a href="edittimetable.php">Trainer Timetable</a>
+                <a href="adminmanageacc.php">Manage Account</a>
             </div>
         </div>
+
+        <?php 
+        if(!ISSET($_SESSION['User_ID'])){
+            echo "<a href='login.php'><b>Login</b></a>";
+        }else{
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+            $result = mysqli_query($conn, $query);
+            $row = mysqli_fetch_assoc($result);
+            echo "<div class='dropdown'>
+            <button class='dropbtn'><b>".$row['Name']."</b></button>
+            <div class='dropdown-content'>
+            <a href='userprofile.php'>Profile</a>
+            <a href='#'>Booking History</a>
+            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+
+            echo "</div> </div>";
+        }
+        ?>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php session_destroy();?>
+        };
+    </script>
 </header>
 <title>Membership Management</title>
 <style>
