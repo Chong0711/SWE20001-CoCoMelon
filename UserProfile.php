@@ -26,22 +26,43 @@ session_start();
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>  
         <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
+            <button class="dropbtn"><b>Services</b></button>
+                <div class="dropdown-content">
+                    <!-- Add links or content for the dropdown here -->
+                    <a href="customertimetable.php">Trainer Timetable</a>
+                    <a href="addbooking.php">Book Court Now!</a>
+                    <a href="#">I dont know</a>
+                </div>
             </div>
+            <?php 
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='bookinghistory.php'>Booking History</a>
+                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+
+                echo "</div> </div>";
+            }
+            ?>
+         
         </div>
-        
-    </nav>
+       </nav>
 </header>
 
 <style>
@@ -374,7 +395,16 @@ body{
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
+<script type="text/javascript">
+    document.getElementById("logout").onclick = function () {
+        location.href = "login.php";
+        <?php if(isset($_POST['logout']))
+        {
+            session_destroy();
+        }
+        ?>
+    };
+</script>
 
 <script>
 /*Profile Picture*/
