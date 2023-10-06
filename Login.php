@@ -8,7 +8,7 @@ session_start();
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>SmashIt Badminton Academy</title>
-		<link rel="stylesheet" href="https">
+        <link rel="stylesheet" href="https">
     </head>
     <body>
 
@@ -20,7 +20,7 @@ session_start();
         <a href="#"><b>About</b></a>
         <a href="#"><b>Services</b></a>
         <a href="#"><b>Contact</b></a>
-		<a href="#"><b>User Profile</b></a>
+        <a href="#"><b>User Profile</b></a>
     </nav>
 </header>
 
@@ -108,7 +108,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin-top: 150px;
 }
 
 .wrapper.active{
@@ -243,7 +243,7 @@ body{
 }
 
 .error {
-	color: #D8000C;
+    color: #D8000C;
     border-radius: 5px;
     padding: 10px;
 }
@@ -272,13 +272,19 @@ body{
                 
                 if (mysqli_num_rows($result) == 1) {
                     $_SESSION['User_ID']=$row['User_ID'];
-                    echo'<script>window.location.replace("homepage.php");</script>';
+                    if($row['Roles'] == 'member'){
+                        echo'<script>window.location.replace("homepage.php");</script>';
+                    }else if($row['Roles'] == 'trainer'){
+                        echo'<script>window.location.replace("trainerhome.php");</script>';
+                    }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                        echo'<script>window.location.replace("adminhome.php");</script>'; 
                 }else {
                     echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
                 }
                 mysqli_free_result($result);
                 mysqli_close($conn);
             }
+        }
         ?>
         <form action="login.php" method="POST">
             <div class="input-box">
@@ -321,4 +327,3 @@ body{
 
     </body>
 </html>
-
