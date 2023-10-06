@@ -18,7 +18,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -26,18 +26,36 @@ session_start();
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="homepage.php#home"><b>Home</b></a>
-        <a href="homepage.php#about"><b>About</b></a>
-        <a href="homepage.php#contact"><b>Contact</b></a>  
-        <div class="dropdown">
-            <button class="dropbtn"><b>Services</b></button>
-                <div class="dropdown-content">
-                    <!-- Add links or content for the dropdown here -->
-                    <a href="customertimetable.php">Trainer Timetable</a>
-                    <a href="addbooking.php">Book Court Now!</a>
-                    <a href="#">I dont know</a>
-                </div>
-            </div>
+        <?php
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['User_ID']=$row['User_ID'];
+                if($row['Roles'] == 'member'){
+                    echo "<a href='homepage.php#home'><b>Home</b></a>";
+                    echo "<a href='homepage.php#about'><b>About</b></a>";
+                    echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'trainer'){
+                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
+                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='addbooking.php'>Add Booking</a>";
+                    echo "<a href='editbooking.php'>Check Booking</a>";
+                    echo "<a href='membership.php'>Membership Management</a>";
+                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                }
+            }
+        ?>
+        
             <?php 
             if(!ISSET($_SESSION['User_ID'])){
                 echo "<a href='login.php'><b>Login</b></a>";
@@ -55,13 +73,11 @@ session_start();
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='bookinghistory.php'>Booking History</a>
-                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
             }
             ?>
-         
-        </div>
        </nav>
 </header>
 
@@ -70,7 +86,7 @@ session_start();
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
