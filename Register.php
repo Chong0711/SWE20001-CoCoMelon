@@ -8,7 +8,7 @@ session_start();
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>SmashIt Badminton Academy</title>
-		<link rel="stylesheet" href="https">
+        <link rel="stylesheet" href="https">
     </head>
     <body>
 
@@ -16,11 +16,9 @@ session_start();
 <header>
     <h2 class="logo"><img src="Greenlogo1.png" style="width:270px;height:270px;"></h2>
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-		<a href="#"><b>User Profile</b></a>
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>
     </nav>
 </header>
 
@@ -108,7 +106,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin-top: 150px;
 }
 
 .wrapper.active{
@@ -243,13 +241,13 @@ body{
 }
 
 .error {
-	color: #D8000C;
+    color: #D8000C;
     border-radius: 5px;
     padding: 10px;
 }
 
 .success {
-	color: green;
+    color: green;
     border-radius: 5px;
     padding: 10px;
 }
@@ -275,7 +273,7 @@ body{
             }
             try {
                 $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
-                VALUES ('','$name', '$email','$hpnum', '$psw','member'); 
+                VALUES ('','$name', '$email','$hpnum', '$psw','user'); 
                 UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
                 if (mysqli_multi_query($conn, $sql)) {
                     do {
@@ -311,8 +309,8 @@ body{
                 <input type="email" name="email" required>
                 <label>Email</label>
             </div>
-			
-			<div class="input-box">
+            
+            <div class="input-box">
                 <span class="icon"><ion-icon name="phone-portrait-outline"></ion-icon></span>
                 <input type="text" name="hpnum" required>
                 <label>Phone Number</label>
@@ -352,4 +350,3 @@ body{
 
     </body>
 </html>
-
