@@ -27,16 +27,7 @@ if (!$con) {
     <nav class="navigation">
         <a href="#home"><b>Home</b></a>
         <a href="#time"><b>Timetable</b></a>
-		
-        <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-        	<div class="dropdown-content">
-	            <a href="#">Profile</a>
-	            <a href="#">Settings</a>
-	            <a href="#">Logout</a>
-        	</div>
-    	</div>
-		 <?php 
+         <?php 
             if(!ISSET($_SESSION['User_ID'])){
                 echo "<a href='login.php'><b>Login</b></a>";
             }else{
@@ -53,19 +44,22 @@ if (!$con) {
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='#'>Booking History</a>
-                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
             }
             ?>
-        
-        <script type="text/javascript">
-            document.getElementById("logout").onclick = function () {
-                location.href = "login.php";
-                <?php session_destroy();?>
-            };
-        </script>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
+        };
+    </script>
 </header>
 
 <style>
@@ -100,7 +94,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -226,7 +220,7 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .home {
@@ -274,7 +268,7 @@ body{
 }
 
 .section{
-	padding: 2rem 0%;
+    padding: 2rem 0%;
 }
 
 
@@ -403,7 +397,7 @@ th {
 
 /*Scroll smooth*/
 html{
-	scroll-padding-top: 6rem;
+    scroll-padding-top: 6rem;
 }
 
 @media(max-width:991px){
@@ -430,18 +424,18 @@ html{
 </style>
 
 <section>
-	<section class="home">
-	    <div class="background-image" id="home"></div>
-	    <div class="content">
-	        <h2>Welcome To Trainer Homepage !</h2>
-	    </div>
-	</section>
+    <section class="home">
+        <div class="background-image" id="home"></div>
+        <div class="content">
+            <h2>Welcome To Trainer Homepage !</h2>
+        </div>
+    </section>
 
-	<section>
-		<div class="TimeTable" id="time">
-			<h1 class="heading">View Timetable</h1>
-		</div>
-	</section>
+    <section>
+        <div class="TimeTable" id="time">
+            <h1 class="heading">View Timetable</h1>
+        </div>
+    </section>
 
 <section>
 
@@ -554,5 +548,3 @@ window.onload = toggleTables;
 
 </body>
 </html>
-
-
