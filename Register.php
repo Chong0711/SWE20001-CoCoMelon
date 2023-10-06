@@ -275,7 +275,7 @@ body{
             }
             try {
                 $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
-                VALUES ('','$name', '$email','$hpnum', '$psw','user'); 
+                VALUES ('','$name', '$email','$hpnum', '$psw','member'); 
                 UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
                 if (mysqli_multi_query($conn, $sql)) {
                     do {
