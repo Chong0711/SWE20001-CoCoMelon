@@ -247,105 +247,6 @@ body{
     margin-top: 20px;
 }
 
-/*Do you need a trainer?*/
-.input-trainer{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
-}
-
-.input-trainer label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.input-trainer select{
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
-}
-/*Do you need a trainer?*/
-
-/*Trainer Name*/
-.input-NTrainer{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
-}
-
-.input-NTrainer label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.input-NTrainer select{
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
-}
-/*Trainer Name*/
-
-/*Trainer Name*/
-.input-court{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 40px 0;
-}
-
-.input-court label{
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-180%);
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    pointer-events: none;
-    transition: .5s;
-}
-
-.input-court select{
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    border: 2px solid #44561c;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #44561c;
-    font-size: 1em;
-    padding: 5px;
-}
-/*Trainer Name*/
-
 /*Profile Picture*/
 .profile-picture {
     width: 150px; 
@@ -353,15 +254,74 @@ body{
     border-radius: 50%; 
     overflow: hidden; 
     margin: 0 auto;
+    border:3px solid #44561c;
 }
 
 .profile-picture img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    border: none; /
 }
 
 /*Profile Picture*/
 
+/*Input-Type CSS*/
+/* Style for input boxes */
+.form-box-reschedule input[type="text"],
+.form-box-reschedule input[type="email"],
+.form-box-reschedule input[type="password"],
+.form-box-reschedule input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 1em;
+    color: #44561c;
+    background-color: #f2f2f2;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Style for input boxes when focused */
+.form-box-reschedule input[type="text"]:focus,
+.form-box-reschedule input[type="email"]:focus,
+.form-box-reschedule input[type="password"]:focus,
+.form-box-reschedule input[type="file"]:focus {
+    border-color: #44561c;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(68, 86, 28, 0.5);
+}
+
+/* Style for the button */
+.form-box-reschedule .btn {
+    width: 100%;
+    height: 45px;
+    background: #44561c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.form-box-reschedule .btn:hover {
+    background-color: #162938;
+}
+
+/* Style for labels */
+.form-box-reschedule p{
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+/*Input-Type CSS*/
 </style>
 
 <div class="wrapper">
@@ -381,15 +341,15 @@ body{
             echo '<div class="profile-picture"> <img src='.$row['Profile_Pic'].'></div>';
         }
         
-            echo "<div class='form-box reschedule'>";
+            echo "<div class='form-box-reschedule'>";
             echo "<form action=userprofile.php method=post>";
             echo "<input type=hidden name=muid value=".$_SESSION['User_ID'].">";
-            echo "<p>User ID: ".$row['User_ID']."</p>";
-            echo "<p>Customer Name: <input type=text name=muname value =\"" . $row['Name'] . "\"></p>";
-            echo "<p>Email: <input type=email name=muemail value=".$row['Email']."></p>";
-            echo "<p>Phone Number: <input type=text name=muphonenum value=".$row['Phone_Num']."></p>";
-            echo "<p>Password: <input type=password name=mupsw value=".$row['Password']."></p>";
-            echo "<p>Profile Image: <input type=file name=img value=".$row['Profile_Pic']."></p>";
+            echo "<br><br><p>User ID: ".$row['User_ID']."</p><br>";
+            echo "<p>Customer Name: <br><input type=text name=muname value =\"" . $row['Name'] . "\"></p>";
+            echo "<p>Email: <br><input type=email name=muemail value=".$row['Email']."></p>";
+            echo "<p>Phone Number: <br><input type=text name=muphonenum value=".$row['Phone_Num']."></p>";
+            echo "<p>Password: <br><input type=password name=mupsw value=".$row['Password']."></p>";
+            echo "<p>Profile Image: <br><input type=file name=img id=profile-image value=".$row['Profile_Pic']."></p>";
             echo "<button type='submit' class='btn' name='updateprofile'>Edit Profile</button>";
             echo "</form>";
             echo "</div>";
@@ -405,7 +365,8 @@ body{
                 echo'<script>window.location.replace("userprofile.php");</script>';
             }
         
-	    ?>
+        ?>
+    </div>
 </div>
 
 
