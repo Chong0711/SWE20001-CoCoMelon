@@ -36,7 +36,35 @@ if (!$con) {
 	            <a href="#">Logout</a>
         	</div>
     	</div>
-		
+		 <?php 
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='#'>Booking History</a>
+                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+
+                echo "</div> </div>";
+            }
+            ?>
+        
+        <script type="text/javascript">
+            document.getElementById("logout").onclick = function () {
+                location.href = "login.php";
+                <?php session_destroy();?>
+            };
+        </script>
     </nav>
 </header>
 
@@ -139,47 +167,47 @@ body{
    display: inline-block;
 }
 
-/* Dropdown button */
-.dropbtn {
-   background-color: transparent; /* Set button background to transparent */
-   border: none;
-   cursor: pointer;
-   color: #44561c;
-   font-size: 1.1em;
-   font-weight: 500;
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-   display: none;
-   position: absolute;
-   background-color: transparent; 
-   z-index: 1;
-   top: 100%;
-   left: 0; 
-   margin-left: -50px;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-   color: #44561c;
-   padding: 14px 16px;
-   text-decoration: none;
-   width: 1px;
-   display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-   background-color: #44561c;
-   color: white;
-}
-
-/* Show the dropdown content when the dropdown button is hovered over */
-.dropdown:hover .dropdown-content {
-   display: block;
-}
-/*Dropdown Menu*/
+ /* Dropdown button */
+ .dropbtn {
+    background-color: transparent; /* Set button background to transparent */
+    border: none;
+    cursor: pointer;
+    color: #44561c;
+    font-size: 1.1em;
+    font-weight: 500;
+ }
+ 
+ /* Dropdown content (hidden by default) */
+ .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent; /* Set dropdown background to transparent */
+    z-index: 1;
+    top: 100%;
+    left: 0; 
+    margin-left: -50px;
+ }
+ 
+ /* Links inside the dropdown */
+ .dropdown-content a {
+    color: #44561c;
+    padding: 12px 16px;
+    width: 120px;
+    text-decoration: none;
+    display: block;
+ }
+ 
+ /* Change color of dropdown links on hover */
+ .dropdown-content a:hover {
+    background-color: #44561c;
+    color: white;
+ }
+ 
+ /* Show the dropdown content when the dropdown button is hovered over */
+ .dropdown:hover .dropdown-content {
+    display: block;
+ }
+ /*Dropdown Menu*/
 
 .form-box h2{
     font-size: 2em;
@@ -421,7 +449,7 @@ html{
 <div class="search-container">
     <h2>Search Records</h2><br>
     <!-- Create a container for the search form -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <form id="search-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
         <label>Date: </label>
         <input type="date" name="date" id="search_date" class="search-option" required>
         <button type="submit" class="btn" a href="#result">Search</button>
@@ -489,7 +517,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the database connection
     mysqli_close($con);
 }
-
 ?>
 
 </section>
@@ -522,6 +549,7 @@ function closeForm() {
 
 // Call the function when the page loads to initialize table visibility
 window.onload = toggleTables;
+
 </script>
 
 </body>
