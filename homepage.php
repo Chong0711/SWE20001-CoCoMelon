@@ -440,10 +440,20 @@ section{
                 </div>
             </div>
         <div class="dropdown">
-            <button class="dropbtn"><b>User Profile</b></button>
+            <?php
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                echo "<button class='dropbtn'><b>".$row['Name']."</b></button>";
+            ?>
                 <div class="dropdown-content">
                     <!-- Add links or content for the dropdown here -->
-                    <a href="userporfile.php">Profile</a>
+                    <a href="userprofile.php">Profile</a>
                     <a href="#">Booking History</a>
                     <a href="#">Logout</a>
                 </div>
