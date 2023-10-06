@@ -456,13 +456,20 @@ body{
             <option value="yes">Yes</option> 
         </select>
     </div>
-   
+    <?php
+        $con=mysqli_connect("localhost", "root", "", "cocomelon");
+        $query="select * from personal_details where Roles='trainer'";
+        $result=mysqli_query($con, $query);
+    ?>
     <div id="ifYes" class="input-NTrainer" style="display: none;">
         <label>Trainers:</label>
-        <select id="trainer-name" name="trainer" >
-            <option value="Ali">Ali</option> 
-            <option value="Lina">Lina</option>
-            <option value="John">John</option> 
+        <select id="trainer-name" name="trainerName" >
+            <option value="">Select Trainer</option>
+            <?php
+            while($row=mysqli_fetch_array($result)) { ?>
+                <option value="<?php echo $row['User_ID']; ?>"><?php echo $row['Name']; ?></option>
+            <?php } ?>
+            
         </select>
     </div>
 
