@@ -273,8 +273,8 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box timetable">
-        <form method="post" action="admincreateacc.php">
-            <h2>Create Account</h2>
+        <form method="post" action="adminmanageacc.php">
+            <h2>Manage Account</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
     </div>
