@@ -198,20 +198,18 @@ body{
 }
 
 .search-container {
-    padding: 0px 0px 0px 0px;
+    padding: 50px 0px 0px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     overflow: auto;
-    margin-bottom: 20px; /* Add margin at the bottom to separate from search results */
 }
 .search-result
 {
     width: 100%; /* Ensure the table takes the full width of the container */
     overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
     overflow-y: auto;
-    margin-top: 20px;
 }
 .search-option
 {
@@ -271,8 +269,56 @@ label{
     font-size: 20px;
 }
 
+.search-results.msg, .updatemsg, .errormsg{
+    width: auto;
+    height: 40px;
+    text-align: center;
+    padding: 10px 0px 0px 0px;
+}
+
+.updatemsg{
+    color: green;
+}
+
+.errormsg{
+    color: red;
+}
 </style>
 <section>
+    <section>
+    <?php
+    /// Check if the form was submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
+        // Retrieve and validate the data from the form
+        $user_id = (int)$_POST['user_id']; // Ensure it's an integer
+        $edit_status = mysqli_real_escape_string($con, $_POST["edit_status"]);
+        $edit_active_date = mysqli_real_escape_string($con, $_POST["edit_active_date"]);
+        $edit_end_date = mysqli_real_escape_string($con, $_POST["edit_end_date"]);
+
+        // Calculate the end date based on the active date
+        $active_date_obj = new DateTime($edit_active_date);
+        $new_end_date_obj = clone $active_date_obj;
+        $new_end_date_obj->add(new DateInterval('P1Y'));
+        $new_end_date = $new_end_date_obj->format('Y-m-d');
+
+        // Check if the duration is one year
+        if ($new_end_date !== $edit_end_date) {
+            echo "Error: The duration between the active date and end date must be one year.";
+        } else {
+            // Update the user's status, active date, and end date in the database
+            $sql = "UPDATE membership SET Status = '$edit_status', Active_Date = '$edit_active_date', End_Date = '$edit_end_date' WHERE User_ID = $user_id";
+
+            $result = mysqli_query($con, $sql);
+            if ($result) {
+                echo "<div class='updatemsg'>Update successful!</div>";
+            } else {
+                echo "<div class='erorrmsg'>Error updating record: </div>" . mysqli_error($con);
+            }
+        }
+    }
+    ?>
+    </section>
+
     <section>
     <div class="search-container">
         <h2 class='heading'>Search Records</h2><br>
@@ -296,7 +342,7 @@ label{
     <div class='search-results' id="result">
         <?php $html?>
     </div>
-</section>
+    </section>
 
 <?php
 // Handle the search based on the selected option
@@ -361,15 +407,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<td>{$row['Active_Date']}</td>";
                     $html .= "<td>{$row['End_Date']}</td>";
                     $html .= "<td>
-                    <form action='1backup.php' method='POST'>
-                    <input type='hidden' name='user_id' value='{$row['User_ID']}'>
-                    <input type='hidden' name='status' value='{$row['Status']}'>
-                    <input type='hidden' name='total_purchases' value='{$row['Total_Purchases']}'>
-                    <input type='hidden' name='active_date' value='{$row['Active_Date']}'>
-                    <input type='hidden' name='end_date' value='{$row['End_Date']}'>
-                    <button type='submit' class='editbtn'>Edit</button>
-                    </form>
-                    </td>";
+                    <form action='membershipedit.php' method='POST'>
+                    <input type='hidden' name='user_id' value='{$row['User_ID']}'>";
+                    $html .= "
+                    <input type='hidden' name='status' value='{$row['Status']}'>";
+                    $html .= "
+                    <input type='hidden' name='total_purchases' value='{$row['Total_Purchases']}'>";
+                    $html .= "
+                    <input type='hidden' name='active_date' value='{$row['Active_Date']}'>";
+                    $html .= "
+                    <input type='hidden' name='end_date' value='{$row['End_Date']}'>";
+                    $html .= "
+                    <button type='submit' class='editbtn'>Edit</button>";
+                    $html .= "</form></td>";
                     $html .= "</tr>";
                 }
 
@@ -380,7 +430,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<div class='search-results'>$html</div>";
             } else {
                 // No results found, display a message
-                echo "<div class='search-results'>Did not find any results.</div>";
+                echo "<div class='search-results msg'>Did not find any results.</div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
