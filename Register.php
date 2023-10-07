@@ -8,6 +8,7 @@ session_start();
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>SmashIt Badminton Academy</title>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https">
     </head>
     <body>
@@ -27,7 +28,7 @@ session_start();
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -106,7 +107,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-    margin-top: 150px;
+    margin: 150px 0px 20px 0px;
 }
 
 .wrapper.active{
@@ -329,7 +330,7 @@ body{
             </div>
             <button type="submit" class="btn" name="signup">Register</button>
             <div class="login-register">
-                <p>Already be our member? <a href="LoginPage.php" class="login-link">Login here!</a></p>                 
+                <p>Already be our member? <a href="login.php" class="login-link">Login here!</a></p>                 
             </div>
 
             <div class="guest-login">
