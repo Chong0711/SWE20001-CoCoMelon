@@ -50,7 +50,7 @@ $row = mysqli_fetch_assoc($result);
                     echo "<a href='addbooking.php'>Add Booking</a>";
                     echo "<a href='editbooking.php'>Check Booking</a>";
                     echo "<a href='membership.php'>Membership Management</a>";
-                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
                     echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
                 }
             }
