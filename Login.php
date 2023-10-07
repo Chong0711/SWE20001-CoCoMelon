@@ -9,6 +9,7 @@ session_start();
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>SmashIt Badminton Academy</title>
         <link rel="stylesheet" href="https">
+        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
     </head>
     <body>
 
@@ -27,7 +28,7 @@ session_start();
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
