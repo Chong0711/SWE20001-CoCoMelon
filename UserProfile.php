@@ -18,7 +18,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -26,22 +26,59 @@ session_start();
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
+        <?php
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['User_ID']=$row['User_ID'];
+                if($row['Roles'] == 'member' || $row['Roles'] == 'guest'){
+                    echo "<a href='homepage.php#home'><b>Home</b></a>";
+                    echo "<a href='homepage.php#about'><b>About</b></a>";
+                    echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'trainer'){
+                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
+                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='addbooking.php'>Add Booking</a>";
+                    echo "<a href='editbooking.php'>Check Booking</a>";
+                    echo "<a href='membership.php'>Membership Management</a>";
+                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                }
+            }
+        ?>
         
-        <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        
-    </nav>
+            <?php 
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                $servername = "localhost";
+                $username = "root";
+                $password = null;
+                $dbname = "cocomelon";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='bookinghistory.php'>Booking History</a>
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+
+                echo "</div> </div>";
+            }
+            ?>
+       </nav>
 </header>
 
 <style>
@@ -49,7 +86,7 @@ session_start();
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -374,7 +411,16 @@ body{
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
+<script type="text/javascript">
+    document.getElementById("logout").onclick = function () {
+        location.href = "login.php";
+        <?php if(isset($_POST['logout']))
+        {
+            session_destroy();
+        }
+        ?>
+    };
+</script>
 
 <script>
 /*Profile Picture*/

@@ -14,8 +14,8 @@ if (!$con) {
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -51,8 +51,7 @@ if (!$con) {
             <button class='dropbtn'><b>".$row['Name']."</b></button>
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
-            <a href='#'>Booking History</a>
-            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+            <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
             echo "</div> </div>";
         }
@@ -61,7 +60,11 @@ if (!$con) {
     <script type="text/javascript">
         document.getElementById("logout").onclick = function () {
             location.href = "login.php";
-            <?php session_destroy();?>
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
         };
     </script>
 </header>
@@ -71,7 +74,7 @@ if (!$con) {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{

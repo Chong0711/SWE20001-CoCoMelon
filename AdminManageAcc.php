@@ -8,7 +8,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="https">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -44,13 +44,22 @@ session_start();
             <button class='dropbtn'><b>".$row['Name']."</b></button>
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
-            <a href='#'>Booking History</a>
-            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+            <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
             echo "</div> </div>";
         }
         ?>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
+        };
+    </script>
 </header>
 
 <style>
@@ -58,7 +67,7 @@ session_start();
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -401,7 +410,7 @@ section{
                 if ($conn->query($deleteSql) === TRUE) {
                     echo "<div class='success'><center><b>Data delete seccessfully!</b></center></div>";
                 } else {
-                    echo "<div class='error'><center><b>Error deleting data: " . $conn->error. "</b></center></div>;
+                    echo "<div class='error'><center><b>Error deleting data: " . $conn->error. "</b></center></div>";
                 }
 
                 $conn->close();

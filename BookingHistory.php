@@ -1,17 +1,11 @@
 <?php
 session_start();
-
-// Include your database connection code here if not already included
-$con = mysqli_connect("localhost", "root", null, "cocomelon");
-
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-$query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-$result = mysqli_query($con, $query);
-$row = mysqli_fetch_assoc($result);
+$servername = "localhost";
+$username = "root";
+$password = null;
+$dbname = "cocomelon";
+$conn = new mysqli($servername, $username, $password, $dbname);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +15,6 @@ $row = mysqli_fetch_assoc($result);
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
-
 </head>
 <body>
 
@@ -29,27 +22,22 @@ $row = mysqli_fetch_assoc($result);
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>  
         <div class="dropdown">
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-                <a href="addbooking.php">Add Booking</a>
-                <a href="editbooking.php">Check Booking</a>
-                <a href="membership.php">Membership Management</a>
-                <a href="edittimetable.php">Trainer Timetable</a>
-                <a href="adminmanageacc.php">Manage Account</a>
+                <a href="customertimetable.php">Trainer Timetable</a>
+                <a href="addbooking.php">Book Court Now!</a>
+                <a href="#">I dont know</a>
             </div>
         </div>
-
         <?php 
         if(!ISSET($_SESSION['User_ID'])){
             echo "<a href='login.php'><b>Login</b></a>";
         }else{
-            $servername = "localhost";
-            $username = "root";
-            $password = null;
-            $dbname = "cocomelon";
-            $conn = new mysqli($servername, $username, $password, $dbname);
             $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
             $result = mysqli_query($conn, $query);
             $row = mysqli_fetch_assoc($result);
@@ -57,20 +45,25 @@ $row = mysqli_fetch_assoc($result);
             <button class='dropbtn'><b>".$row['Name']."</b></button>
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
+            <a href='bookinghistory.php'>Booking History</a>
             <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
             echo "</div> </div>";
         }
         ?>
-    </nav>
+   </nav>
     <script type="text/javascript">
         document.getElementById("logout").onclick = function () {
             location.href = "login.php";
-            <?php session_destroy();?>
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
         };
     </script>
 </header>
-<title>Membership Management</title>
+
 <style>
 * {
     margin: 0;
@@ -99,7 +92,7 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
+    background-size: 1550px 3000px;
     background-position: center;
 
 }
@@ -157,6 +150,9 @@ body{
     background: #fff;
     color: #162938;
 }
+
+/*navigation bar*/
+
 /*Dropdown Menu*/
 /* Dropdown container */
 
@@ -211,10 +207,25 @@ body{
    display: block;
 }
 /*Dropdown Menu*/
-/*navigation bar*/
+
+.wrapper {
+    position: relative;
+    width: 400px;
+    height: auto; /*changed the form box's height as auto*/
+    background: transparent;
+    border: 5px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1);
+    transition: transform .5s ease, height .2s ease;
+    margin-top: 20px;
+}
 
 .btn{
-    width: 30%;
+    width: 150px;
     height: 45px;
     background: #44561c;
     border: none;
@@ -226,108 +237,89 @@ body{
     font-weight: 500;
     margin-top: 20px;
 }
-.form .cancel {
-  background-color: #D92121;
+/* table view */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 20px 10px 0px, 10px;
 }
 
-label{
-    font-size: 20px;
+th, td {
+    border: 2px solid rgba(255, 255, 255, .5);
+    padding: 10px;
+    text-align: left;
+    text-align: center;
 }
 
+th {
+    background-color: #f2f2f2;
+}
+/* table view */
 section{
     padding: 2rem 0%;
     overflow: auto;
 }
 
-.input{
-    width: auto;
-    height: 30px;
-}
 .heading{
+    margin-top: 130px;
     text-align: center;
     font-size: 25px;
 }
-.wrapper {
-    position: relative;
-    width: 100%;
-    height: 200px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+.container{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(1);
-    transition: transform .5s ease, height .2s ease;
     flex-direction: column;
-    margin: 100px 0px 0px 0px;
-    padding: 100px 0px 100px 0px;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
 }
 </style>
-<body>
+
 <section>
-    <section>
-    <?php
-    // Ensure that the form was submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Retrieve the data from the form
-        $user_id = $_POST["user_id"];
-        $status = $_POST["status"];
-        $total_purchases = $_POST["total_purchases"];
-        $active_date = $_POST["active_date"];
-        $end_date = $_POST["end_date"];
-
-        echo "<div class='wrapper'>";
-        echo "<h2 class='heading'> The Member You Want to Edit!</h2><br>";
-        echo "User ID: " . $user_id . "<br>";
-        echo "Status: " . $status . "<br>";
-        echo "Total Purchases: " . $total_purchases . "<br>";
-        echo "Active Date: " . $active_date . "<br>";
-        echo "End Date: " . $end_date . "<br>";
-        echo "</div><br>";
-    }
-    ?>
-    </section>
+    <h2 class="heading">Booking History</h2><br>
+   
+        <div class="container">
+        <?php
+        $historyquery = "SELECT * FROM booking WHERE Cust_ID = '".$_SESSION['User_ID']."'";        
+        $historyresult = mysqli_query($conn, $historyquery);
         
-    <section>
-        <!-- Add your HTML content, including the form, here -->
-        <form action="membership.php" method="post" class="form">
-            <h2 class="heading">Edit Member Status</h2><br>
+        if ($historyresult->num_rows > 0) {
+            while ($historyrow = mysqli_fetch_assoc($historyresult)) {
+                echo '<div class="wrapper"> <table>';
+                echo '<tr>
+                <td>Booking ID</td> 
+                <td>' . $historyrow['Book_ID'] . '</td></tr>';
 
-            <!-- Add hidden fields for User ID -->
-            <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>">
+                echo '<tr>
+                <td>Booking Date</td>
+                <td>' . $historyrow['Book_Date'] . '</td></tr>';
 
-            <label for="status">Status:</label>
-            <select id="edit_status" name="edit_status" class="input">
-                <option value="Inactive">Inactive</option>
-                <option value="Active">Active</option>
-            </select>
+                echo '<tr>
+                <td>Court</td>
+                <td>' . $historyrow['Court'] . '</td></tr>';
 
-            <label for="active_date">Active Date:</label>
-            <input type="date" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" class="input" required>
+                echo '<tr>
+                <td>Booking Start Time</td>
+                <td>' . $historyrow['Book_StartTime'] . '</td></tr>';
 
-            <label for="end_date">End Date:</label>
-            <input type="date" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" class="input" required>
+                echo '<tr>
+                <td>Booking End Time</td>
+                <td>' . $historyrow['Book_EndTime'] . '</td></tr>';
 
-            <center>
-                <button type="submit" name="update" class="btn">Update</button>
-                <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Return</button>
-            </center>
-        </form>
-    </section>
-</section>
-
-<script type="text/javascript">
-    document.getElementById("logout").onclick = function () {
-        location.href = "login.php";
-        <?php if(isset($_POST['logout']))
-        {
-            session_destroy();
+                echo '<tr>
+                <td>Status</td>
+                <td>' . $historyrow['Status'] . '</td></tr>';
+                echo '</table></div>';
+            }
+        } else {
+            echo '<b>No booking history found.</b>';
         }
         ?>
-    };
-</script>
+    <section>
+        <button class="btn" onclick="location.href='homepage.php'">Back to Home</button>
+    </section>
+</div>
+</section>
+
+
 </body>
 </html>

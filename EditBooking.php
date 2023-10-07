@@ -8,27 +8,8 @@ if ($con->connect_error) {
 }
 
 $bookingDetails = null; // Initialize variable to hold booking details
-
 $bookingNotFound = false; // Initialize a flag to check if booking is not found
 
-/*if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['bookid']) && isset($_POST['email'])) {
-        $booking_id = $_POST['bookid'];
-        //$email = $_POST['email'];
-
-        // Connect to the database and select the required details
-        //AND user.email = '$email'
-        $sql = "SELECT * FROM booking WHERE Book_ID = '$booking_id'";
-        $result = mysqli_query($con, $sql);
-
-        if ($result && mysqli_num_rows($result) === 1) {
-            // Booking exists, fetch and store booking details
-            $bookingDetails = mysqli_fetch_assoc($result);
-        } else {
-            $bookingNotFound = true;
-        }
-    }
-}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +18,7 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -73,22 +54,30 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
             <button class='dropbtn'><b>".$row['Name']."</b></button>
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
-            <a href='#'>Booking History</a>
-            <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+            <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
             echo "</div> </div>";
         }
         ?>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
+        };
+    </script>
 </header>
 
-<style>
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -319,11 +308,11 @@ section{
                 <form method="post" action="editbooking.php">
                     <div class="input-box">
                         <input type="text" name="bookid">
-                        <label>Booking ID</label>
+                        <label><b>Booking ID</b></label>
                     </div>
                     <div class="input-box">
                         <input type="email" name="email">
-                        <label>Email</label>
+                        <label><b>Email</b></label>
                     </div>
                          <button type="submit" class="btn" name="search">Check Appointment</button>
                     
