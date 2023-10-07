@@ -29,7 +29,7 @@ session_start();
         <?php
             if (mysqli_num_rows($result) == 1) {
                 $_SESSION['User_ID']=$row['User_ID'];
-                if($row['Roles'] == 'member' || $row['Roles'] == 'guest'){
+                if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){
                     echo "<a href='homepage.php#home'><b>Home</b></a>";
                     echo "<a href='homepage.php#about'><b>About</b></a>";
                     echo "<a href='homepage.php#contact'><b>Contact</b></a>";
@@ -38,6 +38,7 @@ session_start();
                     echo "<div class='dropdown-content'>";
                     echo "<a href='customertimetable.php'>Trainer Timetable</a>";
                     echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
                     echo "</div></div>";
                 }else if($row['Roles'] == 'trainer'){
                     echo "<a href='trainerhome.php#home'><b>Home</b></a>";
@@ -50,7 +51,7 @@ session_start();
                     echo "<a href='addbooking.php'>Add Booking</a>";
                     echo "<a href='editbooking.php'>Check Booking</a>";
                     echo "<a href='membership.php'>Membership Management</a>";
-                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
                     echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
                 }
             }
@@ -240,7 +241,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-    margin-top: 150px;
+    margin: 150px 0px 20px 0px;
 }
 
 .wrapper.active{
