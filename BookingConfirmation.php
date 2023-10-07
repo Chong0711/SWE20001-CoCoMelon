@@ -8,6 +8,18 @@ if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
 // Retrieve user inputs
+
+if (isset($_POST['book_appointment'])) {
+        $_SESSION['name'] = $_POST['name'];
+        $_SESSION['email'] = $_POST['email'];
+        $_SESSION['phone'] = $_POST['phone'];
+        $_SESSION['date'] = $_POST['date'];
+        $_SESSION['startTime'] = $_POST['stime'];
+        $_SESSION['endTime'] = $_POST['etime'];
+        $_SESSION['courts'] = $_POST['court'];
+        $_SESSION['trainerID'] = $_POST['trainerID'];
+        }
+
     // $_SESSION['name'] = $_POST['name'];
     // $_SESSION['email'] = $_POST['email'];
     // $_SESSION['phone'] = $_POST['phone'];
