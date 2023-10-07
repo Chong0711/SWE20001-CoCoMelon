@@ -264,10 +264,7 @@ th {
     background-color: #f2f2f2;
 }
 /* table view */
-span {
-  width: 50px;
-  height: 50px;
-}
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .editbtn {
     width: 100%;
@@ -310,42 +307,89 @@ label{
 .errormsg{
     color: red;
 }
+
+/* The form */
+.form-popup {
+  display: none;
+  position: absolute;
+  margin-bottom: 0px;
+  right: 570px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  width: 400px; /* Set the width to match Part B */
+  background: transparent; /* Change background to match Part B */
+}
+/* Add styles to the form container */
+.form-container {
+  max-width: 100%; /* Set max-width to 100% to match Part B */
+  padding: 20px; /* Adjust padding */
+  background-color: transparent; /* Change background to match Part B */
+}
+
+/* Full-width input fields */
+.form-container input[type="text"],
+.form-container input[type="password"] {
+  width: 100%;
+  padding: 10px; /* Adjust padding */
+  margin: 10px 0; /* Adjust margin */
+  border: 1px solid black;
+  border-radius: 6px;
+  background-color: transparent;
+  font-size: 1em;
+  outline: none;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
+  background-color: #f1f1f1;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  width: 100%;
+  height: 45px;
+  background: #8888ec;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 500;
+  margin-top: 10px; /* Adjust margin-top */
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}
+
+.form-container label{
+    font-size: 1em;
+    color: #44561c;
+    margin-right: 10px;
+}
+
+.form-popup h1{
+    text-align: center;
+    margin-top: 30px;
+}
+
+/*pop out form*/
+
 </style>
 <section>
-    <section>
-    <?php
-    /// Check if the form was submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
-        // Retrieve and validate the data from the form
-        $user_id = (int)$_POST['user_id']; // Ensure it's an integer
-        $edit_status = mysqli_real_escape_string($con, $_POST["edit_status"]);
-        $edit_active_date = mysqli_real_escape_string($con, $_POST["edit_active_date"]);
-        $edit_end_date = mysqli_real_escape_string($con, $_POST["edit_end_date"]);
-
-        // Calculate the end date based on the active date
-        $active_date_obj = new DateTime($edit_active_date);
-        $new_end_date_obj = clone $active_date_obj;
-        $new_end_date_obj->add(new DateInterval('P1Y'));
-        $new_end_date = $new_end_date_obj->format('Y-m-d');
-
-        // Check if the duration is one year
-        if ($new_end_date !== $edit_end_date) {
-            echo "Error: The duration between the active date and end date must be one year.";
-        } else {
-            // Update the user's status, active date, and end date in the database
-            $sql = "UPDATE membership SET Status = '$edit_status', Active_Date = '$edit_active_date', End_Date = '$edit_end_date' WHERE User_ID = $user_id";
-
-            $result = mysqli_query($con, $sql);
-            if ($result) {
-                echo "<div class='updatemsg'>Update successful!</div>";
-            } else {
-                echo "<div class='erorrmsg'>Error updating record: </div>" . mysqli_error($con);
-            }
-        }
-    }
-    ?>
-    </section>
-
     <section>
     <div class="search-container">
         <h2 class='heading'>Search Records</h2><br>
@@ -433,23 +477,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<td>{$row['Total_Purchases']}</td>";
                     $html .= "<td>{$row['Active_Date']}</td>";
                     $html .= "<td>{$row['End_Date']}</td>";
-                    $html .= "<td>
-                    <form action='membershipedit.php' method='POST'>
-                    <input type='hidden' name='user_id' value='{$row['User_ID']}'>";
-                    $html .= "
-                    <input type='hidden' name='status' value='{$row['Status']}'>";
-                    $html .= "
-                    <input type='hidden' name='total_purchases' value='{$row['Total_Purchases']}'>";
-                    $html .= "
-                    <input type='hidden' name='active_date' value='{$row['Active_Date']}'>";
-                    $html .= "
-                    <input type='hidden' name='end_date' value='{$row['End_Date']}'>";
-                    $html .= "
-                    <button type='submit' class='editbtn'>Edit</button>";
-                    $html .= "</form></td>";
+                    $html .= "<td><button class='editbtn' onclick='openForm(\"{$row['User_ID']}\", \"{$row['Status']}\", \"{$row['Total_Purchases']}\", \"{$row['Active_Date']}\", \"{$row['End_Date']}\")'>Edit</button></td>";
                     $html .= "</tr>";
                 }
-
 
                 $html .= "</table>";
 
@@ -463,15 +493,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error: " . mysqli_error($con);
         }
     }
+}
+}
 
-    // Close the database connection
-    mysqli_close($con);
+// Handle editing trainer availability
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
+    $user_id = $_POST["user_id"];
+    $edit_status = $_POST["edit_status"];
+    $total_purchase = $_POST["total_purchase"];
+    $edit_active_date = $_POST["edit_active_date"];
+    $edit_end_date = $_POST["edit_end_date"];
+
+    // Modify the SQL query to update the status based on trainer name and date
+    $update_sql = "UPDATE membership SET Status = '$edit_status', Active_Date = '$edit_active_date', End_Date = '$edit_end_date'  WHERE User_ID = '$user_id'";
+
+    if (mysqli_query($con, $update_sql)) {
+        echo "<script>alert('Availability updated successfully.');</script>";
+    } else {
+        echo "Error updating availability: " . mysqli_error($con);
+    }
 }
-}
+
+// Close the database connection
+mysqli_close($con);
 ?>
+<!-- the form-->
+    <section>
+        <div class="form-popup" id="myForm">
+            <!-- Add your HTML content, including the form, here -->
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form">
+                <h2 class="heading">Edit Member Status</h2><br>
 
+                <!-- Add hidden fields for User ID -->
+                <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>">
+
+                <label for="status">Status:</label>
+                <select id="edit_status" name="edit_status" class="input">
+                    <option value="Inactive">Inactive</option>
+                    <option value="Active">Active</option>
+                </select>
+
+                <input type="hidden" id="total_purchase" name="total_purchase" value="<?php echo $total_purchase; ?>">
+
+                <label for="active_date">Active Date:</label>
+                <input type="date" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" class="input" required>
+
+                <label for="end_date">End Date:</label>
+                <input type="date" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" class="input" required>
+
+                <center>
+                    <button type="submit" name="update" class="btn">Update</button>
+                    <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Return</button>
+                </center>
+            </form>
+        </div>
+    </section>
 </section>
 <script>
+function openForm(UserID, Status, TotalPurchases, ActiveDate, EndDate) {
+  // Populate the hidden fields and form fields with trainer information
+  document.getElementById("user_id").value = UserID;
+  document.getElementById("edit_status").value = Status;
+  document.getElementById("total_purchase").value = TotalPurchases;
+  document.getElementById("edit_active_date").value = ActiveDate;
+  document.getElementById("edit_end_date").value = EndDate;
+
+  // Display the form
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  // Reset the form fields to their initial state
+  document.getElementById("user_id").value = "";
+  document.getElementById("edit_status").value = "";
+  document.getElementById("total_purchase").value = "";
+  document.getElementById("edit_active_date").value = "";
+  document.getElementById("edit_end_date").value = "";
+
+  // Hide the form
+  document.getElementById("myForm").style.display = "none";
+}
+
  function toggleTables() {
     var year = document.getElementById('search_year').value;
     var searchOption = document.getElementById('search_option').value;
