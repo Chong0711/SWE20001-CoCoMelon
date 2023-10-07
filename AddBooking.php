@@ -1,7 +1,14 @@
 <?php
 session_start();
 // this con is used to connect with the database
-$con=mysqli_connect("localhost", "root", null, "cocomelon");
+$servername = "localhost";
+$username = "root";
+$password = null;
+$dbname = "cocomelon";
+$conn = new mysqli($servername, $username, $password, $dbname);
+$query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -19,24 +26,48 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
-        <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        
-    </nav>
+        <?php
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['User_ID']=$row['User_ID'];
+                if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){
+                    echo "<a href='homepage.php#home'><b>Home</b></a>";
+                    echo "<a href='homepage.php#about'><b>About</b></a>";
+                    echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'trainer'){
+                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
+                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='addbooking.php'>Add Booking</a>";
+                    echo "<a href='editbooking.php'>Check Booking</a>";
+                    echo "<a href='membership.php'>Membership Management</a>";
+                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                }
+            }
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='bookinghistory.php'>Booking History</a>
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+
+                echo "</div> </div>";
+            }
+            ?>
+       </nav>
 </header>
 
 <style>
@@ -198,7 +229,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-    margin-top: 150px;
+    margin: 150px 0px 20px 0px;
 }
 
 .wrapper label{
@@ -412,17 +443,30 @@ body{
         <form method="post" action="bookingconfirmation.php">
             <label>Name</label>
             <div class="input-box">
-                <input type="text" name="name" required>
+                <input type="text" name="name" 
+                value="<?php 
+                if(ISSET($_SESSION['User_ID']))
+                  {echo $row['Name'];}
+                else{echo "";}
+              ?>" required>
             </div>
 
             <label>Email</label>
             <div class="input-box">
-                <input type="email" name="email" required>
+                <input type="email" name="email" value="<?php 
+                if(ISSET($_SESSION['User_ID']))
+                  {echo $row['Email'];}
+                else{echo "";}
+              ?>" required>
             </div>
 
             <label>Phone</label>
             <div class="input-box">
-                <input type="tel" name="phone" required>
+                <input type="tel" name="phone"  value="<?php 
+                if(ISSET($_SESSION['User_ID']))
+                  {echo $row['Phone_Num'];}
+                else{echo "";}
+              ?>" required>
             </div>
 
             <label>Date</label>
@@ -480,19 +524,7 @@ body{
     <br><br><br><br>
 </div>
 
-
-<!--<script src="script.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>-->
-
-
-<script>
-    //const wrapper = document.querySelector('.wrapper');
-    //const trainerNeededSelect = document.getElementById('trainer-needed');
-    //const trainerNameInput = document.getElementById('trainer-name-input');
-    //const trainerNameSelect = document.getElementById('trainer-name'); // Added this line
-
-    
+<script>    
     function yesnoCheck(that) {
         if (that.value == "yes") {
             document.getElementById("ifYes").style.display = "block";
