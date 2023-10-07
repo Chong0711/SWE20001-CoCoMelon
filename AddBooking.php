@@ -18,7 +18,7 @@ $row = mysqli_fetch_assoc($result);
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -75,7 +75,7 @@ $row = mysqli_fetch_assoc($result);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -100,7 +100,6 @@ body{
     background: url(Background_SWE2.jpg)no-repeat;
     background-size: 1550px 1200px;
     background-position: center;
-
 }
 
 .logo{
