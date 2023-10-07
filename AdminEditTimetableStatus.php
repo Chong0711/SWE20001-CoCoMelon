@@ -416,6 +416,7 @@ html{
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <label for="trainer_name">Trainer Name:</label>
             <select name="trainer_name" id="trainer_name" class="search-option">
+                <option value="">Select a Trainer</option>
                 <option value="John">John</option>
                 <option value="Bob">Bob</option>
                 <option value="Lina">Lina</option>
