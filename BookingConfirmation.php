@@ -1,35 +1,29 @@
 <?php
 session_start();
 // this con is used to connect with the database
-$con=mysqli_connect("localhost", "root", null, "cocomelon");
-
-// Check the connection
+$servername = "localhost";
+$username = "root";
+$password = null;
+$dbname = "cocomelon";
+$con = new mysqli($servername, $username, $password, $dbname);
+$query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+$result = mysqli_query($con, $query);
+$row = mysqli_fetch_assoc($result);
 if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
 // Retrieve user inputs
 
 if (isset($_POST['book_appointment'])) {
-        $_SESSION['name'] = $_POST['name'];
-        $_SESSION['email'] = $_POST['email'];
-        $_SESSION['phone'] = $_POST['phone'];
-        $_SESSION['date'] = $_POST['date'];
-        $_SESSION['startTime'] = $_POST['stime'];
-        $_SESSION['endTime'] = $_POST['etime'];
-        $_SESSION['courts'] = $_POST['court'];
-        $_SESSION['trainerID'] = $_POST['trainerID'];
-        }
-
-    // $_SESSION['name'] = $_POST['name'];
-    // $_SESSION['email'] = $_POST['email'];
-    // $_SESSION['phone'] = $_POST['phone'];
-    // $_SESSION['date'] = $_POST['date'];
-    // $_SESSION['startTime'] = $_POST['stime'];
-    // $_SESSION['endTime'] = $_POST['etime'];
-    // $_SESSION['courts'] = $_POST['court'];
-    // $_SESSION['trainerID'] = $_POST['trainerID'];
-    // $_SESSION['trainer'] = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
-    // $_SESSION['trainerID'] = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+    $_SESSION['name'] = $_POST['name'];
+    $_SESSION['email'] = $_POST['email'];
+    $_SESSION['phone'] = $_POST['phone'];
+    $_SESSION['date'] = $_POST['date'];
+    $_SESSION['startTime'] = $_POST['stime'];
+    $_SESSION['endTime'] = $_POST['etime'];
+    $_SESSION['courts'] = $_POST['court'];
+    $_SESSION['trainerID'] = $_POST['trainerID'];
+    }
 
     $name = $_SESSION['name'];
     $email = $_SESSION['email'];
@@ -64,12 +58,12 @@ if (isset($_POST['book_appointment'])) {
         $query="select * from personal_details where Email='$email'";
         $result=mysqli_query($con, $query);
         $row=mysqli_fetch_array($result);
-        $custid = $row['User_ID'];
+        $custid = $row['User_ID']??null;
         $trainertotal = 0;
         $total = 0;
         if($trainerID != null)
         {
-            $trainertotal = $courts * $durationInHours * $trainerPricePerHour;
+            $trainertotal = $durationInHours * $trainerPricePerHour;
             if(mysqli_num_rows($result)==0)
             {
                 $total = $courts * $durationInHours * $courtPricePerHourNonMem;
@@ -91,9 +85,6 @@ if (isset($_POST['book_appointment'])) {
             }
         }
         $finaltotal = $trainertotal + $total;
-        //$courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
-        //$trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
-        //$_SESSION['totalPrice'] = $courtTotalPrice + $trainerTotalPrice;
     }
 
 ?>
@@ -105,6 +96,7 @@ if (isset($_POST['book_appointment'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>SmashIt Badminton Academy</title>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -112,23 +104,48 @@ if (isset($_POST['book_appointment'])) {
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#"><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
-        <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-            <div class="dropdown-content">
-                <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-    </nav>
+        <?php
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['User_ID']=$row['User_ID'];
+                if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){
+                    echo "<a href='homepage.php#home'><b>Home</b></a>";
+                    echo "<a href='homepage.php#about'><b>About</b></a>";
+                    echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'trainer'){
+                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
+                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                    echo "</div></div>";
+                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                    echo "<div class='dropdown'>";
+                    echo "<button class='dropbtn'><b>Services</b></button>";
+                    echo "<div class='dropdown-content'>";
+                    echo "<a href='addbooking.php'>Add Booking</a>";
+                    echo "<a href='editbooking.php'>Check Booking</a>";
+                    echo "<a href='membership.php'>Membership Management</a>";
+                    echo "<a href='edittimetable.php'>Trainer Timetable</a>";
+                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                }
+            }
+            if(!ISSET($_SESSION['User_ID'])){
+                echo "<a href='login.php'><b>Login</b></a>";
+            }else{
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>".$row['Name']."</b></button>
+                <div class='dropdown-content'>
+                <a href='userprofile.php'>Profile</a>
+                <a href='bookinghistory.php'>Booking History</a>
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+
+                echo "</div> </div>";
+            }
+            ?>
+       </nav>
 </header>
 
 <style>
@@ -136,7 +153,7 @@ if (isset($_POST['book_appointment'])) {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 
 header{
@@ -160,13 +177,12 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 800px;
+    background-size: 1550px 1000px;
     background-position: center;
-
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -220,7 +236,7 @@ body{
 /* Box*/
 .wrapper {
     position: relative;
-    width: 400px;
+    width: 500px;
     height: auto; /*changed the form box's height as auto*/
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
@@ -232,7 +248,7 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin: 150px 0px 20px 0px;
 }
 
 .wrapper .form-box{
@@ -244,7 +260,7 @@ body{
     font-size: 2em;
     color:#44561c ;
     text-align: center;
-	margin-top: 15px;
+    margin-top: 15px;
 }
 
 .btn{
@@ -258,7 +274,11 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
+}
+
+.btn.cancel {
+  background-color: #D92121;
 }
 
 
@@ -337,15 +357,14 @@ body{
    display: block;
 }
 /*Dropdown Menu*/
-/*Block*/
-span {
-  width: 50px;
-  height: 50px;
-}
-/*Block*/
 
 .success {
     color: green;
+    border-radius: 5px;
+    padding: 10px;
+}
+.errormsg{
+    color: red;
     border-radius: 5px;
     padding: 10px;
 }
@@ -372,10 +391,35 @@ span {
                         }
                     } while (mysqli_next_result($con));
                 }
-                echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+            echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+            $to = $email;
+            $subject = "Booking Confirmation from SmashIt Academy";
+            $message = "Hello Dear $name,\n\n";
+            $message .= "Thank you for booking with SmashIt Badminton Academy.\n";
+            $message .= "Here is your booking details:\n";
+            $message .= "Name: $name\n";
+            $message .= "Date: $date\n";
+            $message .= "Start Time: $startTime\n";
+            $message .= "End Time: $endTime\n";
+            $message .= "Number of Booking Court: $courts\n";
+            
+            if ($trainerID != null) {
+                $query = "select * from personal_details where User_ID='$trainerID'";
+                $result = mysqli_query($con, $query);
+                $row = mysqli_fetch_array($result);
+                $trainerName = $row['Name'];
+                $message .= "Trainer Name: $trainerName\n";
+            }
+            $message .= "Total Amount: RM $finaltotal\n";
+            $headers = "From: <cocomelonswe@gmail.com>"; // Replace with your email address
+            if (mail($to, $subject, $message, $headers)) {
+                echo "<div class='success'><center><b>Booking confirmation email sent successfully.</b></center></div>";
+            } else {
+                echo "<div class='errormsg'><center><b>Booking confirmation email could not be sent.</b></center></div>";
+            }
         }
         ?>
-		    <div class="booking-details">
+            <div class="booking-details">
                 <form action="bookingconfirmation.php" method="post">
                     <p><strong>Name:</strong> <?php echo $name; ?></p>
                     <p><strong>Email:</strong> <?php echo $email; ?></p>
@@ -397,27 +441,18 @@ span {
                     <p><strong>Court Fee:</strong> RM <?php echo $total; ?></p>
                     <p><strong>Total Price:</strong> RM <?php echo $finaltotal ?></p>
                     <button type="submit" name='pay' id='confirmbtn' class="btn">Pay</button>
-                    <button type="submit" name='cancel' id='cancelbtn' class="btn">Cancel</button>
+                    <button type="button" name='cancel' class="btn cancel" id="cancelbtn" onclick="closeForm()">Cancel</button>
                 </form>
-			</div>
+            </div>
     </div>
     
 </div>
-
-<!--<script src="script.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <script type="text/javascript">
     document.getElementById("cancelbtn").onclick = function () {
         location.href = "addbooking.php";
     };
 </script>
-
-<script>
-	const wrapper = document.querySelector('.wrapper');
-
-</script>-->
 
 </body>
 </html>
