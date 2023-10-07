@@ -23,7 +23,7 @@ session_start();
                 <a href="addbooking.php">Add Booking</a>
                 <a href="editbooking.php">Check Booking</a>
                 <a href="membership.php">Membership Management</a>
-                <a href="edittimetable.php">Trainer Timetable</a>
+                <a href="adminedittimetablestatus.php">Trainer Timetable</a>
                 <a href="adminmanageacc.php">Manage Account</a>
             </div>
         </div>
