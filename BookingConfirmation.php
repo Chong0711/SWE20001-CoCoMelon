@@ -8,15 +8,16 @@ if ($con->connect_error) {
     die("Connection failed: " . $con->connect_error);
 }
 // Retrieve user inputs
-    $_SESSION['name'] = $_POST['name'];
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['phone'] = $_POST['phone'];
-    $_SESSION['date'] = $_POST['date'];
-    $_SESSION['startTime'] = $_POST['stime'];
-    $_SESSION['endTime'] = $_POST['etime'];
-    $_SESSION['courts'] = $_POST['court'];
-    $_SESSION['trainer'] = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
-    $_SESSION['trainerID'] = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
+    // $_SESSION['name'] = $_POST['name'];
+    // $_SESSION['email'] = $_POST['email'];
+    // $_SESSION['phone'] = $_POST['phone'];
+    // $_SESSION['date'] = $_POST['date'];
+    // $_SESSION['startTime'] = $_POST['stime'];
+    // $_SESSION['endTime'] = $_POST['etime'];
+    // $_SESSION['courts'] = $_POST['court'];
+    // $_SESSION['trainerID'] = $_POST['trainerID'];
+    // $_SESSION['trainer'] = isset($_POST['trainer']) ? $_POST['trainer'] : "no";
+    // $_SESSION['trainerID'] = isset($_POST['trainerName']) ? $_POST['trainerName'] : "";
 
     $name = $_SESSION['name'];
     $email = $_SESSION['email'];
@@ -25,8 +26,7 @@ if ($con->connect_error) {
     $startTime = $_SESSION['startTime'];
     $endTime = $_SESSION['endTime'];
     $courts = $_SESSION['courts'];
-    $trainer = $_SESSION['trainer'];
-    $trainerID = $_SESSION['trainerID'];
+    $trainerID = $_SESSION['trainerID']??null;
     $startTimeStamp = strtotime($startTime);
     $endTimeStamp = strtotime($endTime);
 
@@ -41,17 +41,47 @@ if ($con->connect_error) {
     }
 
     // Calculate the price
-    $courtPricePerHour = 8; // court RM per hour
+    $courtPricePerHourMem = 8; // court RM per hour
+    $courtPricePerHourNonMem = 15; // court RM per hour
     $trainerPricePerHour = 20; // trainer RM per hour
 
     // Calculate the total price based on the number of courts and trainer selection
     if ($durationInHours <= 0)
         echo "Error! Please check your start time and end time.";
     else {
-
-        $courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
-        $trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
-        $_SESSION['totalPrice'] = $courtTotalPrice + $trainerTotalPrice;
+        $query="select * from personal_details where Email='$email'";
+        $result=mysqli_query($con, $query);
+        $row=mysqli_fetch_array($result);
+        $custid = $row['User_ID'];
+        $trainertotal = 0;
+        $total = 0;
+        if($trainerID != null)
+        {
+            $trainertotal = $courts * $durationInHours * $trainerPricePerHour;
+            if(mysqli_num_rows($result)==0)
+            {
+                $total = $courts * $durationInHours * $courtPricePerHourNonMem;
+            }
+            else
+            {
+                $total = $courts * $durationInHours * $courtPricePerHourMem;
+            }
+        }
+        else
+        {
+            if(mysqli_num_rows($result)==0)
+            {
+                $total = $courts * $durationInHours * $courtPricePerHourNonMem;
+            }
+            else
+            {
+                $total = $courts * $durationInHours * $courtPricePerHourMem;
+            }
+        }
+        $finaltotal = $trainertotal + $total;
+        //$courtTotalPrice = $courts * $durationInHours * $courtPricePerHour;
+        //$trainerTotalPrice = ($trainer === "yes") ? $durationInHours * $trainerPricePerHour : 0;
+        //$_SESSION['totalPrice'] = $courtTotalPrice + $trainerTotalPrice;
     }
 
 ?>
@@ -301,13 +331,40 @@ span {
   height: 50px;
 }
 /*Block*/
+
+.success {
+    color: green;
+    border-radius: 5px;
+    padding: 10px;
+}
 </style>
 
 <div class="wrapper">
     <div class="form-box booking">
         <h2>Booking Confirmation</h2>
+        <?php
+        if (isset($_POST['pay'])) {
+            $sql = "INSERT INTO booking (Book_ID, Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount)
+                VALUES ('','$custid','$trainerID','$date','$startTime','$endTime','Booked','$courts','$finaltotal'); 
+                UPDATE booking SET Book_ID = concat( Book_Str, Book_No ) ";
+                if (mysqli_multi_query($con, $sql)) {
+                    do {
+                        /* store first result set */
+                        if ($result = mysqli_store_result($con)) {
+                            while ($row = mysqli_fetch_row($result)) {
+                            }
+                            mysqli_free_result($con);
+                        }
+                        /* print divider */
+                        if (mysqli_more_results($con)) {
+                        }
+                    } while (mysqli_next_result($con));
+                }
+                echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+        }
+        ?>
 		    <div class="booking-details">
-                <form action="payment.php" method="post">
+                <form action="bookingconfirmation.php" method="post">
                     <p><strong>Name:</strong> <?php echo $name; ?></p>
                     <p><strong>Email:</strong> <?php echo $email; ?></p>
                     <p><strong>Phone:</strong> <?php echo $phone; ?></p>
@@ -315,14 +372,19 @@ span {
                     <p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
                     <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
                     <p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
-                    <p><strong>Trainer:</strong> <?php echo $trainer; ?></p>
                     <?php
-                    if ($trainer === "yes") {
+                    if ($trainerID != null) {
+                        $query="select * from personal_details where User_ID='$trainerID'";
+                        $result=mysqli_query($con, $query);
+                        $row=mysqli_fetch_array($result);
+                        $trainerName = $row['Name'];
                         echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
+                        echo "<p><strong>Trainer Fee: RM</strong> $trainertotal</p>";
                     }
                     ?>
-                    <p><strong>Total Price:</strong> RM <?php echo $_SESSION['totalPrice']; ?></p>
-                  <button type="submit" name='confirm' id='confirmbtn' class="btn">Confirm</button>
+                    <p><strong>Court Fee:</strong> RM <?php echo $total; ?></p>
+                    <p><strong>Total Price:</strong> RM <?php echo $finaltotal ?></p>
+                    <button type="submit" name='pay' id='confirmbtn' class="btn">Pay</button>
                     <button type="submit" name='cancel' id='cancelbtn' class="btn">Cancel</button>
                 </form>
 			</div>
@@ -330,7 +392,7 @@ span {
     
 </div>
 
-<script src="script.js"></script>
+<!--<script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
@@ -343,7 +405,7 @@ span {
 <script>
 	const wrapper = document.querySelector('.wrapper');
 
-</script>
+</script>-->
 
 </body>
 </html>

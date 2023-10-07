@@ -410,77 +410,87 @@ body{
     <div class="form-box login">
         <h2>Booking</h2>
         <form method="post" action="bookingconfirmation.php">
-        <label>Name</label>
-        <div class="input-box">
-        <input type="text" name="name" required>
-    </div>
+            <label>Name</label>
+            <div class="input-box">
+                <input type="text" name="name" required>
+            </div>
 
-    <label>Email</label>
-    <div class="input-box">
-        <input type="email" name="email" required>
-    </div>
+            <label>Email</label>
+            <div class="input-box">
+                <input type="email" name="email" required>
+            </div>
 
-    <label>Phone</label>
-    <div class="input-box">
-        <input type="tel" name="phone" required>
-    </div>
+            <label>Phone</label>
+            <div class="input-box">
+                <input type="tel" name="phone" required>
+            </div>
 
-    <label>Date</label>
-    <div class="input-box">
-        <input type="date" name="date" required>
-    </div>
+            <label>Date</label>
+            <div class="input-box">
+                <input type="date" name="date" required>
+            </div>
 
-    <label>Start Time</label>
-    <div class="input-box">
-        <input type="time" name="stime" required>
-    </div>
+            <label>Start Time</label>
+            <div class="input-box">
+                <input type="time" name="stime" required>
+            </div>
 
-    <label>End Time</label>
-    <div class="input-box">
-        <input type="time" name="etime" required>
-    </div>
+            <label>End Time</label>
+            <div class="input-box">
+                <input type="time" name="etime" required>
+            </div>
 
-    <div class="input-court">
-        <label>Number of Court:</label>
-        <select id="court" name="court">
-            <option value="1">1</option>
-            <option value="2">2</option> 
-            <option value="3">3</option> 
-        </select>
-    </div>
+            <div class="input-court">
+                <label>Number of Court:</label>
+                <select id="court" name="court">
+                    <option value="1">1</option>
+                    <option value="2">2</option> 
+                    <option value="3">3</option> 
+                </select>
+            </div>
 
-    <div class="input-trainer">
-        <label>Do you need a trainer?</label>
-        <select onchange="yesnoCheck(this);">
-            <option value="no">No</option>
-            <option value="yes">Yes</option> 
-        </select>
-    </div>
-    <?php
-        $con=mysqli_connect("localhost", "root", "", "cocomelon");
-        $query="select * from personal_details where Roles='trainer'";
-        $result=mysqli_query($con, $query);
-    ?>
-    <div id="ifYes" class="input-NTrainer" style="display: none;">
-        <label>Trainers:</label>
-        <select id="trainer-name" name="trainerName" >
-            <option value="">Select Trainer</option>
+            <div class="input-trainer">
+                <label>Do you need a trainer?</label>
+                <select onchange="yesnoCheck(this);">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option> 
+                </select>
+            </div>
             <?php
-            while($row=mysqli_fetch_array($result)) { ?>
-                <option value="<?php echo $row['User_ID']; ?>"><?php echo $row['Name']; ?></option>
-            <?php } ?>
-            
-        </select>
-    </div>
+                $con=mysqli_connect("localhost", "root", "", "cocomelon");
+                $query="select * from personal_details where Roles='trainer'";
+                $result=mysqli_query($con, $query);
+            ?>
+            <div id="ifYes" class="input-NTrainer" style="display: none;">
+                <label>Trainers:</label>
+                <select id="trainer-name" name="trainerID" >
+                    <option value="">Select Trainer</option>
+                    <?php
+                    while($row=mysqli_fetch_array($result)) { ?>
+                        <option value="<?php echo $row['User_ID']; ?>"><?php echo $row['Name']; ?></option>
+                    <?php } ?>
+                    
+                </select>
+            </div>
 
-         <button type="submit" class="btn">Book Appointment</button>
-    
-</form>
+                <button type="submit" class="btn" name="book_appointment">Book Appointment</button>
+                        
+        </form>
     </div>
     <br><br><br><br>
 </div>
-
-
+<?php
+if (isset($_POST['book_appointment'])) {
+        $_SESSION['name'] = $_POST['name'];
+        $_SESSION['email'] = $_POST['email'];
+        $_SESSION['phone'] = $_POST['phone'];
+        $_SESSION['date'] = $_POST['date'];
+        $_SESSION['startTime'] = $_POST['stime'];
+        $_SESSION['endTime'] = $_POST['etime'];
+        $_SESSION['courts'] = $_POST['court'];
+        $_SESSION['trainerID'] = $_POST['trainerID'];
+        }
+?>
 
 <!--<script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
