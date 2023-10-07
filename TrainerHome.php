@@ -27,16 +27,7 @@ if (!$con) {
     <nav class="navigation">
         <a href="#home"><b>Home</b></a>
         <a href="#time"><b>Timetable</b></a>
-		
-        <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
-        	<div class="dropdown-content">
-	            <a href="#">Profile</a>
-	            <a href="#">Settings</a>
-	            <a href="#">Logout</a>
-        	</div>
-    	</div>
-		 <?php 
+         <?php 
             if(!ISSET($_SESSION['User_ID'])){
                 echo "<a href='login.php'><b>Login</b></a>";
             }else{
@@ -53,19 +44,22 @@ if (!$con) {
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='#'>Booking History</a>
-                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
             }
             ?>
-        
-        <script type="text/javascript">
-            document.getElementById("logout").onclick = function () {
-                location.href = "login.php";
-                <?php session_destroy();?>
-            };
-        </script>
     </nav>
+    <script type="text/javascript">
+        document.getElementById("logout").onclick = function () {
+            location.href = "login.php";
+            <?php if(isset($_POST['logout']))
+            {
+                session_destroy();
+            }
+            ?>
+        };
+    </script>
 </header>
 
 <style>
