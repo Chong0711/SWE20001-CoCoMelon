@@ -292,7 +292,7 @@ span {
 <span></span>
 <div class="wrapper">
     <div class="form-box timetable">
-        <form method="post" action="trainertimetable.php">
+        <form method="post" action="adminedittimetablestatus.php">
             <h2>Trainer Timetable</h2>
             <button type="submit" name='add' class="btn">Click</button>
         </form>
