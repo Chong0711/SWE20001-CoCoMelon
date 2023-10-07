@@ -116,6 +116,7 @@ if (isset($_POST['book_appointment'])) {
                     echo "<div class='dropdown-content'>";
                     echo "<a href='customertimetable.php'>Trainer Timetable</a>";
                     echo "<a href='addbooking.php'>Book Court Now!</a>";
+                    echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
                     echo "</div></div>";
                 }else if($row['Roles'] == 'trainer'){
                     echo "<a href='trainerhome.php#home'><b>Home</b></a>";
