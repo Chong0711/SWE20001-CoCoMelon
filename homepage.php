@@ -422,7 +422,7 @@ section{
   
 <body>
 
-        <! -- Website Navigation -->
+        <!-- Website Navigation -->
 <header>
     <h2 class="logo"><img src="Greenlogo1.png" style="width:210px;height:210px;"></h2>
     <nav class="navigation">
