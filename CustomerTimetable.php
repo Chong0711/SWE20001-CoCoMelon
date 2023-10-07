@@ -24,49 +24,36 @@ if (!$con) {
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#" ><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>  
         <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
+        <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
+                <a href="customertimetable.php">Trainer Timetable</a>
+                <a href="addbooking.php">Book Court Now!</a>
             </div>
         </div>
+        <?php 
+        if(!ISSET($_SESSION['User_ID'])){
+            echo "<a href='login.php'><b>Login</b></a>";
+        }else{
+            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+            echo "<div class='dropdown'>
+            <button class='dropbtn'><b>".$row['Name']."</b></button>
+            <div class='dropdown-content'>
+            <a href='userprofile.php'>Profile</a>
+            <a href='bookinghistory.php'>Booking History</a>
+            <a href='login.php' id='logout' name='logout' onclick='logout()'>Logout</a>";
 
-         <?php 
-            if(!ISSET($_SESSION['User_ID'])){
-                echo "<a href='login.php'><b>Login</b></a>";
-            }else{
-                $servername = "localhost";
-                $username = "root";
-                $password = null;
-                $dbname = "cocomelon";
-                $conn = new mysqli($servername, $username, $password, $dbname);
-                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-                $result = mysqli_query($conn, $query);
-                $row = mysqli_fetch_assoc($result);
-                echo "<div class='dropdown'>
-                <button class='dropbtn'><b>".$row['Name']."</b></button>
-                <div class='dropdown-content'>
-                <a href='userprofile.php'>Profile</a>
-                <a href='#'>Booking History</a>
-                <a href='login.php' id='logout' onclick='closeForm()'>Logout</a>";
-
-                echo "</div> </div>";
-            }
-            ?>
-
-    </nav>
+            echo "</div> </div>";
+        }
+        ?>
+   </nav>
 </header>
-<title>Membership Management</title>
 <style>
 * {
     margin: 0;
@@ -341,15 +328,22 @@ html{
         <label>Date:</label>
         <input type="date" name="search_date" required>
         
+        <?php
+            // Removed the duplicate database connection since it's already established at the beginning
+            $query = "SELECT * FROM personal_details WHERE Roles='trainer'";
+            $result = mysqli_query($con, $query);
+        ?>
         <label>Trainer Name:</label>
-        <select name="search_trainer" required>
-            <option value="John">Select a Trainer</option>
-            <option value="John">John</option>
-            <option value="Bob">Bob</option>
-            <option value="Lina">Lina</option>
-    </select>
-    
-    <button type="submit" class="btn">Search</button>
+        <select name="search_option"> <!-- Changed the name attribute here -->
+            <option value="">All Trainers</option> <!-- Option to select all trainers -->
+            <?php
+                while($row = mysqli_fetch_array($result)) {
+                    echo "<option value='" . $row['User_ID'] . "'>" . $row['Name'] . "</option>";
+                }
+            ?>
+        </select>
+
+        <button type="submit" class="btn">Search</button>
 </form>
 </div>
 </section>
@@ -361,9 +355,10 @@ html{
 </section>
 
 <?php
-// Handle the search based on the selected date
+// Handle the search based on the selected date and trainer
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $search_date = $_POST["search_date"];
+    $search_option = $_POST["search_option"];
 
     if (!empty($search_date)) {
         // Ensure that the date format is valid
@@ -372,38 +367,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($parsed_date !== false) {
             $formatted_date = $parsed_date->format("Y-m-d");
 
-            // Corrected SQL query to order by date and time
-            $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
-        DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
-        DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
-        FROM timetable 
-        WHERE Date = '$formatted_date'
-        ORDER BY STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
-
-            $result = mysqli_query($con, $sql);
-
-            if ($result) {
-                if (mysqli_num_rows($result) > 0) {
-                    $html = "<h1 class='heading'>Availability</h1><br><table>";
-                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th></tr>";
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $html .= "<tr>";
-                        $html .= "<td>{$row['Trainer_ID']}</td>";
-                        $html .= "<td>{$row['Trainer_Name']}</td>";
-                        $html .= "<td>{$row['Date']}</td>";
-                        $html .= "<td>{$row['From_Time']}</td>";
-                        $html .= "<td>{$row['To_Time']}</td>";
-                        $html .= "<td>{$row['Status']}</td>";
-                        $html .= "</tr>";
-                    }
-                    $html .= "</table>";
-
-                    echo "<div class='search-results' id='result'>$html</div>";
-                } else {
-                    echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
-                }
+            // Modify the SQL query based on user input
+            if (!empty($search_option)) {
+                // If both date and trainer are provided
+                $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
+                DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
+                DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
+                FROM timetable 
+                WHERE Date = '$formatted_date' AND Trainer_ID = '$search_option'
+                ORDER BY STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
             } else {
-                echo "Error: " . mysqli_error($con);
+                // If only date is provided (show all trainers)
+                $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
+                DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
+                DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
+                FROM timetable 
+                WHERE Date = '$formatted_date'
+                ORDER BY Trainer_Name, STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
             }
         } else {
             echo "Invalid date format. Please use the format: YYYY-MM-DD";
@@ -411,13 +391,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Date is required for this search.";
     }
+    if (isset($sql)) {
+        $result = mysqli_query($con, $sql);
 
-    mysqli_close($con);
+        if ($result) {
+            if (mysqli_num_rows($result) > 0) {
+                $html = "<h1 class='heading'>Availability</h1><br><table>";
+                $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th></tr>";
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $html .= "<tr>";
+                    $html .= "<td>{$row['Trainer_ID']}</td>";
+                    $html .= "<td>{$row['Trainer_Name']}</td>";
+                    $html .= "<td>{$row['Date']}</td>";
+                    $html .= "<td>{$row['From_Time']}</td>";
+                    $html .= "<td>{$row['To_Time']}</td>";
+                    $html .= "<td>{$row['Status']}</td>";
+                    $html .= "</tr>";
+                }
+                $html .= "</table>";
+
+                echo "<div class='search-results' id='result'>$html</div>";
+            } else {
+                echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
+            }
+        } else {
+            echo "Error: " . mysqli_error($con);
+        }
+    }
+mysqli_close($con);
 }
 ?>
 
 </section>
-
+<script type="text/javascript">
+    document.getElementById("logout").onclick = function logout() {
+        location.href = "login.php";
+        <?php if(isset($_POST['logout']))
+        {
+            session_destroy();
+        }
+        ?>
+    };
+</script>
 <script>
 function openForm() {
   document.getElementById("myForm").style.display = "block";
@@ -431,7 +446,6 @@ function closeForm() {
  function toggleTables() {
     var year = document.getElementById('date').value;
     var searchOption = document.getElementById('search_option').value;
-    var searchQuery = document.getElementById('search_query').value;
     var resultsqlTable = document.getElementById('resultsql');
     var resultyearTable = document.getElementById('resultyear');
 }
