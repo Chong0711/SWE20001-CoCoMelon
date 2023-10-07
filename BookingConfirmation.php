@@ -392,6 +392,7 @@ body{
                     } while (mysqli_next_result($con));
                 }
             echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+
             $to = $email;
             $subject = "Booking Confirmation from SmashIt Academy";
             $message = "Hello Dear $name,\n\n";
@@ -409,6 +410,16 @@ body{
                 $row = mysqli_fetch_array($result);
                 $trainerName = $row['Name'];
                 $message .= "Trainer Name: $trainerName\n";
+
+                $insertTimetableSQL = "INSERT INTO timetable (Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status) VALUES ('$trainerID', '$trainerName', '$date', '$startTime', '$endTime', 'not')";
+    
+                if (mysqli_query($con, $insertTimetableSQL)) {
+                    // Timetable entry for the trainer is successfully added
+                    // You can add any additional actions or messages here if needed
+                } else {
+                    // Handle the case where the insertion into the timetable table fails
+                    echo "Error inserting data into timetable table: " . mysqli_error($con);
+                }
             }
             $message .= "Total Amount: RM $finaltotal\n";
             $headers = "From: <cocomelonswe@gmail.com>"; // Replace with your email address
