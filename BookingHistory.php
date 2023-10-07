@@ -31,6 +31,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
                 <!-- Add links or content for the dropdown here -->
                 <a href="customertimetable.php">Trainer Timetable</a>
                 <a href="addbooking.php">Book Court Now!</a>
+                <a href="editbooking.php">Any Changes To Bookings</a>
             </div>
         </div>
         <?php 
@@ -45,7 +46,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
             <a href='bookinghistory.php'>Booking History</a>
-            <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+            <a href='logoutaction.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
             echo "</div> </div>";
         }
@@ -318,7 +319,6 @@ section{
     </section>
 </div>
 </section>
-
 
 </body>
 </html>
