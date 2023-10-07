@@ -94,7 +94,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -220,7 +220,7 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .home {
@@ -259,13 +259,18 @@ body{
   
 .heading{
     text-align:center;
-    font-size: 1.8em;
+    font-size: 2.5em;
     color: #44561C;
-    padding: 0.5em;
-    margin: 2em 0;
+    padding: 1em;
+    margin: 1em 0;
     width: 1519px;
     background: rgba(90, 132, 85, 0.415);
 }
+
+.section{
+    padding: 2rem 0%;
+}
+
 
 /*Add Space Between Timetable and Form*/
 .TimeTable {
@@ -280,7 +285,7 @@ body{
     align-items: center;
     text-align: center;
     overflow: auto;
-    margin-bottom: -60px; /* Add margin at the bottom to separate from search results */
+    margin-bottom: 20px; /* Add margin at the bottom to separate from search results */
 }
 
 /* Result Table Styles */
@@ -300,10 +305,9 @@ body{
 
 /* table view */
 table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
-    margin-bottom: 30px;
-    margin-left: 150px;
+    margin-top: 20px;
 }
 
 table, th, td {
@@ -321,9 +325,79 @@ th {
 }
 /* table view */
 
+/*pop out form*/
+/* Button used to open the contact form - fixed at the bottom of the page */
+.editbtn {
+    width: 100%;
+    height: 45px;
+    background: #44561c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+/*pop out form*/
+
 /*Scroll smooth*/
 html{
-	scroll-padding-top: 6rem;
+    scroll-padding-top: 6rem;
 }
 
 @media(max-width:991px){
@@ -350,18 +424,18 @@ html{
 </style>
 
 <section>
-	<section class="home">
-	    <div class="background-image" id="home"></div>
-	    <div class="content">
-	        <h2>Welcome To Trainer Homepage !</h2>
-	    </div>
-	</section>
+    <section class="home">
+        <div class="background-image" id="home"></div>
+        <div class="content">
+            <h2>Welcome To Trainer Homepage !</h2>
+        </div>
+    </section>
 
-	<section>
-		<div class="TimeTable" id="time">
-			<h1 class="heading">View Timetable</h1>
-		</div>
-	</section>
+    <section>
+        <div class="TimeTable" id="time">
+            <h1 class="heading">View Timetable</h1>
+        </div>
+    </section>
 
 <section>
 
@@ -397,12 +471,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $formatted_date = $parsed_date->format($date_format);
 
             // Now, search the database for Trainer details for the specified date
-            $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status FROM Timetable WHERE Date = '$formatted_date'";
-            $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status 
-        FROM Timetable 
-        WHERE Date = '$formatted_date'
-        ORDER BY Date ASC, STR_TO_DATE(From_Time, '%H:%i:%s') ASC";
-
+            $sql = "SELECT Trainer_ID, Trainer_Name, Date, Time, Status FROM Timetable WHERE Date = '$formatted_date'";
             
             $result = mysqli_query($con, $sql);
 
@@ -411,14 +480,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_num_rows($result) > 0) {
                     // Start creating the HTML for the results
                     $html = "<h1 class='heading'>Results</h1><br><table>";
-                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th></tr>";
+                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>Time</th><th>Status</th></tr>";
                     while ($row = mysqli_fetch_assoc($result)) {
                         $html .= "<tr>";
                         $html .= "<td>{$row['Trainer_ID']}</td>";
                         $html .= "<td>{$row['Trainer_Name']}</td>";
                         $html .= "<td>{$row['Date']}</td>";
-                        $html .= "<td>{$row['From_Time']}</td>";
-                        $html .= "<td>{$row['To_Time']}</td>";
+                        $html .= "<td>{$row['Time']}</td>";
                         $html .= "<td>{$row['Status']}</td>";
                         $html .= "</tr>";
                     }
@@ -480,5 +548,3 @@ window.onload = toggleTables;
 
 </body>
 </html>
-
-
