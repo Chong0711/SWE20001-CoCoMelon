@@ -392,7 +392,7 @@ label{
 <section>
     <section>
     <div class="search-container">
-        <h2 class='heading'>Search Records</h2><br>
+        <h2 class='heading'>Search Member Records</h2><br>
         <!-- Create a container for the search form -->
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <label>Year: </label>
