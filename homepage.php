@@ -435,7 +435,6 @@ section{
                     <!-- Add links or content for the dropdown here -->
                     <a href="customertimetable.php">Trainer Timetable</a>
                     <a href="addbooking.php">Book Court Now!</a>
-                    <a href="#">I dont know</a>
                 </div>
             </div>
             <?php 
