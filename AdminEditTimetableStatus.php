@@ -24,25 +24,36 @@ if (!$con) {
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <a href="#"><b>Home</b></a>
-        <a href="#"><b>About</b></a>
-        <a href="#" ><b>Services</b></a>
-        <a href="#"><b>Contact</b></a>
-        <!--non-member view
-        <a href="#"><b>User Profile</b></a>-->
-        <!-- member view-->
+        <a href="homepage.php#home"><b>Home</b></a>
+        <a href="homepage.php#about"><b>About</b></a>
+        <a href="homepage.php#contact"><b>Contact</b></a>  
         <div class="dropdown">
-        <button class="dropbtn"><b>User Profile</b></button>
+        <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-                <a href="#">Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
+                <a href="customertimetable.php">Trainer Timetable</a>
+                <a href="addbooking.php">Book Court Now!</a>
             </div>
         </div>
-    </nav>
+        <?php 
+        if(!ISSET($_SESSION['User_ID'])){
+            echo "<a href='login.php'><b>Login</b></a>";
+        }else{
+            $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+            echo "<div class='dropdown'>
+            <button class='dropbtn'><b>".$row['Name']."</b></button>
+            <div class='dropdown-content'>
+            <a href='userprofile.php'>Profile</a>
+            <a href='bookinghistory.php'>Booking History</a>
+            <a href='login.php' id='logout' name='logout' onclick='logout()'>Logout</a>";
+
+            echo "</div> </div>";
+        }
+        ?>
+   </nav>
 </header>
-<title>Membership Management</title>
 <style>
 * {
     margin: 0;
@@ -226,7 +237,7 @@ table {
 }
 
 table, th, td {
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
 }
 
 th, td {
@@ -240,109 +251,8 @@ th {
 }
 /* table view */
 
-/*pop out form*/
-/* Button used to open the contact form - fixed at the bottom of the page */
-.editbtn {
-    width: 100%;
-    height: 45px;
-    background: #44561c;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    color: #fff;
-    font-weight: 500;
-}
-
-/* The form */
-.form-popup {
-  display: none;
-  position: absolute;
-  margin-bottom: 0px;
-  right: 570px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  z-index: 9;
-  width: 400px; /* Set the width to match Part B */
-  background: transparent; /* Change background to match Part B */
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 100%; /* Set max-width to 100% to match Part B */
-  padding: 20px; /* Adjust padding */
-  background-color: transparent; /* Change background to match Part B */
-}
-
-/* Full-width input fields */
-.form-container input[type="text"],
-.form-container input[type="password"] {
-  width: 100%;
-  padding: 10px; /* Adjust padding */
-  margin: 10px 0; /* Adjust margin */
-  border: 1px solid black;
-  border-radius: 6px;
-  background-color: transparent;
-  font-size: 1em;
-  outline: none;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
-  background-color: #f1f1f1;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  width: 100%;
-  height: 45px;
-  background: #8888ec;
-  border: none;
-  outline: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1em;
-  color: #fff;
-  font-weight: 500;
-  margin-top: 10px; /* Adjust margin-top */
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
-}
-
-.form-container label{
-    font-size: 1em;
-    color: #44561c;
-    margin-right: 10px;
-}
-
-.form-popup h1{
-    text-align: center;
-    margin-top: 30px;
-}
-
-/*pop out form*/
-
 .section{
     padding: 2rem 0%;
-}
-
-.heading h1{
-    text-align: center;
-    margin-top: -10px;
 }
 
 .search-container {
@@ -355,7 +265,7 @@ th {
     margin-right: 10px;
 }
 
-.search-container input[select="trainer_name"],
+.search-container input[type="date"],
 .search-container select {
     width: 200px;
     height: 30px;
@@ -412,23 +322,29 @@ html{
 
 <section>
 <div class="search-container">
-    <h2>Search Trainers</h2><br>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <label for="trainer_name">Trainer Name:</label>
-            <select name="trainer_name" id="trainer_name" class="search-option">
-                <option value="">Select a Trainer</option>
-                <option value="John">John</option>
-                <option value="Bob">Bob</option>
-                <option value="Lina">Lina</option>
-            </select>
+    <h2>Search Trainer Availability</h2><br>
+    <!-- Create a container for the search form -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+        <label>Date:</label>
+        <input type="date" name="search_date" required>
+        
+        <?php
+            // Removed the duplicate database connection since it's already established at the beginning
+            $query = "SELECT * FROM personal_details WHERE Roles='trainer'";
+            $result = mysqli_query($con, $query);
+        ?>
+        <label>Trainer Name:</label>
+        <select name="search_option"> <!-- Changed the name attribute here -->
+            <option value="">All Trainers</option> <!-- Option to select all trainers -->
+            <?php
+                while($row = mysqli_fetch_array($result)) {
+                    echo "<option value='" . $row['User_ID'] . "'>" . $row['Name'] . "</option>";
+                }
+            ?>
+        </select>
 
-            <!-- Add a date input field -->
-            <label for="training_date">Training Date:</label>
-            <input type="date" name="training_date" id="training_date" class="search-option">
-
-            <button type="submit" class="btn" name="search">Search</button>
-        </form>
-
+        <button type="submit" class="btn">Search</button>
+</form>
 </div>
 </section>
 
@@ -439,29 +355,49 @@ html{
 </section>
 
 <?php
-// Handle the search based on the selected trainer name
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
-    $trainer_name = $_POST["trainer_name"];
-    $training_date = $_POST["training_date"];
+// Handle the search based on the selected date and trainer
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search_date = $_POST["search_date"];
+    $search_option = $_POST["search_option"];
 
-    if (!empty($trainer_name)) {
+    if (!empty($search_date)) {
+        // Ensure that the date format is valid
+        $parsed_date = date_create($search_date);
 
-        $formatted_training_date = date("Y-m-d", strtotime($training_date));
+        if ($parsed_date !== false) {
+            $formatted_date = $parsed_date->format("Y-m-d");
 
-        // Modify the SQL query to search for trainers with the selected name
-        $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status FROM Timetable WHERE Trainer_Name = '$trainer_name'";
-
-    if (!empty($training_date)) {
-                    $sql .= " AND Date = '$training_date'";
-                }
+            // Modify the SQL query based on user input
+            if (!empty($search_option)) {
+                // If both date and trainer are provided
+                $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
+                DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
+                DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
+                FROM timetable 
+                WHERE Date = '$formatted_date' AND Trainer_ID = '$search_option'
+                ORDER BY STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
+            } else {
+                // If only date is provided (show all trainers)
+                $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
+                DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
+                DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
+                FROM timetable 
+                WHERE Date = '$formatted_date'
+                ORDER BY Trainer_Name, STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
+            }
+        } else {
+            echo "Invalid date format. Please use the format: YYYY-MM-DD";
+        }
+    } else {
+        echo "Date is required for this search.";
+    }
+    if (isset($sql)) {
         $result = mysqli_query($con, $sql);
 
         if ($result) {
-            // Check if there are any rows in the result set
             if (mysqli_num_rows($result) > 0) {
-                // Start creating the HTML for the results
-                $html = "<div class='heading'><h1>Trainer Availability</h1></div><br><table>";
-                $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th><th>Action</th></tr>";
+                $html = "<h1 class='heading'>Availability</h1><br><table>";
+                $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
                     $html .= "<td>{$row['Trainer_ID']}</td>";
@@ -470,94 +406,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
                     $html .= "<td>{$row['From_Time']}</td>";
                     $html .= "<td>{$row['To_Time']}</td>";
                     $html .= "<td>{$row['Status']}</td>";
-                    $html .= "<td><button class='editbtn' onclick='openForm(\"{$row['Trainer_ID']}\", \"{$row['Status']}\", \"{$row['Trainer_Name']}\", \"{$row['Date']}\")'>Edit</button></td>";
                     $html .= "</tr>";
                 }
                 $html .= "</table>";
 
-                // Display the HTML in the search-results container
                 echo "<div class='search-results' id='result'>$html</div>";
             } else {
-                // No results found, display a message
-                echo "<div class='search-results' id='result'>Did not find any results.</div>";
+                echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
         }
     }
-}
-
-// Handle editing trainer availability
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
-    $trainer_id = $_POST["trainer_id"];
-    $edit_status = $_POST["edit_status"];
-    $edit_trainer_name = $_POST["edit_trainer_name"];
-    $edit_training_date = $_POST["edit_training_date"];
-
-    // Modify the SQL query to update the status based on trainer name and date
-    $update_sql = "UPDATE Timetable SET Status = '$edit_status' WHERE Trainer_ID = '$trainer_id' AND Trainer_Name = '$edit_trainer_name' AND Date = '$edit_training_date'";
-
-    if (mysqli_query($con, $update_sql)) {
-        echo "<script>alert('Availability updated successfully.');</script>";
-    } else {
-        echo "Error updating availability: " . mysqli_error($con);
-    }
-}
-
-// Close the database connection
 mysqli_close($con);
+}
 ?>
 
-
-<!-- The form -->
-<div class="form-popup" id="myForm">
-    <h1>Edit Trainer Availability</h1>
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-container">
-
-    <!-- Add hidden fields for User ID and Trainer ID -->
-    <input type="hidden" id="user_id" name="user_id" value="">
-    <input type="hidden" id="trainer_id" name="trainer_id" value="">
-    <input type="hidden" id="edit_trainer_name" name="edit_trainer_name" value="">
-    <input type="hidden" id="edit_training_date" name="edit_training_date" value="">
-
-
-    <label for="status"><b>Status:</b></label>
-    <input type="text" placeholder="Enter Status" name="edit_status" id="edit_status" required>
-
-    <button type="submit" class="btn" name="update">Update</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
 </section>
-
+<script type="text/javascript">
+    document.getElementById("logout").onclick = function logout() {
+        location.href = "login.php";
+        <?php if(isset($_POST['logout']))
+        {
+            session_destroy();
+        }
+        ?>
+    };
+</script>
 <script>
-function openForm(trainerId, trainerStatus, trainerName, trainingDate) {
-  // Populate the hidden fields and form fields with trainer information
-  document.getElementById("user_id").value = trainerId;
-  document.getElementById("trainer_id").value = trainerId;
-  document.getElementById("edit_status").value = trainerStatus;
-  document.getElementById("edit_trainer_name").value = trainerName;
-  document.getElementById("edit_training_date").value = trainingDate;
-
-  // Display the form
+function openForm() {
   document.getElementById("myForm").style.display = "block";
+  console.log("Opening form for User ID: " + userId);
 }
 
 function closeForm() {
-  // Reset the form fields to their initial state
-  document.getElementById("user_id").value = "";
-  document.getElementById("trainer_id").value = "";
-  document.getElementById("edit_status").value = "";
-  document.getElementById("edit_trainer_name").value = "";
-  document.getElementById("edit_training_date").value = "";
+    document.getElementById("myForm").style.display = "none";
+}
 
-  // Hide the form
-  document.getElementById("myForm").style.display = "none";
+ function toggleTables() {
+    var year = document.getElementById('date').value;
+    var searchOption = document.getElementById('search_option').value;
+    var resultsqlTable = document.getElementById('resultsql');
+    var resultyearTable = document.getElementById('resultyear');
 }
 
 // Call the function when the page loads to initialize table visibility
 window.onload = toggleTables;
 </script>
-
 </body>
 </html>
