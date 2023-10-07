@@ -272,16 +272,25 @@ body{
                     $_SESSION['User_ID']=$row['User_ID'];
                     if($row['Roles'] == 'member'){
                         echo'<script>window.location.replace("homepage.php");</script>';
+                        //header('Location: homepage.php');
                     }else if($row['Roles'] == 'trainer'){
                         echo'<script>window.location.replace("trainerhome.php");</script>';
+                        //header('Location: trainerhome.php');
                     }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
                         echo'<script>window.location.replace("adminhome.php");</script>'; 
+                        //header('Location: adminhome.php');
                 }else {
                     echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
                 }
                 mysqli_free_result($result);
                 mysqli_close($conn);
             }
+        }
+        ?>
+        <?php
+        if (isset($_POST['logout'])) {
+                echo "1";
+                session_destroy();
         }
         ?>
         <form action="login.php" method="POST">
