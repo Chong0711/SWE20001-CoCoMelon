@@ -6,9 +6,6 @@ $username = "root";
 $password = null;
 $dbname = "cocomelon";
 $conn = new mysqli($servername, $username, $password, $dbname);
-$query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -27,45 +24,58 @@ $row = mysqli_fetch_assoc($result);
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
         <?php
-            if (mysqli_num_rows($result) == 1) {
-                $_SESSION['User_ID']=$row['User_ID'];
-                if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){
-                    echo "<a href='homepage.php#home'><b>Home</b></a>";
-                    echo "<a href='homepage.php#about'><b>About</b></a>";
-                    echo "<a href='homepage.php#contact'><b>Contact</b></a>";
-                    echo "<div class='dropdown'>";
-                    echo "<button class='dropbtn'><b>Services</b></button>";
-                    echo "<div class='dropdown-content'>";
-                    echo "<a href='customertimetable.php'>Trainer Timetable</a>";
-                    echo "<a href='addbooking.php'>Book Court Now!</a>";
-                    echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
-                    echo "</div></div>";
-                }else if($row['Roles'] == 'trainer'){
-                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
-                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
-                    echo "</div></div>";
-                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
-                    echo "<div class='dropdown'>";
-                    echo "<button class='dropbtn'><b>Services</b></button>";
-                    echo "<div class='dropdown-content'>";
-                    echo "<a href='addbooking.php'>Add Booking</a>";
-                    echo "<a href='editbooking.php'>Check Booking</a>";
-                    echo "<a href='membership.php'>Membership Management</a>";
-                    echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
-                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
-                }
-            }
-            if(!ISSET($_SESSION['User_ID'])){
-                echo "<a href='login.php'><b>Login</b></a>";
+        if(!ISSET($_SESSION['User_ID'])){
+            echo "<a href='homepage.php#home'><b>Home</b></a>";
+            echo "<a href='homepage.php#about'><b>About</b></a>";
+            echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+            echo "<div class='dropdown'>";
+            echo "<button class='dropbtn'><b>Services</b></button>";
+            echo "<div class='dropdown-content'>";
+            echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+            echo "<a href='addbooking.php'>Book Court Now!</a>";
+            echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
+            echo "</div></div>";
+            echo "<a href='login.php'><b>Login</b></a>";
             }else{
+                $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                $result = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($result);
+                if (mysqli_num_rows($result) == 1) {
+                    $_SESSION['User_ID']=$row['User_ID'];
+                    if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){
+                        echo "<a href='homepage.php#home'><b>Home</b></a>";
+                        echo "<a href='homepage.php#about'><b>About</b></a>";
+                        echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                        echo "<div class='dropdown'>";
+                        echo "<button class='dropbtn'><b>Services</b></button>";
+                        echo "<div class='dropdown-content'>";
+                        echo "<a href='customertimetable.php'>Trainer Timetable</a>";
+                        echo "<a href='addbooking.php'>Book Court Now!</a>";
+                        echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
+                        echo "</div></div>";
+                    }else if($row['Roles'] == 'trainer'){
+                        echo "<a href='trainerhome.php#home'><b>Home</b></a>";
+                        echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                        echo "</div></div>";
+                    }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                        echo "<div class='dropdown'>";
+                        echo "<button class='dropbtn'><b>Services</b></button>";
+                        echo "<div class='dropdown-content'>";
+                        echo "<a href='addbooking.php'>Add Booking</a>";
+                        echo "<a href='editbooking.php'>Check Booking</a>";
+                        echo "<a href='membership.php'>Membership Management</a>";
+                        echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
+                        echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                    }
                 echo "<div class='dropdown'>
                 <button class='dropbtn'><b>".$row['Name']."</b></button>
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='bookinghistory.php'>Booking History</a>
-                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+                <a href='logoutaction.php' name='logout'>Logout</a>";
 
                 echo "</div> </div>";
+                }
             }
             ?>
        </nav>
@@ -493,13 +503,17 @@ body{
                 </select>
             </div>
 
-            <div class="input-trainer">
+            <?php 
+            if(!ISSET($_SESSION['User_ID']))
+                { echo '<div class="input-trainer" style="display: none">';}?>
+            
                 <label>Do you need a trainer?</label>
                 <select onchange="yesnoCheck(this);">
                     <option value="no">No</option>
                     <option value="yes">Yes</option> 
                 </select>
             </div>
+            
             <?php
                 $con=mysqli_connect("localhost", "root", "", "cocomelon");
                 $query="select * from personal_details where Roles='trainer'";
