@@ -455,7 +455,8 @@ section{
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='bookinghistory.php'>Booking History</a>
-                <a href='logoutaction.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+                <a href='logoutaction.php' name='logout'>Logout</a>";
+                
 
                 echo "</div> </div>";
             }
