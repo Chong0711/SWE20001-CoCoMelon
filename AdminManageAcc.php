@@ -44,7 +44,7 @@ session_start();
             <button class='dropbtn'><b>".$row['Name']."</b></button>
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
-            <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+            <a href='logoutaction.php' name='logout'>Logout</a>";
 
             echo "</div> </div>";
         }

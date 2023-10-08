@@ -82,7 +82,7 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='bookinghistory.php'>Booking History</a>
-                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
+                <a href='logoutaction.php' name='logout'>Logout</a>";
 
                 echo "</div> </div>";
             }

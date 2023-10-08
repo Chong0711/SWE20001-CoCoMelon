@@ -48,7 +48,7 @@ if (!$con) {
             <div class='dropdown-content'>
             <a href='userprofile.php'>Profile</a>
             <a href='bookinghistory.php'>Booking History</a>
-            <a href='login.php' id='logout' name='logout' onclick='logout()'>Logout</a>";
+            <a href='logoutaction.php' name='logout'>Logout</a>";
 
             echo "</div> </div>";
         }
