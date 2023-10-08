@@ -72,7 +72,7 @@ if (isset($_POST['book_appointment'])) {
         }
         else
         {
-            if(!ISSET($_SESSION['User_ID']) || mysqli_num_rows($result)==0)
+            if(!ISSET($_SESSION['User_ID'])||mysqli_num_rows($result)==0)
             {
                 $total = $courts * $durationInHours * $courtPricePerHourNonMem;
             }
@@ -116,7 +116,7 @@ if (isset($_POST['book_appointment'])) {
             echo "<a href='login.php'><b>Login</b></a>";
             }else{
                 $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-                $result = mysqli_query($conn, $query);
+                $result = mysqli_query($con, $query);
                 $row = mysqli_fetch_assoc($result);
                 if (mysqli_num_rows($result) == 1) {
                     $_SESSION['User_ID']=$row['User_ID'];
