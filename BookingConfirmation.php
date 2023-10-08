@@ -61,7 +61,7 @@ if (isset($_POST['book_appointment'])) {
         if($trainerID != null)
         {
             $trainertotal = $durationInHours * $trainerPricePerHour;
-            if(mysqli_num_rows($result)==0)
+            if(!ISSET($_SESSION['User_ID']) || mysqli_num_rows($result)==0)
             {
                 $total = $courts * $durationInHours * $courtPricePerHourNonMem;
             }
@@ -72,7 +72,7 @@ if (isset($_POST['book_appointment'])) {
         }
         else
         {
-            if(mysqli_num_rows($result)==0)
+            if(!ISSET($_SESSION['User_ID']) || mysqli_num_rows($result)==0)
             {
                 $total = $courts * $durationInHours * $courtPricePerHourNonMem;
             }
