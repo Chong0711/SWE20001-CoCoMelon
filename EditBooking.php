@@ -46,7 +46,7 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
             echo "<a href='login.php'><b>Login</b></a>";
             }else{
                 $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-                $result = mysqli_query($conn, $query);
+                $result = mysqli_query($con, $query);
                 $row = mysqli_fetch_assoc($result);
                 if (mysqli_num_rows($result) == 1) {
                     $_SESSION['User_ID']=$row['User_ID'];
