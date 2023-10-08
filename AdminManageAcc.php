@@ -306,7 +306,6 @@ body{
    display: none;
    position: absolute;
    background-color: transparent; /* Set dropdown background to transparent */
-   min-width: 160px;
    z-index: 1;
    top: 100%;
    left: 0; 
@@ -315,8 +314,10 @@ body{
 
 /* Links inside the dropdown */
 .dropdown-content a {
+   font-size: 16px;
    color: #44561c;
-   padding: 12px 16px;
+   padding: 12px 14px;
+   width: 117px;
    text-decoration: none;
    display: block;
 }
