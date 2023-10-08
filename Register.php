@@ -438,7 +438,7 @@ body{
             </div>
 
             <div class="guest-login">
-                <p> <a href="index.php" class="guest-link"><u>Login as Guest</u></a></p>                 
+                <p> <a href="homepage.php" class="guest-link"><u>Login as Guest</u></a></p>                 
             </div>
         </form>
 
