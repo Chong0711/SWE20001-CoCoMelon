@@ -505,7 +505,7 @@ body{
 
             <?php 
             if(!ISSET($_SESSION['User_ID']))
-                { echo '<div class="input-trainer" style="display: none">';}?>
+                { echo '<div class="input-trainer" style="display: none">';}else{echo '<div class="input-trainer" style="display: block">'; }?>
             
                 <label>Do you need a trainer?</label>
                 <select onchange="yesnoCheck(this);">
@@ -513,7 +513,7 @@ body{
                     <option value="yes">Yes</option> 
                 </select>
             </div>
-            
+
             <?php
                 $con=mysqli_connect("localhost", "root", "", "cocomelon");
                 $query="select * from personal_details where Roles='trainer'";
