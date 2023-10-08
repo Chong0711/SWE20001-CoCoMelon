@@ -252,6 +252,97 @@ body{
     border-radius: 5px;
     padding: 10px;
 }
+
+.center{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup{
+    position: fixed;
+    top: 100vh;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.popup .overlay{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 100ms ease-in-out 200ms;
+}
+
+.popup .content-pop{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.15);
+    width: 95%;
+    max-width: 350px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    opacity: 0;
+    box-shadow: 0px 2px 2px 5px rgba(0,0,0,0.05);
+    transition: all 300ms ease-in-out;
+}
+
+.popup .content-pop h1{
+    margin: 10px 0px;
+    font-size: 25px;
+    color: black;
+    text-align: center;
+}
+
+.popup .content-pop p{
+    margin: 15px 0px;
+    color: #222;
+    font-size: 16px;
+    text-align: center;
+}
+
+.popup .content-pop .controls{
+    display: flex;
+    justify-content: space-between;
+    margin: 20p 0px 0px;
+}
+
+.popup .content-pop .controls button{
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.popup .content-pop .controls .closebtn{
+    background: #44561C;
+    color: #fff;
+}
+
+.popup.active {
+    top:0px;
+    transition: top 0ms ease-in-out 0ms;
+}
+
+.popup.active .overlay{
+    opacity: 1;
+    transition: all 300ms ease-in-out;
+}
+
+.popup.active .content-pop{
+    transform: translate(-50%,-50% scale(1));
+    opacity: 1;
+}
+
 </style>
 
 <div class="wrapper">
@@ -324,10 +415,23 @@ body{
             </div>
 
             <div class="remember-forgot">
-                <label><input type="checkbox">I accept this Terms & Condition</label>
-                
+                <label><input type="checkbox" required>I accept this Terms & Condition</label> <button id="openpop">Click here</button>   
 
             </div>
+            <div class="popup" id="popup">
+            <div class="overlay"></div>
+            <div class="content-pop">
+                <h1>Terms & Condition</h1>
+                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
+             Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney 
+             College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going 
+             through the cites of the word in classical literature, discovered the undoubtable source.</p>
+             <div class="controls">
+                <button class="closebtn">Close</button>
+             </div>
+            </div>
+          </div>
+
             <button type="submit" class="btn" name="signup">Register</button>
             <div class="login-register">
                 <p>Already be our member? <a href="login.php" class="login-link">Login here!</a></p>                 
@@ -337,13 +441,38 @@ body{
                 <p> <a href="index.php" class="guest-link"><u>Login as Guest</u></a></p>                 
             </div>
         </form>
+
+        
+
     </div>
 </div>
 
 <script src="script.js"></script>
+
+<script>
+function createPopup(id){
+  let popupNode = document.querySelector(id);
+  let overlay = popupNode.querySelector(".overlay");
+  let closeBtn = popupNode.querySelector(".closebtn");
+  function openPopup(){
+    popupNode.classList.add("active");
+  }
+  function closePopup(){
+    popupNode.classList.remove("active");
+  }
+  overlay.addEventListener("click", closePopup);
+  closeBtn.addEventListener("click", closePopup);
+  return openPopup;
+}
+
+let popup = createPopup("#popup");
+document.querySelector("#openpop").addEventListener("click", popup);
+</script>
+
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+    
 
 </body>
 </html>
@@ -351,3 +480,5 @@ body{
 
     </body>
 </html>
+
+
