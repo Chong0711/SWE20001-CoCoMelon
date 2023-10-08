@@ -154,10 +154,10 @@ body{
 /*navigation bar*/
 
 /*Dropdown Menu*/
-/* Dropdown container */
+/* Dropdown container*/
 
-.navigation a:nth-child(4) {
-   margin-right: 30px; /* Adjust the margin value as needed */
+.navigation a:nth-child(3) {
+   margin-right: 40px; /* Adjust the margin value as needed */
 }
 
 .dropdown {
@@ -181,7 +181,6 @@ body{
    display: none;
    position: absolute;
    background-color: transparent; /* Set dropdown background to transparent */
-   min-width: 160px;
    z-index: 1;
    top: 100%;
    left: 0; 
@@ -190,8 +189,10 @@ body{
 
 /* Links inside the dropdown */
 .dropdown-content a {
+   font-size: 16px;
    color: #44561c;
-   padding: 12px 16px;
+   padding: 12px 14px;
+   width: 117px;
    text-decoration: none;
    display: block;
 }
