@@ -170,10 +170,9 @@ body{
 /*navigation bar*/
 
 /*Dropdown Menu*/
-/* Dropdown container */
-
-.navigation a:nth-child(4) {
-   margin-right: 30px; /* Adjust the margin value as needed */
+/* Dropdown container*/
+.navigation a:nth-child(3) {
+   margin-right: 40px;
 }
 
 .dropdown {
