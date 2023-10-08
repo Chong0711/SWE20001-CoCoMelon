@@ -172,24 +172,25 @@ body{
  }
  
  /* Dropdown content (hidden by default) */
- .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: transparent; /* Set dropdown background to transparent */
-    z-index: 1;
-    top: 100%;
-    left: 0; 
-    margin-left: -50px;
- }
- 
- /* Links inside the dropdown */
- .dropdown-content a {
-    color: #44561c;
-    padding: 12px 16px;
-    width: 120px;
-    text-decoration: none;
-    display: block;
- }
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   font-size: 16px;
+   color: #44561c;
+   padding: 12px 14px;
+   width: 117px;
+   text-decoration: none;
+   display: block;
+}
  
  /* Change color of dropdown links on hover */
  .dropdown-content a:hover {
