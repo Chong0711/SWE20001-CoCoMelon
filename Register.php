@@ -3,17 +3,17 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>SmashIt Badminton Academy</title>
-        <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SmashIt Badminton Academy</title>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https">
+</head>
+<body>
 
-        <!-- Website Navigation -->
+<!-- Website Navigation -->
 <header>
     <h2 class="logo"><img src="Greenlogo1.png" style="width:270px;height:270px;"></h2>
     <nav class="navigation">
@@ -43,7 +43,6 @@ header{
     align-items: center;
     justify-content: space-between;
     font-size: 1em;
-
 }
 
 body{
@@ -52,9 +51,8 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(badminton.jpg)no-repeat;
-    background-size: 1550px 850px;
+    background-size: 1550px 950px;
     background-position: center;
-
 }
 
 .logo{
@@ -119,12 +117,10 @@ body{
     padding: 40px;
 }
 
-
 .wrapper .form-box.login{
     transition: transform .18s ease;
     transform: translateX(0);
 }
-
 
 .wrapper.active .form-box.login{
     transition: none;
@@ -342,7 +338,18 @@ body{
     transform: translate(-50%,-50% scale(1));
     opacity: 1;
 }
-
+.error {
+    color: #D8000C;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+.success {
+    color: green;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
 </style>
 
 <div class="wrapper">
@@ -356,40 +363,58 @@ body{
             $password = null;
             $dbname = "cocomelon";
         
-            $name=$_POST["name"]; $email=$_POST["email"]; $hpnum=$_POST["hpnum"]; $psw=$_POST["pass"];
+            $name=$_POST["name"]; 
+            $email=$_POST["email"]; 
+            $hpnum=$_POST["hpnum"]; 
+            $psw=$_POST["pass"];
+            
             // Create connection
             $conn = new mysqli($servername, $username, $password, $dbname);
+            
             // Check connection
             if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+                die("Connection failed: " . $conn->connect_error);
             }
-            try {
-                $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
-                VALUES ('','$name', '$email','$hpnum', '$psw','member'); 
-                UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
-                if (mysqli_multi_query($conn, $sql)) {
-                    do {
-                        /* store first result set */
-                        if ($result = mysqli_store_result($conn)) {
-                            while ($row = mysqli_fetch_row($result)) {
+
+            // Validate password strength
+            $uppercase = preg_match('@[A-Z]@', $psw);
+            $lowercase = preg_match('@[a-z]@', $psw);
+            $number    = preg_match('@[0-9]@', $psw);
+
+            if(!$uppercase || !$lowercase || !$number || strlen($psw) < 8) {
+                echo '<div class="error">Password should be at least 8 characters in length and should include at least one upper case letter and one number.</div>';
+            }else {
+                try {
+                    $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
+                    VALUES ('','$name', '$email','$hpnum', '$psw','member'); 
+                    UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
+
+                    $membersql"INSERT INTO member (User_ID, Status, Active_Date, End_Date)
+                    VALUES ()"; 
+                    if (mysqli_multi_query($conn, $sql)) {
+                        do {
+                            /* store first result set */
+                            if ($result = mysqli_store_result($conn)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                }
+                                mysqli_free_result($conn);
                             }
-                            mysqli_free_result($conn);
-                        }
-                        /* print divider */
-                        if (mysqli_more_results($conn)) {
-                        }
-                    } while (mysqli_next_result($conn));
+                            /* print divider */
+                            if (mysqli_more_results($conn)) {
+                            }
+                        } while (mysqli_next_result($conn));
+                    }
+                    //echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                    echo'<div class="success"><b>Register successfully. Click the "Login here" to continue.</b></div>';
                 }
-                //echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
-                echo'<script>window.location.replace("login.php");</script>';
+                catch (mysqli_sql_exception $e) {
+                    echo "<div class='error'><center><b>Error: $e </b></center></div>";
+                }
+                $conn->close();
             }
-            catch (mysqli_sql_exception $e) {
-                echo "<div class='error'><center><b>Error: Duplicated Email</b></center></div>";
-            }
-            $conn->close();
         }
         ?>
-        <form action="register.php" method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <div class="input-box">
                 <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
                 <input type="text" name="name" required>
@@ -472,13 +497,5 @@ document.querySelector("#openpop").addEventListener("click", popup);
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-    
-
 </body>
 </html>
-
-
-    </body>
-</html>
-
-
