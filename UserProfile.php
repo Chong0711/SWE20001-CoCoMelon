@@ -361,6 +361,18 @@ body{
     margin-bottom: 5px;
 }
 /*Input-Type CSS*/
+.error {
+    color: #D8000C;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+.success {
+    color: green;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
 </style>
 
 <div class="wrapper">
@@ -396,13 +408,25 @@ body{
         if(isset($_POST["updateprofile"])){
             $muname=$_POST["muname"]; $muemail=$_POST["muemail"]; $muphonenum=$_POST["muphonenum"]; $mupsw=$_POST["mupsw"]; $mupic=$_POST["img"]??null;
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            if($mupic != null)
-            $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw', Profile_Pic='$mupic' WHERE User_ID='".$_SESSION['User_ID']."'";
-            else
-            $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw' WHERE User_ID='".$_SESSION['User_ID']."'";
-                $result=mysqli_query($con, $sql);
-                echo'<script>window.location.replace("userprofile.php");</script>';
+
+            $uppercase = preg_match('@[A-Z]@', $mupsw);
+            $lowercase = preg_match('@[a-z]@', $mupsw);
+            $number    = preg_match('@[0-9]@', $mupsw);
+
+            if(!$uppercase || !$lowercase || !$number || strlen($mupsw) < 8) {
+                echo '<div class="error"><br>Password should be at least 8 characters in length and should include at least one upper case letter and one number.</div>';
+            }else {
+
+                if($mupic != null){
+                    $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw', Profile_Pic='$mupic' WHERE User_ID='".$_SESSION['User_ID']."'";
+                }else{
+                    $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw' WHERE User_ID='".$_SESSION['User_ID']."'";
+                    $result=mysqli_query($con, $sql);
+                    echo'<script>window.location.replace("userprofile.php");</script>';
+                }
+                echo '<div class="success"><br>Update successfully.</div>';
             }
+        }
         
         ?>
     </div>
