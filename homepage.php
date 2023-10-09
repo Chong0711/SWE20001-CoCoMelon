@@ -193,6 +193,8 @@ section{
     flex-wrap: wrap;
     padding: 2em o;
     padding-bottom: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
 }
 
 .about .row .video-container{
@@ -260,7 +262,7 @@ section{
     flex: 5 5 25em;
     padding-left: 2em;
     padding-right: 2em;
-
+    background: #f4f0e6;
 }
 
 .icon-container .icons img{
@@ -303,6 +305,7 @@ section{
     flex-wrap: wrap;
     padding: 2em 0;
     padding-bottom: 3em;
+    padding-left: 2em;
 }
 
 .contact .row .video-container{
@@ -505,7 +508,7 @@ section{
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Lau Joe Yee</h3>
+            <h3>Dr. Chong Ah Kau</h3>
             <span>Chief executive officer (CEO) of SmashIT Badminton Academy</span>
         </div>
     </div>
@@ -513,7 +516,7 @@ section{
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Alicia Teh Jia Yi</h3>
+            <h3>Dr. Alicia Yacob</h3>
             <span>Chief operating officer (COO) of SmashIT Badminton Academy</span>
         </div>
     </div>
@@ -521,7 +524,7 @@ section{
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Yagulan A/L Ramani</h3>
+            <h3>Dr. George Lan</h3>
             <span>Chief technology officer (CTO) of SmashIT Badminton Academy</span>
         </div>
     </div>
@@ -529,8 +532,24 @@ section{
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Chong Ming Herng</h3>
+            <h3>Dr. Brother Joe</h3>
             <span>Chief marketing officer (CMO) of SmashIT Badminton Academy</span>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <h3>Dr. Faizal</h3>
+            <span>Project Manager of SmashIT Badminton Academy</span>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <h3>Dr. Shan</h3>
+            <span>Finance Manager of SmashIT Badminton Academy</span>
         </div>
     </div>
 </section>
@@ -548,8 +567,9 @@ section{
         <h3>SmashIt Academy Contact</h3>
         <span>"Stay in touch with us"</span>
         <p>...SmashIt Badminton Academy...</p>
-        <p>No 2023, Imagination street, 501 palm St, <br> 21022 Swinburne State, World
+        <p>No 2023, Imagination street, 501 Swinburne St, <br> 40150 Subang Jaya, Selangor.
         <br> Call us: <br> 08-192837465</p>
+        <br> <p>smashit.acad@outlook.my</p>
     </div>
 
 </section>
