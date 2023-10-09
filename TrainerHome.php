@@ -472,7 +472,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $formatted_date = $parsed_date->format($date_format);
 
             // Now, search the database for Trainer details for the specified date
-            $sql = "SELECT Trainer_ID, Trainer_Name, Date, Time, Status FROM Timetable WHERE Date = '$formatted_date'";
+            $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status FROM Timetable WHERE Date = '$formatted_date'";
             
             $result = mysqli_query($con, $sql);
 
@@ -487,7 +487,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $html .= "<td>{$row['Trainer_ID']}</td>";
                         $html .= "<td>{$row['Trainer_Name']}</td>";
                         $html .= "<td>{$row['Date']}</td>";
-                        $html .= "<td>{$row['Time']}</td>";
+                        $html .= "<td>{$row['From_Time']} - {$row['To_Time']}</td>";
                         $html .= "<td>{$row['Status']}</td>";
                         $html .= "</tr>";
                     }
@@ -497,7 +497,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<div class='search-results' id='result'>$html</div>";
                 } else {
                     // No results found for the specified date, display a message
-                    echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
+                    echo "<div class='search-results' id='result'><center>No records found for the specified date.</center></div>";
                 }
             } else {
                 echo "Error: " . mysqli_error($con);
