@@ -252,39 +252,40 @@ body{
     <div class="form-box login">
         <h2>Login</h2><br>
         <?php
-            if (isset($_POST['login'])) {
-                $servername = "localhost";
-                $username = "root";
-                $password = null;
-                $dbname = "cocomelon";
-                $conn = new mysqli($servername, $username, $password, $dbname);
+        if (isset($_POST['login'])) {
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
+            $conn = new mysqli($servername, $username, $password, $dbname);
 
-                $user_username = mysqli_real_escape_string($conn, $_POST["loginemail"]);
-                $user_password = mysqli_real_escape_string($conn, $_POST["loginpsw"]);
+            $user_username = mysqli_real_escape_string($conn, $_POST["loginemail"]);
+            $user_password = mysqli_real_escape_string($conn, $_POST["loginpsw"]);
 
-                
-                // this query is used to track student id and password
-                $query = "SELECT * FROM personal_details WHERE Email ='$user_username' AND Password ='$user_password'";
+            
+            // this query is used to track student id and password
+            $query = "SELECT * FROM personal_details WHERE Email ='$user_username' AND Password ='$user_password'";
 
-                $result = mysqli_query($conn, $query);
-                $row = mysqli_fetch_assoc($result);
-                
-                if (mysqli_num_rows($result) == 1) {
-                    $_SESSION['User_ID']=$row['User_ID'];
-                    if($row['Roles'] == 'member'){
-                        echo'<script>window.location.replace("homepage.php");</script>';
-                        //header('Location: homepage.php');
-                    }else if($row['Roles'] == 'trainer'){
-                        echo'<script>window.location.replace("trainerhome.php");</script>';
-                        //header('Location: trainerhome.php');
-                    }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
-                        echo'<script>window.location.replace("adminhome.php");</script>'; 
-                        //header('Location: adminhome.php');
+            $result = mysqli_query($conn, $query);
+            $row = mysqli_fetch_assoc($result);
+            
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['User_ID']=$row['User_ID'];
+                if($row['Roles'] == 'member'){
+                    echo'<script>window.location.replace("homepage.php");</script>';
+                    //header('Location: homepage.php');
+                }else if($row['Roles'] == 'trainer'){
+                    echo'<script>window.location.replace("trainerhome.php");</script>';
+                    //header('Location: trainerhome.php');
+                }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
+                    echo'<script>window.location.replace("adminhome.php");</script>'; 
+                    //header('Location: adminhome.php');
                 }else {
                     echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
                 }
-                mysqli_free_result($result);
-                mysqli_close($conn);
+            
+            }else {
+                echo "<div class='error'><center><b>Wrong Email / Password</b></center></div>";
             }
         }
         ?>
