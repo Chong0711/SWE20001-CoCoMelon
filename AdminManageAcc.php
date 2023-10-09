@@ -1,6 +1,7 @@
 <?php
 session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -271,6 +272,7 @@ body{
     color: #D8000C;
     border-radius: 5px;
     padding: 10px;
+    text-align: center;
 }
 
 .success {
@@ -349,85 +351,110 @@ section{
             $username = "root";
             $password = null;
             $dbname = "cocomelon";
-        
-            $name=$_POST["name"]; 
-            $email=$_POST["email"]; 
-            $hpnum=$_POST["hpnum"]; 
-            $psw=$_POST["pass"];
-            $roles=$_POST["roles"];
 
             // Create connection
             $conn = new mysqli($servername, $username, $password, $dbname);
             // Check connection
             if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+                die("Connection failed: " . $conn->connect_error);
             }
-            try {
+
+            $name=$_POST["name"]; 
+            $email=$_POST["email"]; 
+            $hpnum=$_POST["hpnum"]; 
+            $psw=$_POST["pass"];
+            $roles=$_POST["roles"];
+            // Check if the password meets the conditions
+
+            // Validate password strength
+            $uppercase = preg_match('@[A-Z]@', $psw);
+            $lowercase = preg_match('@[a-z]@', $psw);
+            $number    = preg_match('@[0-9]@', $psw);
+
+            if(!$uppercase || !$lowercase || !$number || strlen($psw) < 8) {
+            echo '<div class="error">Password should be at least 8 characters in length and should include at least one upper case letter and one number.</div>';
+            } else {
+                try {
                 // Insert the new user into the personal_details table
-                $insertSql = "INSERT INTO personal_details (Name, Email, Phone_Num, Password, Roles, Profile_Pic)
-                              VALUES ('$name', '$email', '$hpnum', '$psw', '$roles', '')";
+                    $insertSql = "INSERT INTO personal_details (Name, Email, Phone_Num, Password, Roles, Profile_Pic)
+                                  VALUES ('$name', '$email', '$hpnum', '$psw', '$roles', '')";
 
-                if ($conn->query($insertSql) === TRUE) {
-                    $lastInsertId = $conn->insert_id;
-                    // Generate the User_ID by combining User_Str and the last insert ID
-                    $updateSql = "UPDATE personal_details SET User_ID = CONCAT(User_Str, $lastInsertId)
-                                  WHERE ID = $lastInsertId";
+                    if ($conn->query($insertSql) === TRUE) {
+                        $lastInsertId = $conn->insert_id;
+                        // Generate the User_ID by combining User_Str and the last insert ID
+                        $updateSql = "UPDATE personal_details SET User_ID = CONCAT(User_Str, $lastInsertId)
+                                      WHERE ID = $lastInsertId";
 
-                    if ($conn->query($updateSql) === TRUE) {
-                        echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                        if ($conn->query($updateSql) === TRUE) {
+                            echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                        } else {
+                            echo "Error updating User_ID: " . $conn->error;
+                        }
                     } else {
-                        echo "Error updating User_ID: " . $conn->error;
+                        echo "Error inserting user: " . $conn->error;
                     }
-                } else {
-                    echo "Error inserting user: " . $conn->error;
+                } catch (mysqli_sql_exception $e) {
+                    echo "<div class='error'><center><b>Error: $e</b></center></div>";
                 }
-            } catch (mysqli_sql_exception $e) {
-                echo "<div class='error'><center><b>Error: $e->message</b></center></div>";
             }
-            $conn->close();
+        }
+
+        if (isset($_POST["delete"])) {
+
+            $email = $_POST["email"];
+            $roles = $_POST["roles"];
+
+            // Construct the SQL DELETE statement with a WHERE clause
+            $deleteSql = "DELETE FROM personal_details WHERE email = '$email' AND roles = '$roles'";
+
+            if ($conn->query($deleteSql) === TRUE) {
+                echo "<div class='success'><center><b>Data delete seccessfully!</b></center></div>";
+            } else {
+                echo "<div class='error'><center><b>Error deleting data: " . $conn->error. "</b></center></div>";
+            }
+             $conn->close();
         }
         ?>
 
-        <?php
-            if (isset($_POST["delete"])) {
-                $servername = "localhost";
-                $username = "root";
-                $password = null;
-                $dbname = "cocomelon";
-
-                $email = $_POST["email"];
-                $roles = $_POST["roles"];
-
-                // Create connection
-                $conn = new mysqli($servername, $username, $password, $dbname);
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-
-                // Construct the SQL DELETE statement with a WHERE clause
-                $deleteSql = "DELETE FROM personal_details WHERE email = '$email' AND roles = '$roles'";
-
-                if ($conn->query($deleteSql) === TRUE) {
-                    echo "<div class='success'><center><b>Data delete seccessfully!</b></center></div>";
-                } else {
-                    echo "<div class='error'><center><b>Error deleting data: " . $conn->error. "</b></center></div>";
-                }
-
-                $conn->close();
-            }
-        ?>
-
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <div class="input-roles">
-                <label>Roles</label>
-                <select id="roles" name="roles">
-                    <option value="head">Head</option>
-                    <option value="staff">Staff</option>
-                    <option value="trainer">Trainer</option> 
-                    <option value="member">Member</option> 
-                </select>
-            </div>
+            <?php 
+            if(ISSET($_SESSION['User_ID']))
+                {
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = null;
+                    $dbname = "cocomelon";
+
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Check connection
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $queryroles = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                    $resultroles = mysqli_query($conn, $queryroles);
+                    $rowroles = mysqli_fetch_assoc($resultroles);
+
+                    if($rowroles['Roles'] == "head" || $rowroles['Roles'] == "Head")
+                    {
+                        echo '<div class="input-roles">';
+                        echo '<label>Roles</label>';
+                        echo '<select id="roles" name="roles">';
+                        echo '<option value="head">Head</option>';
+                        echo '<option value="staff">Staff</option>';
+                        echo '<option value="trainer">Trainer</option>';
+                        echo '<option value="member">Member</option> ';
+                        echo '</select></div>';
+                    }else{
+                        echo '<div class="input-roles">';
+                        echo '<label>Roles</label>';
+                        echo '<select id="roles" name="roles">';
+                        echo '<option value="member">Member</option> ';
+                        echo '</select></div>';
+                    }
+                }
+                    ?>
 
             <div class="input-box">
                 <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
@@ -450,7 +477,7 @@ section{
             <div class="input-box">
                 <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                 <input type="password" name="pass" required>
-                <label>Password</label>
+                <label>Password</label>            
             </div>
             <section>
             <div>
