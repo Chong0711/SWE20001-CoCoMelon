@@ -386,6 +386,15 @@ section{
                                       WHERE ID = $lastInsertId";
 
                         if ($conn->query($updateSql) === TRUE) {
+                            $activedate = date("Y-m-d");
+                            $enddate = date('Y-m-d', strtotime('+1 years'));
+                            $query = "SELECT User_ID FROM personal_details WHERE Email = '$email'";
+                            $result = mysqli_query($conn, $query);
+                            $row = mysqli_fetch_assoc($result);
+                            $user_id = $row['User_ID'];
+                            $membersql = "INSERT INTO membership (User_ID, Status, Active_Date, End_Date)
+                            VALUES ('$user_id','Active', '$activedate','$enddate')";
+                            $result = mysqli_query($conn, $membersql);
                             echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
                         } else {
                             echo "Error updating User_ID: " . $conn->error;

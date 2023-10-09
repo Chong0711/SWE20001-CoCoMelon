@@ -389,8 +389,6 @@ body{
                     VALUES ('','$name', '$email','$hpnum', '$psw','member'); 
                     UPDATE personal_details SET User_ID = concat( User_Str, ID ) ";
 
-                    $membersql"INSERT INTO member (User_ID, Status, Active_Date, End_Date)
-                    VALUES ()"; 
                     if (mysqli_multi_query($conn, $sql)) {
                         do {
                             /* store first result set */
@@ -405,7 +403,17 @@ body{
                         } while (mysqli_next_result($conn));
                     }
                     //echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                    $activedate = date("Y-m-d");
+                    $enddate = date('Y-m-d', strtotime('+1 years'));
+                    $query = "SELECT User_ID FROM personal_details WHERE Email = '$email'";
+                    $result = mysqli_query($conn, $query);
+                    $row = mysqli_fetch_assoc($result);
+                    $user_id = $row['User_ID'];
+                    $membersql = "INSERT INTO membership (User_ID, Status, Active_Date, End_Date)
+                    VALUES ('$user_id','Active', '$activedate','$enddate')";
+                    $result = mysqli_query($conn, $membersql);
                     echo'<div class="success"><b>Register successfully. Click the "Login here" to continue.</b></div>';
+                    
                 }
                 catch (mysqli_sql_exception $e) {
                     echo "<div class='error'><center><b>Error: $e </b></center></div>";
