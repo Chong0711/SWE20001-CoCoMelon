@@ -387,88 +387,107 @@ body{
         <h2>Booking Confirmation</h2>
         <?php
         if (isset($_POST['pay'])) {
-            $sql = "INSERT INTO booking (Book_ID, Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount)
-                VALUES ('','$custid','$trainerID','$date','$startTime','$endTime','Booked','$courts','$finaltotal'); 
-                UPDATE booking SET Book_ID = concat( Book_Str, Book_No ) ";
-                if (mysqli_multi_query($con, $sql)) {
-                    do {
-                        /* store first result set */
-                        if ($result = mysqli_store_result($con)) {
-                            while ($row = mysqli_fetch_row($result)) {
-                            }
-                            mysqli_free_result($con);
-                        }
-                        /* print divider */
-                        if (mysqli_more_results($con)) {
-                        }
-                    } while (mysqli_next_result($con));
-                }
-            echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+            $insertSql = "INSERT INTO booking (Cust_ID, Trainer_ID, Book_Date, Book_StartTime, Book_EndTime, Status, Court, Amount)
+                VALUES ('$custid','$trainerID','$date','$startTime','$endTime','Booked','$courts','$finaltotal')";
 
-            $to = $email;
-            $subject = "Booking Confirmation from SmashIt Academy";
-            $message = "Hello Dear $name,\n\n";
-            $message .= "Thank you for booking with SmashIt Badminton Academy.\n";
-            $message .= "Here is your booking details:\n";
-            $message .= "Name: $name\n";
-            $message .= "Date: $date\n";
-            $message .= "Start Time: $startTime\n";
-            $message .= "End Time: $endTime\n";
-            $message .= "Number of Booking Court: $courts\n";
-            
-            if ($trainerID != null) {
-                $query = "select * from personal_details where User_ID='$trainerID'";
-                $result = mysqli_query($con, $query);
-                $row = mysqli_fetch_array($result);
-                $trainerName = $row['Name'];
-                $message .= "Trainer Name: $trainerName\n";
+            if ($con->query($insertSql) === TRUE) {
+            $lastInsertId = $con->insert_id;
+            // Generate the User_ID by combining Book_Str and the last insert ID
+            $bookId = 'B' . $lastInsertId;
+            $updateSql = "UPDATE booking SET Book_ID = '$bookId' WHERE Book_No = $lastInsertId";
 
-                $insertTimetableSQL = "INSERT INTO timetable (Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status) VALUES ('$trainerID', '$trainerName', '$date', '$startTime', '$endTime', 'Not')";
-    
-                if (mysqli_query($con, $insertTimetableSQL)) {
-                    // Timetable entry for the trainer is successfully added
-                    // You can add any additional actions or messages here if needed
+            if ($con->query($updateSql) === TRUE) {
+                // Now that the booking record is updated with the correct Book_ID, proceed to insert into the payment table
+                $paymentsql = "INSERT INTO payment (Payment_ID, Cust_ID, Book_ID, Payment_Date, Amount, Status)
+                                VALUES ('', '$custid', '$bookId', '$date', '$finaltotal', 'done')";
+                
+                if ($con->query($paymentsql) === TRUE) {
+                    // Retrieve the last insert ID for the Payment_ID
+                    $paymentId = $con->insert_id;
+                    
+                    // Generate the Payment_ID by combining Payment_Str and the Payment_No
+                    $paymentId2 = 'P' . $paymentId;
+                    
+                    // Update the Payment_ID in the payment table
+                    $updatePaymentSql = "UPDATE payment SET Payment_ID = '$paymentId2' WHERE Payment_No = $paymentId";
+
+                    if ($con->query($updatePaymentSql) === TRUE) {
+                        echo "<div class='success'><center><b>Successfully Booked</b></center></div>";
+                    } else {
+                        echo "Error updating Payment_ID: " . $con->error;
+                    }
                 } else {
-                    // Handle the case where the insertion into the timetable table fails
-                    echo "Error inserting data into timetable table: " . mysqli_error($con);
+                    echo "Error inserting payment record: " . $con->error;
                 }
-            }
-            $message .= "Total Amount: RM $finaltotal\n";
-            $headers = "From: <cocomelonswe@gmail.com>"; // Replace with your email address
-            if (mail($to, $subject, $message, $headers)) {
-                echo "<div class='success'><center><b>Booking confirmation email sent successfully.</b></center></div>";
             } else {
-                echo "<div class='errormsg'><center><b>Booking confirmation email could not be sent.</b></center></div>";
+                echo "Error updating Book_ID: " . $con->error;
+            }
+        } else {
+            echo "Error inserting booking record: " . $con->error;
+        }
+        $to = $email;
+        $subject = "Booking Confirmation from SmashIt Academy";
+        $message = "Hello Dear $name,\n\n";
+        $message .= "Thank you for booking with SmashIt Badminton Academy.\n";
+        $message .= "Here is your booking details:\n";
+        $message .= "Name: $name\n";
+        $message .= "Date: $date\n";
+        $message .= "Start Time: $startTime\n";
+        $message .= "End Time: $endTime\n";
+        $message .= "Number of Booking Court: $courts\n";
+        
+        if ($trainerID != null) {
+            $query = "select * from personal_details where User_ID='$trainerID'";
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_array($result);
+            $trainerName = $row['Name'];
+            $message .= "Trainer Name: $trainerName\n";
+
+            $insertTimetableSQL = "INSERT INTO timetable (Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status) VALUES ('$trainerID', '$trainerName', '$date', '$startTime', '$endTime', 'Not')";
+
+            if (mysqli_query($con, $insertTimetableSQL)) {
+                // Timetable entry for the trainer is successfully added
+                // You can add any additional actions or messages here if needed
+            } else {
+                // Handle the case where the insertion into the timetable table fails
+                echo "Error inserting data into timetable table: " . mysqli_error($con);
             }
         }
-        ?>
-            <div class="booking-details">
-                <form action="bookingconfirmation.php" method="post">
-                    <p><strong>Name:</strong> <?php echo $name; ?></p>
-                    <p><strong>Email:</strong> <?php echo $email; ?></p>
-                    <p><strong>Phone:</strong> <?php echo $phone; ?></p>
-                    <p><strong>Date:</strong> <?php echo $date; ?></p>
-                    <p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
-                    <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
-                    <p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
-                    <?php
-                    if ($trainerID != null) {
-                        $query="select * from personal_details where User_ID='$trainerID'";
-                        $result=mysqli_query($con, $query);
-                        $row=mysqli_fetch_array($result);
-                        $trainerName = $row['Name'];
-                        echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
-                        echo "<p><strong>Trainer Fee: RM</strong> $trainertotal</p>";
-                    }
-                    ?>
-                    <p><strong>Court Fee:</strong> RM <?php echo $total; ?></p>
-                    <p><strong>Total Price:</strong> RM <?php echo $finaltotal ?></p>
-                    <button type="submit" name='pay' id='confirmbtn' class="btn">Pay</button>
-                    <button type="button" name='cancel' class="btn cancel" id="cancelbtn" onclick="closeForm()">Cancel</button>
-                </form>
-            </div>
+        $message .= "Total Amount: RM $finaltotal\n";
+        $headers = "From: <cocomelonswe@gmail.com>"; // Replace with your email address
+        if (mail($to, $subject, $message, $headers)) {
+            echo "<div class='success'><center><b>Booking confirmation email sent successfully.</b></center></div>";
+        } else {
+            echo "<div class='errormsg'><center><b>Booking confirmation email could not be sent.</b></center></div>";
+        }
+    }
+    ?>
+        <div class="booking-details">
+            <form action="bookingconfirmation.php" method="post">
+                <p><strong>Name:</strong> <?php echo $name; ?></p>
+                <p><strong>Email:</strong> <?php echo $email; ?></p>
+                <p><strong>Phone:</strong> <?php echo $phone; ?></p>
+                <p><strong>Date:</strong> <?php echo $date; ?></p>
+                <p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
+                <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
+                <p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
+                <?php
+                if ($trainerID != null) {
+                    $query="select * from personal_details where User_ID='$trainerID'";
+                    $result=mysqli_query($con, $query);
+                    $row=mysqli_fetch_array($result);
+                    $trainerName = $row['Name'];
+                    echo "<p><strong>Trainer Name:</strong> $trainerName</p>";
+                    echo "<p><strong>Trainer Fee: RM</strong> $trainertotal</p>";
+                }
+                ?>
+                <p><strong>Court Fee:</strong> RM <?php echo $total; ?></p>
+                <p><strong>Total Price:</strong> RM <?php echo $finaltotal ?></p>
+                <button type="submit" name='pay' id='confirmbtn' class="btn">Pay</button>
+                <button type="button" name='cancel' class="btn cancel" id="cancelbtn" onclick="closeForm()">Cancel</button>
+            </form>
+        </div>
     </div>
-    
 </div>
 
 <script type="text/javascript">
