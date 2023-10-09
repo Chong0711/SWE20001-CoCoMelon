@@ -414,7 +414,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "<div class='search-results' id='result'>$html</div>";
             } else {
-                echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
+                echo "<div class='search-results' id='result'>Trainers are available on this date.</div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
