@@ -233,7 +233,24 @@ body{
     font-weight: 600;
     padding: 0 35px 0 5px;
 }
+/* Full-width input fields */
+.form-box.reschedule input[type="date"],
+.form-box.reschedule input[type="time"] {
+  width: 100%;
+  padding: 10px; /* Adjust padding */
+  margin: 10px 0; /* Adjust margin */
+  border: 1px solid black;
+  border-radius: 6px;
+  background-color: transparent;
+  font-size: 1em;
+  outline: none;
+}
 
+/* When the inputs get focus, do something */
+.form-box.reschedule input[type="date"]:focus,
+.form-box.reschedule input[type="time"]:focus {
+  background-color: #f1f1f1;
+}
 .input-box .icon{
     position: absolute;
     right: 8px;
@@ -254,6 +271,9 @@ body{
     color: #fff;
     font-weight: 500;
     margin-top: 20px;
+}
+.btn.cancel{
+    background-color: #D92121;
 }
 /*Dropdown Menu*/
 /* Dropdown container */
@@ -325,7 +345,7 @@ section{
                 <h2>Check Booking</h2>
                 <form method="post" action="editbooking.php">
                     <div class="input-box">
-                        <input type="text" name="bookid">
+                        <input type="text" name="bookid" required>
                         <label><b>Booking ID</b></label>
                     </div>
                     <div class="input-box">
@@ -345,7 +365,7 @@ section{
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
             $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id' or personal_details.Email = '$email'";
             $result=mysqli_query($con, $query);
-            if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
+            if(mysqli_num_rows($result)==0) echo "<br><p><center><b>No record.</b></center></p>";
             else {
                 $row=mysqli_fetch_array($result); 
                     echo "<div class='wrapper edit'>";
@@ -364,7 +384,10 @@ section{
                     echo "<p>Status: ".$row['Status']."</p>";
                     echo "<p>Amount: ".$row['Amount']."</p>";
                     echo "<button type='submit' class='btn' name='update'>Update Appointment</button>";
-                    echo "<button type='submit' class='btn' name='delete'>Delete Appointment</button>";
+                    echo "<button type='submit' class='btn cancel
+                    .btn.cancel{
+                        background-color: red;
+                    }' name='delete'>Delete Appointment</button>";
                     echo "</form>";
                     echo "</div>";
                     echo "</div>";  
