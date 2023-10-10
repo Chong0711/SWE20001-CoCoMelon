@@ -279,6 +279,10 @@ body{
 <div class="wrapper">
     <div class="form-box login">
         <h2>Reset Password</h2><br>
+        <?php
+        if (isset($_POST["enter"]))
+        {}
+        else{?>
         <form action="ForgotPass.php" method="POST">
 
                 <div class="input-box">
@@ -290,6 +294,7 @@ body{
                 <button type="submit" class="btn" name="enter">Enter</button>
         </form>
         <?php
+        }
         if (isset($_POST["enter"])) {
             $RName = $_POST["Rname"];
             $search = $RName;
