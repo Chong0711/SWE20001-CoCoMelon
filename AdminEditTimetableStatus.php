@@ -327,7 +327,7 @@ th {
 .form-container .btn {
   width: 100%;
   height: 45px;
-  background: #8888ec;
+  background: #44561c;
   border: none;
   outline: none;
   border-radius: 6px;
@@ -341,7 +341,7 @@ th {
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+  background-color: #D92121;
 }
 
 /* Add some hover effects to buttons */
@@ -367,10 +367,6 @@ th {
     padding: 2rem 0%;
 }
 
-.heading h1{
-    text-align: center;
-    margin-top: -10px;
-}
 
 .search-container {
     padding: 20px;
