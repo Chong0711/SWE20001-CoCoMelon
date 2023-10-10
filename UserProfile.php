@@ -41,8 +41,8 @@ session_start();
                     echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
                     echo "</div></div>";
                 }else if($row['Roles'] == 'trainer'){
-                    echo "<a href='trainerhome.php#home'><b>Home</b></a>";
-                    echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
+                    echo "<a href='trainerhome.php#home' class='t'><b>Home</b></a>";
+                    echo "<a href='trainerhome.php#time' class='t'><b>Timetable</b></a>";
                     echo "</div></div>";
                 }else if($row['Roles'] == 'staff' || $row['Roles'] == 'head' ){
                     echo "<div class='dropdown'>";
@@ -69,14 +69,25 @@ session_start();
                 $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
                 $result = mysqli_query($conn, $query);
                 $row = mysqli_fetch_assoc($result);
-                echo "<div class='dropdown'>
-                <button class='dropbtn'><b>".$row['Name']."</b></button>
-                <div class='dropdown-content'>
-                <a href='userprofile.php'>Profile</a>
-                <a href='bookinghistory.php'>Booking History</a>
-                <a href='logoutaction.php' name='logout'>Logout</a>";
+                if($row['Roles'] == 'trainer'||$row['Roles'] == 'trainer'||
+                    $row['Roles'] == 'staff'||$row['Roles'] == 'Staff'||
+                    $row['Roles']== 'head'||$row['Roles']== 'Head'){
+                    echo "<div class='dropdown'>
+                        <button class='dropbtn'><b>".$row['Name']."</b></button>
+                        <div class='dropdown-content'>
+                        <a href='userprofile.php'>Profile</a>
+                        <a href='logoutaction.php' name='logout'>Logout</a>";
+                    echo "</div> </div>";
+                }else{
+                    echo "<div class='dropdown'>
+                    <button class='dropbtn'><b>".$row['Name']."</b></button>
+                    <div class='dropdown-content'>
+                    <a href='userprofile.php'>Profile</a>
+                    <a href='bookinghistory.php'>Booking History</a>
+                    <a href='logoutaction.php' name='logout'>Logout</a>";
 
-                echo "</div> </div>";
+                    echo "</div> </div>";
+                }
             }
             ?>
        </nav>
@@ -175,6 +186,10 @@ body{
 /*Dropdown container*/
 
 .navigation a:nth-child(3) {
+   margin-right: 40px; /* Adjust the margin value as needed */
+}
+/*trainer*/
+.navigation a:nth-child(2).t {
    margin-right: 40px; /* Adjust the margin value as needed */
 }
 
