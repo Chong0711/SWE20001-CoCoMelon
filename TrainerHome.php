@@ -43,7 +43,6 @@ if (!$con) {
                 <button class='dropbtn'><b>".$row['Name']."</b></button>
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
-                <a href='#'>Booking History</a>
                 <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
