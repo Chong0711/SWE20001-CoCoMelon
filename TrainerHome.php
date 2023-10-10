@@ -44,7 +44,7 @@ if (!$con) {
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
                 <a href='#'>Booking History</a>
-                <a href='logoutaction.php' name='logout'>Logout</a>";
+                <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
             }
@@ -172,7 +172,7 @@ body{
  }
  
  /* Dropdown content (hidden by default) */
-.dropdown-content {
+ .dropdown-content {
    display: none;
    position: absolute;
    background-color: transparent; /* Set dropdown background to transparent */
@@ -306,9 +306,11 @@ body{
 
 /* table view */
 table {
-    width: 100%;
+    width: 50%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 table, th, td {
@@ -472,7 +474,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $formatted_date = $parsed_date->format($date_format);
 
             // Now, search the database for Trainer details for the specified date
-            $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status FROM Timetable WHERE Date = '$formatted_date'";
+            $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
+                DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
+                DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
+                FROM timetable 
+                WHERE Date = '$formatted_date'
+                ORDER BY Trainer_Name, STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
             
             $result = mysqli_query($con, $sql);
 
@@ -481,13 +488,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (mysqli_num_rows($result) > 0) {
                     // Start creating the HTML for the results
                     $html = "<h1 class='heading'>Results</h1><br><table>";
-                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>Time</th><th>Status</th></tr>";
+                    $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th></tr>";
                     while ($row = mysqli_fetch_assoc($result)) {
                         $html .= "<tr>";
                         $html .= "<td>{$row['Trainer_ID']}</td>";
                         $html .= "<td>{$row['Trainer_Name']}</td>";
                         $html .= "<td>{$row['Date']}</td>";
-                        $html .= "<td>{$row['From_Time']} - {$row['To_Time']}</td>";
+                        $html .= "<td>{$row['From_Time']}</td>";
+                        $html .= "<td>{$row['To_Time']}</td>";
                         $html .= "<td>{$row['Status']}</td>";
                         $html .= "</tr>";
                     }
@@ -497,7 +505,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<div class='search-results' id='result'>$html</div>";
                 } else {
                     // No results found for the specified date, display a message
-                    echo "<div class='search-results' id='result'><center>No records found for the specified date.</center></div>";
+                    echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
                 }
             } else {
                 echo "Error: " . mysqli_error($con);
