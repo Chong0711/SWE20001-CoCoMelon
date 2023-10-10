@@ -57,16 +57,6 @@ if (!$con) {
         }
         ?>
     </nav>
-    <script type="text/javascript">
-        document.getElementById("logout").onclick = function () {
-            location.href = "login.php";
-            <?php if(isset($_POST['logout']))
-            {
-                session_destroy();
-            }
-            ?>
-        };
-    </script>
 </header>
 <title>Membership Management</title>
 <style>
@@ -97,7 +87,7 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
+    background-size: 100% 400%;
     background-position: center;
 
 }
@@ -232,11 +222,19 @@ body{
     text-align: center;
     overflow: auto;
 }
+.search-container label {
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
 .search-result
 {
     width: 100%; /* Ensure the table takes the full width of the container */
     overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
     overflow-y: auto;
+    margin-top: -30px;
+    padding: 20px;
 }
 .search-option
 {
@@ -279,14 +277,10 @@ th {
     font-weight: 500;
 }
 
-section{
-    padding: 2rem 0%;
-    overflow: auto;
-}
-
 .heading{
     text-align: center;
     font-size: 25px;
+    margin-top: 20px;
 }
 
 label{
@@ -312,7 +306,7 @@ label{
 .form-popup {
   display: none;
   position: absolute;
-  margin-bottom: 0px;
+  margin-top: 20px;
   right: 570px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
@@ -322,6 +316,7 @@ label{
   width: 400px; /* Set the width to match Part B */
   background: transparent; /* Change background to match Part B */
 }
+
 /* Add styles to the form container */
 .form-container {
   max-width: 100%; /* Set max-width to 100% to match Part B */
@@ -330,8 +325,8 @@ label{
 }
 
 /* Full-width input fields */
-.form-container input[type="text"],
-.form-container input[type="password"] {
+.form-container input[type="date"],
+.form-container select {
   width: 100%;
   padding: 10px; /* Adjust padding */
   margin: 10px 0; /* Adjust margin */
@@ -343,30 +338,14 @@ label{
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
+.form-container input[type="date"]:focus,
+.form-container select:focus {
   background-color: #f1f1f1;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  width: 100%;
-  height: 45px;
-  background: #8888ec;
-  border: none;
-  outline: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1em;
-  color: #fff;
-  font-weight: 500;
-  margin-top: 10px; /* Adjust margin-top */
-  opacity: 0.8;
 }
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+  background-color: #D92121;
 }
 
 /* Add some hover effects to buttons */
@@ -385,7 +364,6 @@ label{
     text-align: center;
     margin-top: 30px;
 }
-
 /*pop out form*/
 
 </style>
@@ -413,7 +391,7 @@ label{
     <div class='search-results' id="result">
         <?php $html?>
     </div>
-    </section>
+    
 
 <?php
 // Handle the search based on the selected option
@@ -430,45 +408,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($year)) {
         if ($search_option === "email" && !empty($search_query)) {
             // If both year and email are provided, get records for that user in that year
-            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
-            FROM payment p
-            JOIN membership m ON p.Cust_ID = m.User_ID 
-            JOIN personal_details u ON p.Cust_ID = u.User_ID
+            $sql = "SELECT m.User_ID, m.Status, COUNT(p.Cust_ID) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM membership m
+            LEFT JOIN payment p ON m.User_ID = p.Cust_ID
+            JOIN personal_details u ON m.User_ID = u.User_ID
             WHERE YEAR(p.Payment_Date) = '$year' 
                 AND u.Email = '$search_query'
-            GROUP BY Cust_ID
+            GROUP BY m.User_ID
             ORDER BY Total_Purchases";
         } elseif ($search_option === "phone" && !empty($search_query)) {
             // If both year and phone number are provided, get records for that user in that year
-            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
-            FROM payment p
-            JOIN membership m ON p.Cust_ID = m.User_ID 
-            JOIN personal_details u ON p.Cust_ID = u.User_ID
+            $sql = "SELECT m.User_ID, m.Status, COUNT(p.Cust_ID) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM membership m
+            LEFT JOIN payment p ON m.User_ID = p.Cust_ID
+            JOIN personal_details u ON m.User_ID = u.User_ID
             WHERE YEAR(p.Payment_Date) = '$year' 
                 AND u.Phone_Num = '$search_query'
-            GROUP BY Cust_ID
+            GROUP BY m.User_ID
             ORDER BY Total_Purchases";
         } else {
             // If only year is provided or if year and email/phone are provided but email/phone is empty
             // Get records for all users in that year
-            $sql = "SELECT u.User_ID, m.Status, COUNT(*) AS Total_Purchases, m.Active_Date, m.End_Date  
-            FROM payment p
-            JOIN membership m ON p.Cust_ID = m.User_ID 
-            JOIN personal_details u ON p.Cust_ID = u.User_ID
-            WHERE YEAR(p.Payment_Date) = '$year'
-            GROUP BY Cust_ID
+            $sql = "SELECT m.User_ID, m.Status, COUNT(p.Cust_ID) AS Total_Purchases, m.Active_Date, m.End_Date  
+            FROM membership m
+            LEFT JOIN payment p ON m.User_ID = p.Cust_ID
+            GROUP BY m.User_ID
             ORDER BY Total_Purchases";
         }
     }
 
     if (isset($sql)) {
-        $result = mysqli_query($con, $sql);
+    $result = mysqli_query($con, $sql);
 
         if ($result) {
             // Check if there are any rows in the result set
             if (mysqli_num_rows($result) > 0) {
                 // Start creating the HTML for the results
-                $html = "<h2 class='heading'>Results</h2><br><table>";
+                $html = "<br><h2 class='heading'>Results</h2><br><table>";
                 $html .= "<tr><th>Customer ID</th><th>Membership Status</th><th>Total Purchases</th><th>Active Date</th><th>End Date</th><th>Action</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
@@ -487,7 +463,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<div class='search-results'>$html</div>";
             } else {
                 // No results found, display a message
-                echo "<div class='search-results msg'>Did not find any results.</div>";
+                echo "<div class='search-results msg'><br><b>No members found.</b></div>";
             }
         } else {
             echo "Error: " . mysqli_error($con);
@@ -495,6 +471,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 }
+?>
+</section>
+<?php
 
 // Handle editing trainer availability
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
@@ -508,9 +487,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
     $update_sql = "UPDATE membership SET Status = '$edit_status', Active_Date = '$edit_active_date', End_Date = '$edit_end_date'  WHERE User_ID = '$user_id'";
 
     if (mysqli_query($con, $update_sql)) {
-        echo "<script>alert('Availability updated successfully.');</script>";
+        echo "<script>alert('Membership status updated successfully.');</script>";
     } else {
-        echo "Error updating availability: " . mysqli_error($con);
+        echo "Error updating membership: " . mysqli_error($con);
     }
 }
 
@@ -519,9 +498,10 @@ mysqli_close($con);
 ?>
 <!-- the form-->
     <section>
+        <section><br></section>
         <div class="form-popup" id="myForm">
             <!-- Add your HTML content, including the form, here -->
-            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-container">
                 <h2 class="heading">Edit Member Status</h2><br>
 
                 <!-- Add hidden fields for User ID -->
@@ -532,11 +512,13 @@ mysqli_close($con);
                     <option value="Inactive">Inactive</option>
                     <option value="Active">Active</option>
                 </select>
+                <br>
 
                 <input type="hidden" id="total_purchase" name="total_purchase" value="<?php echo $total_purchase; ?>">
 
                 <label for="active_date">Active Date:</label>
                 <input type="date" placeholder="Enter Active Date" name="edit_active_date" id="edit_active_date" class="input" required>
+                <br>
 
                 <label for="end_date">End Date:</label>
                 <input type="date" placeholder="Enter End Date" name="edit_end_date" id="edit_end_date" class="input" required>
@@ -549,6 +531,7 @@ mysqli_close($con);
         </div>
     </section>
 </section>
+
 <script>
 function openForm(UserID, Status, TotalPurchases, ActiveDate, EndDate) {
   // Populate the hidden fields and form fields with trainer information
