@@ -328,10 +328,6 @@ section{
                         <input type="text" name="bookid">
                         <label><b>Booking ID</b></label>
                     </div>
-                    <div class="input-box">
-                        <input type="email" name="email">
-                        <label><b>Email</b></label>
-                    </div>
                          <button type="submit" class="btn" name="search">Check Appointment</button>
                     
                 </form>
@@ -341,9 +337,9 @@ section{
     <section>
         <?php
         if(isset($_POST["search"])){
-            $id=$_POST["bookid"]??null; $email=$_POST["email"]??null; 
+            $id=$_POST["bookid"]??null;
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id' or personal_details.Email = '$email'";
+            $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id'";
             $result=mysqli_query($con, $query);
             if(mysqli_num_rows($result)==0) echo "<p>No record.</p>";
             else {
