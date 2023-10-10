@@ -287,13 +287,13 @@ body{
                     <label>Email</label>
                 </div>
 
-                <button type="submit" class="btn" name="email">Enter</button>
-
-            <?php
-        if (isset($_POST["Rname"])) {
+                <button type="submit" class="btn" name="enter">Enter</button>
+        </form>
+        <?php
+        if (isset($_POST["enter"])) {
             $RName = $_POST["Rname"];
             $search = $RName;
-            $con = mysqli_connect("localhost", "admin", null, "cocomelon");
+            $con = mysqli_connect("localhost", "root", null, "cocomelon");
             
             // Check if the connection was successful
             if (!$con) {
@@ -312,6 +312,17 @@ body{
                 echo "<p><br>No record.</p>";
             } else {
                 $row = mysqli_fetch_array($result);
+
+                echo "<div class=password-reset-box style=display: none;>";
+                echo "<form action=ForgotPass.php method=POST>";
+                echo "<input type=hidden name=uName value=" .$row['Email']. ">";
+                echo "<div class='input-box2'>";
+                echo "<span class=icon><ion-icon name=lock-closed></ion-icon></span>";
+                echo "<input type=password name=uPassword class=input-box>";
+                echo "<label>New Password</label>";
+                echo "<button type=submit name=update class=btn2>Update</button>";
+                echo "</div>";
+                echo "</form>";
                 mysqli_close($con);
             }
         }
@@ -340,19 +351,7 @@ body{
             mysqli_close($con);
         }
         ?>
-                <div class="password-reset-box" style="display: none;">
-                    <form action="" method="POST">
-                        <input type="hidden" name="uName" value="<?php echo $row["Email"]; ?>">
-                        <input type="hidden" name="update" value="1"> 
-                        <div class="input-box2">
-                            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-                            <input type="password" name="uPassword" class="input-box">
-                            <label>New Password</label>
-                            <button type="submit" name="update" class="btn2" value="Update">Update</button>
-                        </div>
-                    </form>
-                </div>
-        </form>
+            
     </div>
 </div>
 
@@ -360,7 +359,7 @@ body{
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-<script>
+<!--<script>
  // JavaScript code for handling the form submission and showing password reset
     document.addEventListener("DOMContentLoaded", function () {
         const formBox = document.querySelector(".form-box.login");
@@ -388,7 +387,7 @@ body{
             return emailRegex.test(email);
         }
     });
-</script>
+</script>-->
 
     </body>
 </html>

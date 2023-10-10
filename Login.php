@@ -310,7 +310,7 @@ body{
 
             <div class="remember-forgot">
                 <label><input type="checkbox">Remember me</label>
-                <a href="#">Forgot Password?</a>
+                <a href="forgotpass.php">Forgot Password?</a>
 
             </div>
             <button type="submit" class="btn" name="login">Login</button>
