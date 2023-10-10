@@ -39,7 +39,7 @@ header{
     width: 100%;
     height: 10.5%;
     z-index: 99;
-    padding: 20px 100px;
+    padding: 50px 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -63,7 +63,7 @@ body{
     color: #44561c;
     user-select: none;
     justify-content: space-between;
-    padding-top: 15px;
+    padding-top: 18px;
 }
 
 
@@ -432,7 +432,7 @@ section{
 
         <!-- Website Navigation -->
 <header>
-    <h2 class="logo"><img src="Greenlogo1.png" style="width:220px;height:230px;"></h2>
+    <h2 class="logo"><img src="Greenlogo1.png" style="width:240px;height:260px;"></h2>
     <nav class="navigation">
         <a href="#home"><b>Home</b></a>
         <a href="#about"><b>About</b></a>
