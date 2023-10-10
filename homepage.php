@@ -63,6 +63,7 @@ body{
     color: #44561c;
     user-select: none;
     justify-content: space-between;
+    padding-top: 15px;
 }
 
 
@@ -161,14 +162,17 @@ section{
     font-size: 1rem;
     outline: none;
     text-decoration:none;
+    transition: 1s;
 }
 
 .btnone:hover{
-    background: var(--black);
+    background: #fff;
+    color:black;
 }
 
 .btntwo:hover{
-    background: var(--black);
+    background: #fff;
+    color:black;
 }
 
 
@@ -263,6 +267,7 @@ section{
     padding-left: 2em;
     padding-right: 2em;
     background: #f4f0e6;
+    box-shadow: 0 .5em 1em rgba(0,0,0,.1);
 }
 
 .icon-container .icons img{
@@ -408,7 +413,7 @@ section{
  /*Dropdown Menu*/
 
 
-@media(max-width:991px){
+@media(max-width:200px){
     html{
         font-size: 55%;
     }
@@ -416,7 +421,7 @@ section{
         padding:2rem;
     }
 }
-@media(max-width:991px){
+@media(max-width:200px){
     html{
         font-size: 50%;
     }
@@ -427,7 +432,7 @@ section{
 
         <!-- Website Navigation -->
 <header>
-    <h2 class="logo"><img src="Greenlogo1.png" style="width:210px;height:210px;"></h2>
+    <h2 class="logo"><img src="Greenlogo1.png" style="width:220px;height:230px;"></h2>
     <nav class="navigation">
         <a href="#home"><b>Home</b></a>
         <a href="#about"><b>About</b></a>
