@@ -43,7 +43,6 @@ if (!$con) {
                 <button class='dropbtn'><b>".$row['Name']."</b></button>
                 <div class='dropdown-content'>
                 <a href='userprofile.php'>Profile</a>
-                <a href='#'>Booking History</a>
                 <a href='login.php' id='logout' name='logout' onclick='closeForm()'>Logout</a>";
 
                 echo "</div> </div>";
@@ -446,7 +445,7 @@ html{
 <div class="search-container">
     <h2>Search Records</h2><br>
     <!-- Create a container for the search form -->
-    <form id="search-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <form id="search-form" action="trainerhome.php#time" method="post">
         <label>Date: </label>
         <input type="date" name="date" id="search_date" class="search-option" required>
         <button type="submit" class="btn" a href="#result">Search</button>
@@ -505,7 +504,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<div class='search-results' id='result'>$html</div>";
                 } else {
                     // No results found for the specified date, display a message
-                    echo "<div class='search-results' id='result'>No records found for the specified date.</div>";
+                    echo "<div class='search-results' id='result'><center><b>No records found for the specified date.</b></center></div>";
                 }
             } else {
                 echo "Error: " . mysqli_error($con);

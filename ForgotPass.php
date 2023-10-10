@@ -95,7 +95,7 @@ body{
 .wrapper {
     position: relative;
     width: 400px;
-    min-height: 480px;
+    height: auto;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
@@ -135,7 +135,7 @@ body{
 .form-box h2{
     font-size: 2em;
     color:#44561c ;
-    margin: 0px 0px 50px 39px;
+    margin: 0px 0px 20px 39px;
 }
 
 .input-box{
@@ -184,14 +184,9 @@ body{
     font-size: .9em;
     color: #44561c;
     font-weight: 500;
-    margin: -15px 0 15px;
+    margin: -30px 0px 15px 170px;
     display: flex;
     justify-content: space-between;
-}
-
-.remember-forgot label input{
-    accent-color: #44561c;
-    margin-right: 3px;
 }
 
 .remember-forgot a{
@@ -221,7 +216,7 @@ body{
     width: 100%;
     height: 50px;
     border-bottom: 2px solid #44561c;
-    margin: 30px 0;  
+    margin: 20px 0px 100px 0px;  
 }
 
 .input-box2 label {
@@ -289,6 +284,10 @@ body{
                     <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
                     <input type="email" name="Rname" id="Rname" required>
                     <label>Email</label>
+                </div>
+
+                <div class="remember-forgot">
+                    <a href="Login.php">Click Here to Log In !</a>
                 </div>
 
                 <button type="submit" class="btn" name="enter">Enter</button>
@@ -363,36 +362,6 @@ body{
 <script src="script.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-<!--<script>
- // JavaScript code for handling the form submission and showing password reset
-    document.addEventListener("DOMContentLoaded", function () {
-        const formBox = document.querySelector(".form-box.login");
-        const passwordResetBox = document.querySelector(".password-reset-box");
-        const emailInput = document.getElementById("Rname");
-
-        // Handle form submission
-        formBox.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent the default form submission
-            const email = emailInput.value.trim(); // Get the entered email value
-
-            // Check if the entered email is valid (you can add more validation here)
-            if (isValidEmail(email)) {
-                formBox.classList.add("active"); // Show the password reset input field
-                passwordResetBox.style.display = "block"; // Show the password reset box
-            } else {
-                // Handle invalid email here (e.g., display an error message)
-                alert("Please enter a valid email address.");
-            }
-        });
-
-        // Function to validate an email address (you can use a more robust validation method)
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-    });
-</script>-->
 
     </body>
 </html>

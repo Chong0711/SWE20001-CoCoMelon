@@ -253,6 +253,8 @@ section{
     gap:1.5em ;
     padding-top: 5em;
     padding-bottom: 5em;
+    padding-left: 3em;
+    padding-right: 3em ;
 }
 
 .icon-container .icons{
@@ -500,10 +502,9 @@ section{
     <div class="content">
         <h3>SmashIT Badminton Academy</h3>
         <span>A little history about us, "How we started?"</span>
-        <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy 
-        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, 
-        but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-        and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</P>
+        <P>SmashIt Badminton is a member-based training and booking centre located in Subang Jaya, Selangor. It was
+            founded by Dr. Chong Ah Kau in 1990. They offer training and court booking for their members and 
+            court booking only for those who are not members of this badminton academy.</P>
         <a href="#" class="btnone">Learn more</a>
     </div>
 
