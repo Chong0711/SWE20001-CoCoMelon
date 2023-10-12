@@ -443,7 +443,7 @@ body{
             $trainerName = $row['Name'];
             $message .= "Trainer Name: $trainerName\n";
 
-            $insertTimetableSQL = "INSERT INTO timetable (Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status) VALUES ('$trainerID', '$trainerName', '$date', '$startTime', '$endTime', 'Not')";
+            $insertTimetableSQL = "INSERT INTO timetable (Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status) VALUES ('$trainerID', '$trainerName', '$date', '$startTime', '$endTime', 'Unavailable')";
 
             if (mysqli_query($con, $insertTimetableSQL)) {
                 // Timetable entry for the trainer is successfully added
