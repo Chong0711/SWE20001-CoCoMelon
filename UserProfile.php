@@ -436,9 +436,9 @@ body{
                     $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw', Profile_Pic='$mupic' WHERE User_ID='".$_SESSION['User_ID']."'";
                 }else{
                     $sql="update personal_details set Name='$muname', Email='$muemail', Phone_Num='$muphonenum', Password='$mupsw' WHERE User_ID='".$_SESSION['User_ID']."'";
-                    $result=mysqli_query($con, $sql);
-                    echo'<script>window.location.replace("userprofile.php");</script>';
                 }
+                $result=mysqli_query($con, $sql);
+                echo'<script>window.location.replace("userprofile.php");</script>';
                 echo '<div class="success"><br>Update successfully.</div>';
             }
         }
