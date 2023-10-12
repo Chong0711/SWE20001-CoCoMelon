@@ -53,6 +53,13 @@ $conn = new mysqli($servername, $username, $password, $dbname);
                         echo "<a href='addbooking.php'>Book Court Now!</a>";
                         echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
                         echo "</div></div>";
+                        echo "<div class='dropdown'>
+                        <button class='dropbtn'><b>".$row['Name']."</b></button>
+                        <div class='dropdown-content'>
+                        <a href='userprofile.php'>Profile</a>
+                        <a href='bookinghistory.php'>Booking History</a>
+                        <a href='logoutaction.php' name='logout'>Logout</a>";
+
                     }else if($row['Roles'] == 'trainer'){
                         echo "<a href='trainerhome.php#home'><b>Home</b></a>";
                         echo "<a href='trainerhome.php#time'><b>Timetable</b></a>";
@@ -66,15 +73,14 @@ $conn = new mysqli($servername, $username, $password, $dbname);
                         echo "<a href='membership.php'>Membership Management</a>";
                         echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
                         echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
-                    }
-                echo "<div class='dropdown'>
-                <button class='dropbtn'><b>".$row['Name']."</b></button>
-                <div class='dropdown-content'>
-                <a href='userprofile.php'>Profile</a>
-                <a href='bookinghistory.php'>Booking History</a>
-                <a href='logoutaction.php' name='logout'>Logout</a>";
+                        echo "<div class='dropdown'>
+                        <button class='dropbtn'><b>".$row['Name']."</b></button>
+                        <div class='dropdown-content'>
+                        <a href='userprofile.php'>Profile</a>
+                        <a href='logoutaction.php' name='logout'>Logout</a>";
 
-                echo "</div> </div>";
+                        echo "</div> </div>";
+                    }
                 }
             }
             ?>
