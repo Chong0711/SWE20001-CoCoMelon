@@ -382,7 +382,7 @@ body{
             $number    = preg_match('@[0-9]@', $psw);
 
             if(!$uppercase || !$lowercase || !$number || strlen($psw) < 8) {
-                echo '<div class="error">Password should be at least 8 characters in length and should include at least one upper case letter and one number.</div>';
+                echo '<div class="error">Password should be at least 8 characters in length and should include at least one uppercase letter, lowercase letter and one number.</div>';
             }else {
                 try {
                     $sql = "INSERT INTO personal_details (User_ID,Name, Email, Phone_Num, Password, Roles)
@@ -416,7 +416,7 @@ body{
                     
                 }
                 catch (mysqli_sql_exception $e) {
-                    echo "<div class='error'><center><b>Error: $e </b></center></div>";
+                    echo "<div class='error'><center><b>This email is registered. <br>Please use another email. </b></center></div>";
                 }
                 $conn->close();
             }
@@ -468,10 +468,6 @@ body{
             <button type="submit" class="btn" name="signup">Register</button>
             <div class="login-register">
                 <p>Already be our member? <a href="login.php" class="login-link">Login here!</a></p>                 
-            </div>
-
-            <div class="guest-login">
-                <p> <a href="homepage.php" class="guest-link"><u>Login as Guest</u></a></p>                 
             </div>
         </form>
 
