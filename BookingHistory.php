@@ -4,7 +4,7 @@ $servername = "localhost";
 $username = "root";
 $password = null;
 $dbname = "cocomelon";
-$conn = new mysqli($servername, $username, $password, $dbname);
+$con = new mysqli($servername, $username, $password, $dbname);
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
             echo "<a href='login.php'><b>Login</b></a>";
         }else{
             $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-            $result = mysqli_query($conn, $query);
+            $result = mysqli_query($con, $query);
             $row = mysqli_fetch_assoc($result);
             echo "<div class='dropdown'>
             <button class='dropbtn'><b>".$row['Name']."</b></button>
@@ -262,9 +262,12 @@ section{
 }
 
 .heading{
-    margin-top: 130px;
     text-align: center;
     font-size: 25px;
+    padding-top: 100px;
+}
+h3{
+    text-align: center;
 }
 .container{
     display: flex;
@@ -273,19 +276,53 @@ section{
     text-align: center;
     overflow: auto;
 }
+label{
+    font-size: 1em;
+    font-weight: 500;
+    font-weight: bold;
+}
+
+select.search-option{
+    width: autp;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 20px;
+    padding-left: 10px;
+}
+.box{
+    width:1000px;
+    height:auto;
+    display:grid;
+    grid-template-columns: 500px 200px;
+    grid-row: auto auto;
+}
+.historytable{
+    padding:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 </style>
 
 <section>
     <h2 class="heading">Booking History</h2><br>
-   
+    <h3>Current</h3><br>
         <div class="container">
         <?php
-        $historyquery = "SELECT * FROM booking WHERE Cust_ID = '".$_SESSION['User_ID']."'";        
-        $historyresult = mysqli_query($conn, $historyquery);
+        $today = date("Y-m-d"); // Get today's date
+        $historyquery = "SELECT * FROM booking WHERE Cust_ID = '".$_SESSION['User_ID']."'AND Book_Date >= '$today'";   
+
+        $historyresult = mysqli_query($con, $historyquery);
         
         if ($historyresult->num_rows > 0) {
+            echo "<div class='box'>";
             while ($historyrow = mysqli_fetch_assoc($historyresult)) {
-                echo '<div class="wrapper"> <table>';
+                echo '<div class="wrapper historytable"> <table>';
                 echo '<tr>
                 <td>Booking ID</td> 
                 <td>' . $historyrow['Book_ID'] . '</td></tr>';
@@ -311,12 +348,101 @@ section{
                 <td>' . $historyrow['Status'] . '</td></tr>';
                 echo '</table></div>';
             }
+            echo "</div>";
         } else {
-            echo '<b>No booking history found.</b>';
+            echo "<b>You do not have booking on ".$today.".</b><br>";
         }
         ?>
+        <br><h3>Past</h3><br>
+        <section>
+        <div class="search-container">
+            <!-- Create a container for the search form -->
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <label for="search">Search </label>
+                <select name="search_option" id="search_option" class="search-option">
+                    <option value="7days">Last 7 days</option>
+                    <option value="15days">Last 15 days</option>
+                    <option value="30days">Last 30 days</option>
+                </select>
+                <button type="submit" class="btn" name="search"a href="#result">Search</button>
+            </form>
+        </div>
+        </section>
+        <?php
+        // Handle the search based on the selected option
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST["search_option"])) {
+            $_SESSION['search_option'] = $_POST["search_option"];
+
+            $search_option =$_SESSION['search_option'];
+
+                if ($search_option === "7days") {
+                    $sevenDaysAgo = date("Y-m-d", strtotime('-7 days', strtotime($today))); // Calculate 7 days ago
+                    $sql = "SELECT * FROM booking WHERE Cust_ID = '" . $_SESSION['User_ID'] . "' AND (Book_Date >= '$sevenDaysAgo' AND Book_Date < '$today')";
+                } 
+                elseif ($search_option === "15days") {
+                    $fifteenDaysAgo = date("Y-m-d", strtotime('-15 days', strtotime($today))); // Calculate 15 days ago
+                    $sql = "SELECT * FROM booking WHERE Cust_ID = '" . $_SESSION['User_ID'] . "' AND (Book_Date >= '$fifteenDaysAgo' AND Book_Date < '$today')";
+                } 
+                elseif ($search_option === "30days") {
+                    $thirtyDaysAgo = date("Y-m-d", strtotime('-30 days', strtotime($today))); // Calculate 30 days ago
+                    $sql = "SELECT * FROM booking WHERE Cust_ID = '" . $_SESSION['User_ID'] . "' AND (Book_Date >= '$thirtyDaysAgo' AND Book_Date < '$today')";
+                }
+
+                if (isset($sql)) {
+                $result = mysqli_query($con, $sql);
+
+                    if ($result) {
+                        // Check if there are any rows in the result set
+                        if (mysqli_num_rows($result) > 0) {
+                            // Start creating the HTML for the results
+                            $html = "<br><h3 id='result'>Results</h3><br><div class='box'>";
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $html .= '<div class="wrapper historytable"> <table>';
+                                $html .= '<tr>
+                                <td>Booking ID</td> 
+                                <td>' . $row['Book_ID'] . '</td></tr>';
+
+                                $html .= '<tr>
+                                <td>Booking Date</td>
+                                <td>' . $row['Book_Date'] . '</td></tr>';
+
+                                $html .= '<tr>
+                                <td>Court</td>
+                                <td>' . $row['Court'] . '</td></tr>';
+
+                                $html .= '<tr>
+                                <td>Booking Start Time</td>
+                                <td>' . $row['Book_StartTime'] . '</td></tr>';
+
+                                $html .= '<tr>
+                                <td>Booking End Time</td>
+                                <td>' . $row['Book_EndTime'] . '</td></tr>';
+
+                                $html .= '<tr>
+                                <td>Status</td>
+                                <td>' . $row['Status'] . '</td></tr>';
+                                $html .= '</table></div>';
+                                    }
+
+                            $html .= "</table></div>";
+
+                            // Display the HTML in the search-results container
+                            echo "<div class='search-results'>$html</div>";
+                        } else {
+                            // No results found, display a message
+                            echo "<div class='search-results msg'><br><b>No members found.</b></div>";
+                        }
+                    } else {
+                        echo "Error: " . mysqli_error($con);
+                    }
+                }
+            }
+        }
+        ?>
+
     <section>
-        <button class="btn" onclick="location.href='homepage.php'">Back to Home</button>
+        <center><button class="btn" onclick="location.href='homepage.php'">Back to Home</button></center>
     </section>
 </div>
 </section>
