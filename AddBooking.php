@@ -487,14 +487,44 @@ body{
                 <input type="date" name="date" required>
             </div>
 
+            <div class="input-court">
             <label>Start Time</label>
-            <div class="input-box">
+            <!--<div class="input-box">
                 <input type="time" name="stime" required>
+            </div>-->
+            <select name="stime">
+            <?php
+                $o=0;
+                echo '<option value="">Select Start Time</option>';
+                while ($o <= 47) {
+                    $date = new DateTime("08:00:00");
+                    $date->add(new DateInterval("PT".($o*60)."M"));
+                    echo '<option value="'. $date->format('H:i') .'" >'. $date->format('H:i') .'</option>';
+                    $o++;
+                }
+            ?>
+            </select>
             </div>
 
+            
+            
+            <div class="input-court">
             <label>End Time</label>
-            <div class="input-box">
+            <!--<div class="input-box">
                 <input type="time" name="etime" required>
+            </div>-->
+            <select name="etime">
+            <?php
+                $o=0;
+                echo '<option value="">Select End Time</option>';
+                while ($o <= 47) {
+                    $date = new DateTime("08:00:00");
+                    $date->add(new DateInterval("PT".($o*60)."M"));
+                    echo '<option value="'. $date->format('H:i') .'" >'. $date->format('H:i') .'</option>';
+                    $o++;
+                }
+            ?>
+            </select>
             </div>
 
             <div class="input-court">
