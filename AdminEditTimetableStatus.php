@@ -212,7 +212,7 @@ body{
 /*Dropdown Menu*/
 /*navigation bar*/
 .btn{
-    width: 100%;
+    width: 35%;
     height: 45px;
     background: #44561c;
     border: none;
@@ -243,7 +243,15 @@ body{
 .search-option
 {
     width: auto;
-    height: 30px;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 20px;
+    padding-left: 10px;
 }
 /* table view */
 table {
@@ -304,25 +312,6 @@ th {
   background-color: transparent; /* Change background to match Part B */
 }
 
-/* Full-width input fields */
-.form-container input[type="text"],
-.form-container input[type="password"] {
-  width: 100%;
-  padding: 10px; /* Adjust padding */
-  margin: 10px 0; /* Adjust margin */
-  border: 1px solid black;
-  border-radius: 6px;
-  background-color: transparent;
-  font-size: 1em;
-  outline: none;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
-  background-color: #f1f1f1;
-}
-
 /* Set a style for the submit/login button */
 .form-container .btn {
   width: 100%;
@@ -378,8 +367,7 @@ th {
     margin-right: 10px;
 }
 
-.search-container input[select="trainer_name"],
-.search-container select {
+.search-container input[select="trainer_name"]{
     width: 200px;
     height: 30px;
     font-size: 1em;
@@ -550,7 +538,7 @@ mysqli_close($con);
 
 
     <label for="status"><b>Status:</b></label>
-    <input type="text" placeholder="Enter Status" name="edit_status" id="edit_status" required>
+    <input type="text" placeholder="Enter Status" name="edit_status" id="edit_status"class="search-option" required>
 
     <button type="submit" class="btn" name="update">Update</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
