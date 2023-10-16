@@ -201,7 +201,7 @@ body{
 /*Dropdown Menu*/
 /*navigation bar*/
 .btn{
-    width: 100%;
+    width: 35%;
     height: 45px;
     background: #44561c;
     border: none;
@@ -215,7 +215,7 @@ body{
 }
 
 .search-container {
-    padding: 50px 0px 0px 0px;
+    padding: 100px 0px 0px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -227,6 +227,7 @@ body{
     color: #44561c;
     font-weight: 500;
     margin-bottom: 30px;
+    padding-left: 10px;
 }
 .search-result
 {
@@ -236,10 +237,18 @@ body{
     margin-top: -30px;
     padding: 20px;
 }
-.search-option
-{
+
+.search-option{
     width: auto;
-    height: 30px;
+    height: 40px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 20px;
+    padding-left: 10px;
 }
 /* table view */
 table {
@@ -373,16 +382,16 @@ label{
         <h2 class='heading'>Search Member Records</h2><br>
         <!-- Create a container for the search form -->
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <label>Year: </label>
+            <label><b>Year: &nbsp;</b></label>
             <input type="text" name="year" id="search_year" class="search-option" required>
 
-            <label for="search">Search by:</label>
+            <label for="search"><b>Search by: &nbsp;</b></label>
             <select name="search_option" id="search_option" class="search-option">
                 <option value="email">Email</option>
                 <option value="phone">Phone Number</option>
             </select>
             <input type="text" name="search_query" id="search_query" class="search-option">
-            <button type="submit" class="btn" a href="#result">Search</button>
+            <center><button type="submit" class="btn" a href="#result">Search</button></center>
         </form>
     </div>
     </section>
