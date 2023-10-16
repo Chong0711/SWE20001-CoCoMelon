@@ -315,16 +315,16 @@ select.search-option{
         <div class="container">
         <?php
         $today = date("Y-m-d"); // Get today's date
-        $historyquery = "SELECT * FROM booking WHERE Cust_ID = '".$_SESSION['User_ID']."'AND Book_Date >= '$today'";   
+        $historyquery = "SELECT * FROM booking WHERE Cust_ID = '" . $_SESSION['User_ID'] . "' AND Book_Date >= '$today'";
 
         $historyresult = mysqli_query($con, $historyquery);
-        
+
         if ($historyresult->num_rows > 0) {
             echo "<div class='box'>";
             while ($historyrow = mysqli_fetch_assoc($historyresult)) {
                 echo '<div class="wrapper historytable"> <table>';
                 echo '<tr>
-                <td>Booking ID</td> 
+                <td>Booking ID</td>
                 <td>' . $historyrow['Book_ID'] . '</td></tr>';
 
                 echo '<tr>
@@ -350,7 +350,7 @@ select.search-option{
             }
             echo "</div>";
         } else {
-            echo "<b>You do not have booking on ".$today.".</b><br>";
+            echo "<b>You do not have any current bookings.</b><br>";
         }
         ?>
         <br><h3>Past</h3><br>
