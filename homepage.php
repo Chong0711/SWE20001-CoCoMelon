@@ -439,15 +439,14 @@ section{
         <a href="#home"><b>Home</b></a>
         <a href="#about"><b>About</b></a>
         <a href="#contact"><b>Contact</b></a>  
-        <div class="dropdown">
-            <button class="dropbtn"><b>Services</b></button>
-                <div class="dropdown-content">
-                    <!-- Add links or content for the dropdown here -->
-                    <a href="addbooking.php">Book Court Now!</a>
-                </div>
-            </div>
             <?php 
             if(!ISSET($_SESSION['User_ID'])){
+                echo "<div class='dropdown'>
+            <button class='dropbtn'><b>Services</b></button>
+                <div class='dropdown-content'>
+                    <a href='addbooking.php'>Book Court Now!</a>
+                </div>
+            </div>";
                 echo "<a href='login.php'><b>Login</b></a>";
             }else{
                 $servername = "localhost";
@@ -458,6 +457,14 @@ section{
                 $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
                 $result = mysqli_query($conn, $query);
                 $row = mysqli_fetch_assoc($result);
+                echo "<div class='dropdown'>
+                <button class='dropbtn'><b>Services</b></button>
+                    <div class='dropdown-content'>
+                        <a href='customertimetable.php'>Trainer Timetable</a>
+                        <a href='addbooking.php'>Book Court Now!</a>
+                        <a href='editbooking.php'>Any Changes To Bookings</a>
+                    </div>
+                </div>";
                 echo "<div class='dropdown'>
                 <button class='dropbtn'><b>".$row['Name']."</b></button>
                 <div class='dropdown-content'>
