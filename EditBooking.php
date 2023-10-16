@@ -31,17 +31,15 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
 <header>
     <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
     <nav class="navigation">
-        <?php
-        if(!ISSET($_SESSION['User_ID'])){
+        <?php 
+        if(!ISSET($_SESSION['User_ID'])){  
             echo "<a href='homepage.php#home'><b>Home</b></a>";
             echo "<a href='homepage.php#about'><b>About</b></a>";
             echo "<a href='homepage.php#contact'><b>Contact</b></a>";
             echo "<div class='dropdown'>";
             echo "<button class='dropbtn'><b>Services</b></button>";
             echo "<div class='dropdown-content'>";
-            echo "<a href='customertimetable.php'>Trainer Timetable</a>";
             echo "<a href='addbooking.php'>Book Court Now!</a>";
-            echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
             echo "</div></div>";
             echo "<a href='login.php'><b>Login</b></a>";
             }else{
@@ -158,7 +156,7 @@ body{
 
 .wrapper {
     position: relative;
-    width: 400px;
+    width: 800px;
     height: auto; 
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
@@ -169,12 +167,6 @@ body{
     flex-direction: column; /* Stack children vertically */
     align-items: center; /* Center content horizontally */
     overflow: hidden;
-    transform: scale(1);
-    transition: transform .5s ease, height .2s ease;
-}
-
-.wrapper.active{
-    height: 520px;
 }
 
 .wrapper .form-box{
@@ -193,21 +185,18 @@ body{
     color:#44561c ;
     text-align: center;
 }
-.wrapper.search{
-     margin-top: 150px;
-}
+
 .wrapper.edit{
-     margin: 50px 0px 20px 0px;
+    width: 400px;
+    margin: 50px 0px 20px 0px;
 }
 
 .input-box{
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid #44561c;
     margin: 30px 0;  
 }
-
 
 .input-box label{
     position: absolute;
@@ -221,7 +210,6 @@ body{
     transition: .5s;
 }
 
-
 .input-box input{
     width: 100%;
     height: 100%;
@@ -233,7 +221,10 @@ body{
     font-weight: 600;
     padding: 0 35px 0 5px;
 }
+
+
 /* Full-width input fields */
+.form-box.reschedule input[type="number"],
 .form-box.reschedule input[type="date"],
 .form-box.reschedule input[type="time"] {
   width: 100%;
@@ -245,18 +236,16 @@ body{
   font-size: 1em;
   outline: none;
 }
+.form-box.reschedule input[type="text"]{
+    border-bottom: 2px solid #44561c;
+}
 
 /* When the inputs get focus, do something */
+.form-box.reschedule input[type="number"]:focus,
+.form-box.reschedule input[type="text"]:focus,
 .form-box.reschedule input[type="date"]:focus,
 .form-box.reschedule input[type="time"]:focus {
   background-color: #f1f1f1;
-}
-.input-box .icon{
-    position: absolute;
-    right: 8px;
-    font-size: 1.2em;
-    color: #44561c;
-    line-height: 57px;
 }
 
 .btn{
@@ -336,85 +325,338 @@ section{
     overflow: auto;
 }
 
+/* table view */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+/* table view */
+
+.heading{
+    text-align: center;
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+.search-result
+{
+    width: 100%; /* Ensure the table takes the full width of the container */
+    overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
+    overflow-y: auto;
+    margin-top: -30px;
+    padding: 20px;
+}
+
+.search-results.msg{
+    width: auto;
+    height: 40px;
+    text-align: center;
+    padding: 10px 0px 0px 0px;
+}
+.box{
+    width:1000px;
+    height:auto;
+    display:grid;
+    grid-template-columns: 500px 200px;
+    grid-row: auto auto;
+}
+.wrapper.search{
+    padding:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:400px;
+    margin-top: 150px;
+  }
+.success {
+    color: green;
+    border-radius: 5px;
+    padding: 10px;
+}
+.errormsg{
+    color: red;
+    border-radius: 5px;
+    padding: 10px;
+}
 </style>
 <section>
-    <section>
-        <div class="wrapper search">
-            <!-- Checking booking form -->
-            <div class="form-box login">
-                <h2>Check Booking</h2>
-                <form method="post" action="editbooking.php">
-                    <div class="input-box">
-                        <input type="text" name="bookid" required>
-                        <label><b>Booking ID</b></label>
-                    </div>
-                         <button type="submit" class="btn" name="search">Check Appointment</button>
-                    
-                </form>
+    <?php
+    if(ISSET($_SESSION['User_ID'])){
+        $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+        $result = mysqli_query($con, $query);
+        $row = mysqli_fetch_assoc($result);
+        if (mysqli_num_rows($result) == 1) {
+            $_SESSION['User_ID']=$row['User_ID'];
+            if($row['Roles'] == 'member'||$row['Roles'] == 'guest'){ ?>
+            <div class="wrapper search">
+                <!-- Checking booking form -->
+                <div class="form-box reschedule">
+                    <h2>Check Booking By Booking ID</h2>
+                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                        <div class="input-box">
+                            <input type="text" name="bookid" required>
+                            <label><b>Booking ID</b></label>
+                        </div>
+                             <button type="submit" class="btn" name="search">Check Appointment</button>
+                        
+                    </form>
+                </div>
             </div>
+        <?php }elseif($row['Roles'] == 'staff'||$row['Roles'] == 'head'){ ?>
+        <section>
+            <div class="box">
+                <div class="wrapper search">
+                    <!-- Checking booking form -->
+                    <div class="form-box reschedule">
+                        <h2>Check Booking By Booking ID</h2>
+                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                            <div class="input-box">
+                                <input type="text" name="bookid" required>
+                                <label><b>Booking ID</b></label>
+                            </div>
+                                 <button type="submit" class="btn" name="search">Check Appointment</button>
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="wrapper search">
+                    <div class="form-box reschedule">
+                        <h2>Check Booking By Date</h2>
+                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                            <div class="input-box">
+                                <input type="date" name="date" required>
+                                <label><b>Select Date</b></label>
+                            </div>
+                            <button type="submit" class="btn" name="searchByDate">Check by Date</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <?php } } } ?>
+    <section>
+        <div class='search-results' id="result">
+           <center><?php $html?></center> 
         </div>
     </section>
     <section>
         <?php
         if(isset($_POST["search"])){
-            $id=$_POST["bookid"]??null;
-            $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            $query="select * from booking inner join personal_details on booking.Cust_ID = personal_details.User_ID where Book_ID= '$id'";
+            $user = $_SESSION['User_ID'];
+            $id = $_POST["bookid"] ?? null;
+
+            // Fetch the user's role from the database
+            $query1 = "SELECT Roles FROM personal_details WHERE User_ID = '$user'";
+            $result = mysqli_query($con, $query1);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row['Roles'] == 'member' || $row['Roles'] == 'guest') {
+                // For members, only allow searching their own bookings
+                $query = "SELECT * FROM booking INNER JOIN personal_details ON booking.Cust_ID = personal_details.User_ID WHERE Book_ID = '$id' AND Cust_ID = '$user'";
+            } elseif ($row['Roles'] == 'staff' || $row['Roles'] == 'head') {
+                // For staff and head users, allow searching all bookings
+                 $query = "SELECT * FROM booking LEFT JOIN personal_details ON booking.Cust_ID = personal_details.User_ID WHERE Book_ID = '$id'";
+            }
+
             $result=mysqli_query($con, $query);
             if(mysqli_num_rows($result)==0) echo "<br><p><center><b>No record.</b></center></p>";
             else {
                 $row=mysqli_fetch_array($result); 
-                    echo "<div class='wrapper edit'>";
-                    echo "<div class='form-box reschedule'>";
-                    echo "<h2>Booking Details</h2><br>";
-                    echo "<form action=editbooking.php method=post>";
-                    echo "<input type=hidden name=mid value=".$row['Book_ID'].">";
-                    echo "<p>Booking ID: ".$row['Book_ID']."</p>";
-                    echo "<p>Customer ID: ".$row['Cust_ID']."</p>";
-                    echo "<p>Customer Name: ".$row['Name']."</p>";
-                    echo "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
-                    echo "<p>Date: <input type=date name=mdate value=".$row['Book_Date']."></p>";
-                    echo "<p>Start Time: <input type=time name=mstarttime value=".$row['Book_StartTime']."></p>";
-                    echo "<p>End Time: <input type=time name=mendtime value=".$row['Book_EndTime']."></p>";
-                    echo "<p>Court: ".$row['Court']."</p>";
-                    echo "<p>Status: ".$row['Status']."</p>";
-                    echo "<p>Amount: ".$row['Amount']."</p>";
-                    echo "<button type='submit' class='btn' name='update'>Update Appointment</button>";
-                    echo "<button type='submit' class='btn cancel
-                    .btn.cancel{
-                        background-color: red;
-                    }' name='delete'>Delete Appointment</button>";
-                    echo "</form>";
-                    echo "</div>";
-                    echo "</div>";  
-                        
+                    // Sample start and end times (in the format 'Y-m-d H:i:s')
+                    $startTimeStamp = strtotime($row['Book_StartTime']);
+                    $endTimeStamp = strtotime($row['Book_EndTime']);
+                    if ($startTimeStamp === false || $endTimeStamp === false) {
+                        echo "Invalid time format.";
+                    } else {
+                        // Calculate the time difference in seconds
+                        $timeDifferenceInSeconds = $endTimeStamp - $startTimeStamp;
+
+                        // Convert the time difference to hours
+                        $durationInHours = $timeDifferenceInSeconds / 3600; // 3600 seconds in an hour
+                    }
+
+                    $html = "<div class='wrapper edit'>";
+                    $html .= "<div class='form-box reschedule'>";
+                    $html .= "<h2>Booking Details</h2><br>";
+                    $html .= "<form action=editbooking.php method=post>";
+                    $html .= "<input type=hidden name=mid value=".$row['Book_ID'].">";
+                    $html .= "<p>Booking ID: ".$row['Book_ID']."</p>";
+                    $html .= "<p>Customer ID: ".$row['Cust_ID']."</p>";
+                    $html .= "<p>Customer Name: ".$row['Name']."</p>";
+                    $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
+                    $html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']."></p>";
+                    $html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
+                    $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
+                    $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
+                    $html .= "<p>Court: ".$row['Court']."</p>";
+                    $html .= "<p>Status: ".$row['Status']."</p>";
+                    $html .= "<p>Amount: ".$row['Amount']."</p>";
+                    $html .= "<button type='submit' class='btn' name='update'>Update Appointment</button>";
+                    $html .= "<button type='submit' class='btn cancel' name='delete'>Delete Appointment</button>";
+                    $html .= "</form></div></div>";
+                    echo "<div class='search-results'>$html</div>";
                     mysqli_close($con);
             }
-        }
-    ?>
-    </section>
-
-    <section>
-
-        <?php
-            if(isset($_POST["update"])){
-                $mid=$_POST["mid"]; $mdate=$_POST["mdate"]; $mstarttime=$_POST["mstarttime"]; $mendtime=$_POST["mendtime"];
-                $con=mysqli_connect("localhost", "root", null, "cocomelon");
-                $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
-                    $result=mysqli_query($con, $sql);
-                    echo "<p>Record is updated.</p>";
+        }elseif(isset($_POST["searchByDate"])){
+            $date=$_POST["date"];
+            $con=mysqli_connect("localhost", "root", null, "cocomelon");
+            $query="select * from booking left join personal_details on booking.Cust_ID = personal_details.User_ID where Book_Date= '$date'";
+            $result=mysqli_query($con, $query);
+            if(mysqli_num_rows($result)==0) echo "<div class='search-results msg'><br><b>$date do not have any booking.</b></div><br>";
+            else {
+                // Start creating the HTML for the results
+                $html = "<br><h2 class='heading'>Results</h2><br><table>";
+                $html .= "<tr><th>Booking ID</th><th>Customer ID</th><th>Customer Name</th><th>Trainer ID</th><th>Date</th><th>Start Time</th><th>End Time</th><th>Court No</th><th>Status</th><th>Amount</th></tr>";
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $html .= "<tr>";
+                    $html .= "<td>{$row['Book_ID']}</td>";
+                    $html .= "<td>{$row['Cust_ID']}</td>";
+                    $html .= "<td>{$row['Name']}</td>";
+                    $html .= "<td>{$row['Trainer_ID']}</td>";
+                    $html .= "<td>{$row['Book_Date']}</td>";
+                    $html .= "<td>{$row['Book_StartTime']}</td>";
+                    $html .= "<td>{$row['Book_EndTime']}</td>";
+                    $html .= "<td>{$row['Court']}</td>";
+                    $html .= "<td>{$row['Status']}</td>";
+                    $html .= "<td>{$row['Amount']}</td></tr>";
                 }
 
-            if(isset($_POST["delete"])){
+                $html .= "</table><br>";
+
+                // Display the HTML in the search-results container
+                echo "<div class='search-results'>$html</div>";
+                mysqli_close($con);
+            }
+        }else {
+            echo mysqli_error($con);
+        }
+
+        if(isset($_POST["update"])){
+            $mid=$_POST["mid"]; 
+            $mdate=$_POST["mdate"]; 
+            $mstarttime=$_POST["mstarttime"]; 
+            $mendtime=$_POST["mendtime"];
+
+            $con=mysqli_connect("localhost", "root", null, "cocomelon");
+            $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
+            $result=mysqli_query($con, $sql);
+            echo "<br><div class='success'><center><b>Record Updated.</b></center></div>";
+            if (mysqli_query($con, $sql)) {
+            // Booking has been updated successfully
+                function sendEmail($to, $subject, $message) {
+                    $headers = 'From: cocomelonswe@gmail.com' . "\r\n" .
+                        'Reply-To: cocomelonswe@gmail.com' . "\r\n" .
+                        'X-Mailer: PHP/' . phpversion();
+
+                    // You should use a proper SMTP library or service to send emails.
+                    // The example below uses the built-in mail function.
+                    if (mail($to, $subject, $message, $headers)) {
+                        return true; // Email sent successfully
+                    } else {
+                        return false; // Email sending failed
+                    }
+                }
+
+            // Send reschedule confirmation email
+            $to = $row['Email'];
+            $subject = "Your Booking Has Been Rescheduled";
+            $message = "Hello {$row['Name']},\n\n";
+            $message .= "Your booking has been successfully rescheduled. Here are the updated details:\n";
+            $message .= "Booking ID: $mid\n";
+            $message .= "Date: $mdate\n";
+            $message .= "Start Time: $mstarttime\n";
+            $message .= "End Time: $mendtime\n";
+
+            // Send the email
+            if (sendEmail($to, $subject, $message)) {
+                echo "<div class='success'><center><b>Booking confirmation email sent successfully.</b></center></div>";
+            } else {
+                echo "<div class='errormsg'><center><b>Booking confirmation email could not be sent.</b></center></div>";
+            }
+        } else {
+            // Handle the case where the SQL update query fails
+            echo "Error updating the booking: " . mysqli_error($con);
+        }
+        }
+
+        if(isset($_POST["delete"])){
             $del=$_POST["mid"];
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
             $query="delete from booking where Book_ID='$del'";
             $result=mysqli_query($con, $query);
-            echo "<p>Booking for ID <b>$del</b> has been deleted.</p>";
-            mysqli_close($con);
+            echo "<br><center><p>Booking for ID <b>$del</b> has been deleted.</p></center>";
+            function sendEmail($to, $subject, $message) {
+                $headers = 'From: cocomelonswe@gmail.com' . "\r\n" .
+                    'Reply-To: cocomelonswe@gmail.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+
+                // You should use a proper SMTP library or service to send emails.
+                // The example below uses the built-in mail function.
+                if (mail($to, $subject, $message, $headers)) {
+                    return true; // Email sent successfully
+                } else {
+                    return false; // Email sending failed
+                }
             }
-        ?>
+            // Send cancellation email
+            $to = $row['Email'];
+            $subject = "Your Booking Has Been Canceled";
+            $message = "Hello {$row['Name']},\n\n";
+            $message .= "We regret to inform you that your booking (ID: $del) has been canceled.";
+
+            // Send the email
+            if (sendEmail($to, $subject, $message)) {
+                echo "<div class='success'><center><b>Cancellation email sent successfully.</b></center></div>";
+            } else {
+                echo "<div class='errormsg'><center><b>Cancellation email could not be sent.</b></center></div>";
+            }
+        }
+    ?>
     </section>
 </section>
+<script>
+    // Function to handle changes in the start time input
+    function handleStartTimeChange() {
+        const startTimeInput = document.getElementById('start-time');
+        const endTimeInput = document.getElementById('end-time');
+        const durationInput = document.getElementById('duration');
+
+        const selectedStartTime = new Date("2023-08-23T" + startTimeInput.value);
+        const duration = parseFloat(durationInput.value) || 1; // Default to 1 hour if duration is not set
+
+        if (!isNaN(selectedStartTime.getTime())) {
+            const newEndTime = new Date(selectedStartTime);
+            newEndTime.setHours(newEndTime.getHours() + duration);
+
+            // Format the end time to HH:MM
+            const endHours = newEndTime.getHours().toString().padStart(2, "0");
+            const endMinutes = newEndTime.getMinutes().toString().padStart(2, "0");
+            endTimeInput.value = endHours + ":" + endMinutes;
+        }
+    }
+
+    // Attach event listeners to the relevant input fields
+    document.getElementById("start-time").addEventListener("input", handleStartTimeChange);
+    document.getElementById("duration").addEventListener("input", handleStartTimeChange);
+
+    // Initially calculate and set the end time based on start time and duration
+    handleStartTimeChange();
+</script>
+
 </body>
 </html>
