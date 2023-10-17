@@ -496,7 +496,7 @@ body{
             <?php
                 $o=0;
                 echo '<option value="">Select Start Time</option>';
-                while ($o <= 47) {
+                while ($o <= 14) {
                     $date = new DateTime("08:00:00");
                     $date->add(new DateInterval("PT".($o*60)."M"));
                     echo '<option value="'. $date->format('H:i') .'" >'. $date->format('H:i') .'</option>';
@@ -517,7 +517,7 @@ body{
             <?php
                 $o=0;
                 echo '<option value="">Select End Time</option>';
-                while ($o <= 47) {
+                while ($o <= 15) {
                     $date = new DateTime("08:00:00");
                     $date->add(new DateInterval("PT".($o*60)."M"));
                     echo '<option value="'. $date->format('H:i') .'" >'. $date->format('H:i') .'</option>';
