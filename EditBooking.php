@@ -393,6 +393,22 @@ th {
     border-radius: 5px;
     padding: 10px;
 }
+
+.input-court label{
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input-court select{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: transparent;
+    font-size: 1em;
+    outline: none;
+}
 </style>
 <section>
     <?php
@@ -500,7 +516,27 @@ th {
                     $html .= "<p>Customer Name: ".$row['Name']."</p>";
                     $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
                     $html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']."></p>";
-                    $html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
+                    //$html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
+                    $startTime = $row['Book_StartTime'];
+                    $print_startTime = date('h:i A', strtotime($startTime));
+                    $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" onchange="handleStartTimeChange()">
+                    <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>
+                    <option value="08:00:00">08:00 AM</option>
+                    <option value="09:00:00">09:00 AM</option>
+                    <option value="10:00:00">10:00 AM</option>
+                    <option value="11:00:00">11:00 AM</option>
+                    <option value="12:00:00">12:00 PM</option>
+                    <option value="13:00:00">01:00 PM</option>
+                    <option value="14:00:00">02:00 PM</option>
+                    <option value="15:00:00">03:00 PM</option>
+                    <option value="16:00:00">04:00 PM</option>
+                    <option value="17:00:00">05:00 PM</option>
+                    <option value="18:00:00">06:00 PM</option>
+                    <option value="19:00:00">07:00 PM</option>
+                    <option value="20:00:00">08:00 PM</option>
+                    <option value="21:00:00">09:00 PM</option>
+                    <option value="22:00:00">10:00 PM</option>
+                    </select></div>';
                     $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
                     $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
                     $html .= "<p>Court: ".$row['Court']."</p>";
@@ -646,8 +682,7 @@ th {
             // Format the end time to HH:MM
             const endHours = newEndTime.getHours().toString().padStart(2, "0");
             const endMinutes = newEndTime.getMinutes().toString().padStart(2, "0");
-            endTimeInput.value = endHours + ":" + endMinutes;
-        }
+            endTimeInput.value = endHours + ":" + endMinutes;        }
     }
 
     // Attach event listeners to the relevant input fields
