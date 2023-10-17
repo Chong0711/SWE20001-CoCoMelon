@@ -462,8 +462,8 @@ html{
 <?php
 // Handle the search based on the selected date
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+     $user = $_SESSION['User_ID'];
     $search_date = $_POST["date"]; // Change "search_date" to "date"
-
     if (!empty($search_date)) {
         // Ensure that the date format is valid (you can customize the format)
         $date_format = "Y-m-d"; // Example format: "2023-09-27"
@@ -476,8 +476,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "SELECT Trainer_ID, Trainer_Name, Date, 
                 DATE_FORMAT(From_Time, '%h:%i %p') AS From_Time, 
                 DATE_FORMAT(To_Time, '%h:%i %p') AS To_Time, Status 
-                FROM timetable 
-                WHERE Date = '$formatted_date'
+                FROM timetable
+                LEFT JOIN personal_details ON timetable.Trainer_ID = personal_details.User_ID
+                WHERE Date = '$formatted_date' AND personal_details.User_ID = '$user'
                 ORDER BY Trainer_Name, STR_TO_DATE(CONCAT(Date, ' ', From_Time), '%Y-%m-%d %h:%i %p') ASC";
             
             $result = mysqli_query($con, $sql);
