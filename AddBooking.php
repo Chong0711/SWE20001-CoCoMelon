@@ -495,84 +495,10 @@ body{
 
             <label>Date</label>
             <div class="input-box">
-                <input type="date" name="date" required onclick="showTime(document.getElementById('court').value, this.value)">
+                <input type="date" name="date" required onchange="showTime(document.getElementById('court').value, this.value)">
             </div>
 
-            <div id="txtHint">
-            <!--<label>Start Time</label>
-            <div class="input-box">
-                <input type="time" name="stime" required>
-            </div>
-            <select name="stime">-->
-            <?php
-                /*$o=0;
-                echo '<option value="">Select Start Time</option>';
-                while ($o <= 14) {
-                    $date = new DateTime("08:00:00");
-                    $date->add(new DateInterval("PT".($o*60)."M"));
-                    echo '<option value="'. $date->format('H:i') .'" >'. $date->format('H:i') .'</option>';
-                    $o++;
-                }*/
-            ?>
-            <!--</select>-->
-            </div>
-            <?php
-            /*$con=mysqli_connect("localhost", "root", "", "cocomelon");
-            $query="select Book_StartTime, Book_EndTime from booking where Book_Date= '2023-10-16'";
-            $result = $con->query($query);
-
-            $booked_slots = array();
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // Store booking data in an array
-                    $booked_slots[] = array(
-                        'start' => $row['Book_StartTime'],
-                        'end' => $row['Book_EndTime']
-                    );
-                }
-            }
-
-            $total_slots = 24; // Total slots available in a day (adjust as needed)
-            $start_time = strtotime('8:00');
-            $end_time = strtotime('23:59');
-
-            $available_slots = array();
-
-            // Create an array of all time slots for the day
-            $all_time_slots = array();
-            for ($i = $start_time; $i <= $end_time; $i += 3600) { // 1800 seconds = 30 minutes
-                $time_slot = date("Y-m-d H:i:s", $i);
-                $all_time_slots[] = $time_slot;
-            }
-
-            foreach ($all_time_slots as $time_slot) {
-                $slot_booked = false;
-
-                foreach ($booked_slots as $booking) {
-                    $start = strtotime($booking['start']);
-                    $end = strtotime($booking['end']);
-
-                    if (strtotime($time_slot) >= $start && strtotime($time_slot) < $end) {
-                        $slot_booked = true;
-                        break;
-                    }
-                }
-
-                if (!$slot_booked) {
-                    $available_slots[] = $time_slot;
-                }
-            }
-            echo "Available Time Slots:<br>";
-
-            foreach ($available_slots as $time_slot) {
-                // Format the time slot for a more user-friendly display
-                $formatted_time_slot = date("h:i A", strtotime($time_slot));
-
-                echo $formatted_time_slot . "<br>";
-            }
-            ;*/
-            ?>
+            <div id="txtHint"></div>
 
             <?php 
             if(!ISSET($_SESSION['User_ID']))
@@ -633,7 +559,7 @@ body{
     }
 
     // Include both parameters in the URL
-    xmlhttp.open("GET", "getavailable.php?court=" + courtValue + "&date=" + dateValue, true);
+    xmlhttp.open("GET", "getavailable.php?court=" + courtValue + "&date=" + dateValue + "&redirected=true", true);
     xmlhttp.send();
     }
     

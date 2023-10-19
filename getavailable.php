@@ -55,7 +55,7 @@ $booked_slots = array();
             ?>
             <div class="input-court">
             <label>Start Time</label>
-            <select name="stime" >
+            <select name="stime">
             <?php
             echo '<option value="">Select Start Time</option>';
             foreach ($available_slots as $time_slot) {
@@ -70,7 +70,8 @@ $booked_slots = array();
             </select>
             </div>
 
-            <div class="input-court">
+            
+            <div class="input-court" <?php if (!isset($_GET['redirected'])) echo 'style="display: none;"'; ?>>
             <label>End Time</label>
             <select name="etime" >
             <?php
@@ -89,3 +90,5 @@ $booked_slots = array();
             <?php
             mysqli_close($con);
             ?>
+
+        
