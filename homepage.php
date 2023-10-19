@@ -551,16 +551,68 @@ section{
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Faizal</h3>
-            <span>Project Manager of SmashIT Badminton Academy</span>
+            <p>Trainer</p>
+            <h3>Mr. Faizal</h3>
+            <span> Expert coach dedicated to honing players' badminton skills and fostering their passion for the sport.</span>
         </div>
     </div>
 
     <div class="icons">
         <img src="profileicon.png" style="width:150px;height:150px";>
         <div class="infoaboutus">
-            <h3>Dr. Shan</h3>
-            <span>Finance Manager of SmashIT Badminton Academy</span>
+            <p>Trainer</p>
+            <h3>Mr. Shan</h3>
+            <span> Expert coach dedicated to honing players' badminton skills and fostering their passion for the sport.</span>
+        </div>
+    </div>
+
+
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <p>Developer Team</p>
+            <h3>Lau Joe Yee</h3>
+            <span>"At SmashIT Badminton Academy, our web application team is a \
+                dedicated group of professionals with a passion for turning ideas into dynamic web solutions."</span>
+        </div>
+    </div>
+    
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <p>Developer Team</p>
+            <h3>Chong Ming Herng</h3>
+            <span>"At SmashIT Badminton Academy, our web application team is a \
+                dedicated group of professionals with a passion for turning ideas into dynamic web solutions."</span>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <p>Developer Team</p>
+            <h3>Alicia Teh Jia Yi</h3>
+            <span>"At SmashIT Badminton Academy, our web application team is a \
+                dedicated group of professionals with a passion for turning ideas into dynamic web solutions."</span>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="profileicon.png" style="width:150px;height:150px";>
+        <div class="infoaboutus">
+            <p>Developer Team</p>
+            <h3>Yagulan Ramani</h3>
+            <span>"At SmashIT Badminton Academy, our dedicated web application 
+                team is a group of passionate professionals who bring your 
+                digital ideas to life. With a diverse blend of skills and 
+                expertise, we collaborate seamlessly to design, develop, 
+                and maintain cutting-edge web applications. Our team is 
+                committed to delivering innovative solutions, user-friendly 
+                interfaces, and top-notch performance. We pride ourselves on our 
+                ability to transform concepts into tangible, functional web applications 
+                that meet and exceed our clients' expectations. We're not just developers; 
+                we're your technology partners, working tirelessly to make your online 
+                dreams a reality."</span>
         </div>
     </div>
 </section>

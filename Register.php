@@ -211,6 +211,16 @@ body{
     font-weight: 500;
 }
 
+.tnc{
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: blue;
+    font-weight: 500;
+}
+
 .login-register{
     font-size: .9em;
     color: #44561c;
@@ -281,6 +291,8 @@ body{
     left: 50%;
     transform: translate(-50%, -50%) scale(1.15);
     width: 95%;
+    overflow: auto;
+    height:500px;
     max-width: 350px;
     background: #fff;
     padding: 25px;
@@ -289,7 +301,6 @@ body{
     box-shadow: 0px 2px 2px 5px rgba(0,0,0,0.05);
     transition: all 300ms ease-in-out;
 }
-
 .popup .content-pop h1{
     margin: 10px 0px;
     font-size: 25px;
@@ -448,19 +459,31 @@ body{
             </div>
 
             <div class="remember-forgot">
-                <label><input type="checkbox" required>I accept this Terms & Condition</label> <button id="openpop">Click here</button>   
-
+                <label><input type="checkbox" required>I accept this <button type="button" class="tnc" id="openpop">Terms & Condition</button></label>
             </div>
             <div class="popup" id="popup">
             <div class="overlay"></div>
             <div class="content-pop">
-                <h1>Terms & Condition</h1>
-                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
-             Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney 
-             College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going 
-             through the cites of the word in classical literature, discovered the undoubtable source.</p>
+                <h1>Terms & Conditions</h1>
+                    <p>
+                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.
+                        
+                        By registering an account, you agree to the following terms and conditions:
+                    </p>
+                    <ul>
+                        <p>Term 1: <br>This is the first condition.</p>
+                        <p>Term 2: <br>This is the second condition.</p>
+                        <p>Term 1: <br>This is the first condition.</p>
+                        <p>Term 2: <br>This is the second condition.</p>
+                        <p>Term 1: <br>This is the first condition.</p>
+                        <p>Term 2: <br>This is the second condition.</p>
+                        <!-- Add more terms here -->
+                    </ul>
+                    <p>
+                        Please read and understand these terms before proceeding with registration.
+                    </p>
              <div class="controls">
-                <button class="closebtn">Close</button>
+                <center><button type="button" class="closebtn">Close</button></center>
              </div>
             </div>
           </div>
