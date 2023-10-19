@@ -470,7 +470,7 @@ body{
                 <p><strong>Date:</strong> <?php echo $date; ?></p>
                 <p><strong>Start Time:</strong> <?php echo $startTime; ?></p>
                 <p><strong>End Time:</strong> <?php echo $endTime; ?></p>
-                <p><strong>Number of Booking Court:</strong> <?php echo $courts; ?></p>
+                <p><strong>Court No:</strong> <?php echo $courts; ?></p>
                 <?php
                 if ($trainerID != null) {
                     $query="select * from personal_details where User_ID='$trainerID'";

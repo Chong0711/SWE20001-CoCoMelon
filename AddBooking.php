@@ -624,8 +624,7 @@ body{
         document.getElementById("txtHint").innerHTML = "";
         return;
     }
-    console.log(courtValue);
-    console.log(dateValue);
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
