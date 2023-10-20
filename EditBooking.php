@@ -519,24 +519,60 @@ th {
                     //$html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
                     $startTime = $row['Book_StartTime'];
                     $print_startTime = date('h:i A', strtotime($startTime));
+                    
+                    
+
+                    $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."'";
+                    $resultBookedTimes = mysqli_query($con, $queryBookedTimes);
+                    $bookedTimeRanges = array();
+
+                    if ($resultBookedTimes) {
+                        while ($rowBookedTime = mysqli_fetch_assoc($resultBookedTimes)) {
+                            $bookedTimeRanges[] = [
+                                'start' => $rowBookedTime['Book_StartTime'],
+                                'end' => $rowBookedTime['Book_EndTime']
+                            ];
+                        }
+                    }
+
                     $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" onchange="handleStartTimeChange()">
-                    <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>
-                    <option value="08:00:00">08:00 AM</option>
-                    <option value="09:00:00">09:00 AM</option>
-                    <option value="10:00:00">10:00 AM</option>
-                    <option value="11:00:00">11:00 AM</option>
-                    <option value="12:00:00">12:00 PM</option>
-                    <option value="13:00:00">01:00 PM</option>
-                    <option value="14:00:00">02:00 PM</option>
-                    <option value="15:00:00">03:00 PM</option>
-                    <option value="16:00:00">04:00 PM</option>
-                    <option value="17:00:00">05:00 PM</option>
-                    <option value="18:00:00">06:00 PM</option>
-                    <option value="19:00:00">07:00 PM</option>
-                    <option value="20:00:00">08:00 PM</option>
-                    <option value="21:00:00">09:00 PM</option>
-                    <option value="22:00:00">10:00 PM</option>
-                    </select></div>';
+                    <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>';
+
+                    $availableTimes = array(
+                        "08:00:00" => "08:00 AM",
+                        "09:00:00" => "09:00 AM",
+                        "10:00:00" => "10:00 AM",
+                        "11:00:00" => "11:00 AM",
+                        "12:00:00" => "12:00 PM",
+                        "13:00:00" => "01:00 PM",
+                        "14:00:00" => "02:00 PM",
+                        "15:00:00" => "03:00 PM",
+                        "16:00:00" => "04:00 PM",
+                        "17:00:00" => "05:00 PM",
+                        "18:00:00" => "06:00 PM",
+                        "19:00:00" => "07:00 PM",
+                        "20:00:00" => "08:00 PM",
+                        "21:00:00" => "09:00 PM",
+                        "22:00:00" => "10:00 PM",
+                    );
+
+                    foreach ($availableTimes as $timeValue => $timeLabel) {
+                        // Check if the time or its adjacent hour is booked
+                        $isDisabled = false;
+
+                        foreach ($bookedTimeRanges as $bookedTimeRange) {
+                            if ($timeValue >= $bookedTimeRange['start'] && $timeValue < $bookedTimeRange['end']) {
+                                $isDisabled = true;
+                                break;
+                            }
+                        }
+
+                        $disabled = $isDisabled ? 'disabled' : '';
+
+                        $html .= '<option value="' . $timeValue . '" ' . $disabled . '>' . $timeLabel . '</option>';
+                    }
+
+                    $html .= '</select></div>';
                     $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
                     $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
                     $html .= "<p>Court: ".$row['Court']."</p>";
