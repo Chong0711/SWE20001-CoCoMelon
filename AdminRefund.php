@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
     $date = $_POST["date"];
 
     if (!empty($date)) {
-        $sql = "SELECT r.Refund_ID, r.Book_ID, r.User_ID, r.Bank, r.Bank_Name, r.Bank_Acc, r.Status 
+        $sql = "SELECT r.Refund_ID, r.Book_ID, b.User_ID, r.Bank, r.Bank_Name, r.Bank_Acc, r.Status, r.Refund_Date, b.Book_Date
                 FROM refund r
                 JOIN booking b ON r.Book_ID = b.Book_ID
                 JOIN personal_details u ON r.User_ID = u.User_ID
@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                 $html .= "<tr><th>Refund ID</th>
                           <th>Book ID</th>
                           <th>User ID</th>
+                          <th>Book Date</th>
+                          <th>Request Date</th>
                           <th>Bank</th>
                           <th>Name of Bank</th>
                           <th>Bank Account</th>
@@ -44,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                     $html .= "<td><input type='text' class='rid' name='rid' value='" . $row['Refund_ID'] . "' readonly></td>";
                     $html .= "<td>{$row['Book_ID']}</td>";
                     $html .= "<td>{$row['User_ID']}</td>";
+                    $html .= "<td>{$row['Book_Date']}</td>";
+                    $html .= "<td>{$row['Refund_Date']}</td>";
                     $html .= "<td>{$row['Bank']}</td>";
                     $html .= "<td>{$row['Bank_Name']}</td>";
                     $html .= "<td>{$row['Bank_Acc']}</td>";
