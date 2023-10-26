@@ -211,6 +211,9 @@ body{
  /*Dropdown Menu*/
 
 /*navigation bar*/
+.row{
+    margin-bottom: 150px;
+}
 .row:after {
   content: "";
   display: table;
