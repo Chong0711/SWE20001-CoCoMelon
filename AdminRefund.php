@@ -89,6 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                 <a href="membership.php">Membership Management</a>
                 <a href="adminedittimetablestatus.php">Trainer Timetable</a>
                 <a href="adminmanageacc.php">Manage Account</a>
+                <a href="adminrefund.php">Refund Request</a>
+                <a href="adminfeedback.php">View Feedback</a>
             </div>
         </div>
 
@@ -407,10 +409,10 @@ label{
                 <input type="date" name="date" id="search_date" class="search-option" required>
                 <center>
                     <button type="submit" class="btn" href="#result">Search</button>
+                    <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Back To Home</button>
                 </center>
             </form>
         </div>
-        <div><center><button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Return</button></center></div>
     </section>
     <section>
         <div class='search-results' id="result">
