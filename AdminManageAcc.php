@@ -27,6 +27,8 @@ session_start();
                 <a href="membership.php">Membership Management</a>
                 <a href="adminedittimetablestatus.php">Trainer Timetable</a>
                 <a href="adminmanageacc.php">Manage Account</a>
+                <a href="adminrefund.php">Refund Request</a>
+                <a href="adminfeedback.php">View Feedback</a>
             </div>
         </div>
 
@@ -373,7 +375,7 @@ section{
             $number    = preg_match('@[0-9]@', $psw);
 
             if(!$uppercase || !$lowercase || !$number || strlen($psw) < 8) {
-            echo '<div class="error">Password should be at least 8 characters in length and should include at least one upper case letter and one number.</div>';
+            echo '<div class="error">Password should be at least 8 characters in length and should include at least one uppercase letter, lowercase letter and one number.</div>';
             } else {
                 try {
                 // Insert the new user into the personal_details table
