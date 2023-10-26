@@ -106,7 +106,7 @@ body{
     user-select: none;
     justify-content: space-between;
 }
-
+/*navigation bar*/
 .navigation a{
     position: relative;
     font-size: 1.1em;
@@ -135,6 +135,79 @@ body{
     transform: scaleX(1);
 }
 
+.navigation .btnlogin-popup{
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #44561c;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #44561c;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-left: 40px;
+    transition: .5s;
+}
+
+.navigation .btnlogin-popup:hover{
+    background: #fff;
+    color: #162938;
+}
+/*Dropdown Menu*/
+/* Dropdown container */
+
+.navigation a:nth-child(4) {
+   margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+.dropdown {
+   margin-right: 20px;
+   position: relative;
+   display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+   background-color: transparent; /* Set button background to transparent */
+   border: none;
+   cursor: pointer;
+   color: #44561c;
+   font-size: 1.1em;
+   font-weight: 500;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+   display: none;
+   position: absolute;
+   background-color: transparent; /* Set dropdown background to transparent */
+   min-width: 160px;
+   z-index: 1;
+   top: 100%;
+   left: 0; 
+   margin-left: -50px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+   color: #44561c;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: #44561c;
+   color: white;
+}
+
+/* Show the dropdown content when the dropdown button is hovered over */
+.dropdown:hover .dropdown-content {
+   display: block;
+}
+/*Dropdown Menu*/
 .wrapper {
     position: relative;
     width: 400px;
@@ -283,61 +356,6 @@ body{
     border-radius: 5px;
     padding: 10px;
 }
-/*Dropdown Menu*/
-/* Dropdown container */
-
-.navigation a:nth-child(4) {
-   margin-right: 30px; /* Adjust the margin value as needed */
-}
-
-.dropdown {
-   margin-right: 20px;
-   position: relative;
-   display: inline-block;
-}
-
-/* Dropdown button */
-.dropbtn {
-   background-color: transparent; /* Set button background to transparent */
-   border: none;
-   cursor: pointer;
-   color: #44561c;
-   font-size: 1.1em;
-   font-weight: 500;
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-   display: none;
-   position: absolute;
-   background-color: transparent; /* Set dropdown background to transparent */
-   z-index: 1;
-   top: 100%;
-   left: 0; 
-   margin-left: -50px;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-   font-size: 16px;
-   color: #44561c;
-   padding: 12px 14px;
-   width: 117px;
-   text-decoration: none;
-   display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-   background-color: #44561c;
-   color: white;
-}
-
-/* Show the dropdown content when the dropdown button is hovered over */
-.dropdown:hover .dropdown-content {
-   display: block;
-}
-/*Dropdown Menu*/
 section{
     padding: 10px 0px 0px 0px;
     overflow: auto;
@@ -346,7 +364,7 @@ section{
 
 <div class="wrapper">
     <div class="form-box register">
-        <h2>Registration</h2><br>
+        <h2>Account Management</h2><br>
         <?php
         if(isset($_POST["signup"]))
         {
