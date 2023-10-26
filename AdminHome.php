@@ -23,12 +23,14 @@ $con=mysqli_connect("localhost", "root", null, "cocomelon");
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
-		<a href="adminhome.php">Admin Homepage</a>
+                <a href="adminhome.php">Admin Homepage</a>
                 <a href="addbooking.php">Add Booking</a>
                 <a href="editbooking.php">Check Booking</a>
                 <a href="membership.php">Membership Management</a>
                 <a href="adminedittimetablestatus.php">Trainer Timetable</a>
                 <a href="adminmanageacc.php">Manage Account</a>
+                <a href="adminrefund.php">Refund Request</a>
+                <a href="adminfeedback.php">View Feedback</a>
             </div>
         </div>
 
@@ -100,7 +102,7 @@ body{
 }
 
 .logo{
-	margin-right: 100px;
+    margin-right: 100px;
     justify-content: space-between;
 }
 
@@ -209,10 +211,16 @@ body{
  /*Dropdown Menu*/
 
 /*navigation bar*/
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  margin-top: -250px;
+}
 
 .wrapper {
     position: relative;
-    width: 400px;
+    width: 300px;
     height: auto; /*changed the form box's height as auto*/
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
@@ -225,10 +233,10 @@ body{
     overflow: hidden;
     transform: scale(1);
     transition: transform .5s ease, height .2s ease;
-	margin-top: 150px;
+    margin-top: 20px;
 }
 
-.wrapper .form-box{
+.form-box{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -259,50 +267,57 @@ span {
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 </style>
 <!-- Admin Dashboard -->
 <span></span>
+<div class="row">
 <div class="wrapper">
-    <div class="form-box addbooking">
+    <div class="form-box">
         <form method="post" action="addbooking.php">
-            <h2>Add Booking</h2>
-            <button type="submit" name='add' class="btn">Click</button>
+            <h2>Add <br>Booking</h2>
+            <button type="submit" class="btn">Click</button>
         </form>
     </div>
 </div>
 <span></span>
 <div class="wrapper">
-    <div class="form-box editbooking">
+    <div class="form-box">
         <form method="post" action="editbooking.php">
             <h2>Check Booking</h2>
-            <button type="submit" name='add' class="btn">Click</button>
+            <button type="submit" class="btn">Click</button>
         </form>
     </div>
 </div>
+</div>
+
 <span></span>
+<div class="row">
 <div class="wrapper">
-    <div class="form-box membership">
+    <div class="form-box">
         <form method="post" action="membership.php">
             <h2>Membership Management</h2>
-            <button type="submit" name='add' class="btn">Click</button>
+            <button type="submit" class="btn">Click</button>
         </form>
     </div>
 </div>
 <span></span>
 <div class="wrapper">
-    <div class="form-box timetable">
+    <div class="form-box">
         <form method="post" action="adminedittimetablestatus.php">
             <h2>Trainer Timetable</h2>
-            <button type="submit" name='add' class="btn">Click</button>
+            <button type="submit" class="btn">Click</button>
         </form>
     </div>
 </div>
+</div>
+
 <span></span>
+<div class="row">
 <div class="wrapper">
-    <div class="form-box timetable">
+    <div class="form-box">
         <form method="post" action="adminmanageacc.php">
             <h2>Manage Account</h2>
             <button type="submit" name='add' class="btn">Click</button>
@@ -310,5 +325,28 @@ span {
     </div>
 </div>
 <span></span>
+<div class="wrapper">
+    <div class="form-box">
+        <form method="post" action="adminrefund.php">
+            <h2> Refund Request</h2>
+            <button type="submit" class="btn">Click</button>
+        </form>
+    </div>
+</div>
+</div>
+<span></span>
+<div class="row">
+<div class="wrapper">
+    <div class="form-box">
+        <form method="post" action="adminfeedback.php">
+            <h2>Customer Feedback</h2>
+            <button type="submit" name='add' class="btn">Click</button>
+        </form>
+    </div>
+</div>
+<span></span>
+</div>
+<span></span>
+<section><br></section>
 </body>
 </html>
