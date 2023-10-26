@@ -515,13 +515,52 @@ th {
                     $html .= "<p>Customer ID: ".$row['Cust_ID']."</p>";
                     $html .= "<p>Customer Name: ".$row['Name']."</p>";
                     $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
-                    $html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']."></p>";
+                    //$html .= "<p>Court: ".$row['Court']."</p>";
+                    /*$html .='<div class="input-court">
+                <label>Court No:</label>
+                <select id="court" name="court">
+                <option value="' . $row['Court'] . '">' . $row['Court'] . '</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option> 
+                    <option value="3">3</option> 
+                    <option value="4">4</option> 
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option> 
+                    <option value="8">8</option> 
+                    <option value="9">9</option> 
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option> 
+                    <option value="13">13</option> 
+                    <option value="14">14</option> 
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option> 
+                    <option value="18">18</option> 
+                    <option value="19">19</option> 
+                    <option value="20">20</option>
+                </select>
+            </div>';*/
+                    $html .= '<div class="input-court">
+                    <label>Court No:</label>
+                    <select id="court" name="court">';
+
+                    // Loop to generate the options
+                    for ($i = 1; $i <= 20; $i++) {
+                        $selected = ($i == $row['Court']) ? 'selected' : '';
+                        $html .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+                    }
+
+                    $html .= '</select></div>';
+                    $html .= '<p>Date: <input type="date" name="mdate" id="edit-date" value="' . $row['Book_Date'] . '" onchange="showTime(document.getElementById(\'court\').value, this.value)"></p>';
+                    //$html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']." ></p>";
+                    $html .= '<div id="txtHint"></div>';
+                    //$html .= '<p id="selectedDateInfo"></p>';
                     //$html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
+                    $html .= '<div id="time-select-container">';
                     $startTime = $row['Book_StartTime'];
                     $print_startTime = date('h:i A', strtotime($startTime));
-                    
-                    
-
                     $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."'";
                     $resultBookedTimes = mysqli_query($con, $queryBookedTimes);
                     $bookedTimeRanges = array();
@@ -535,7 +574,7 @@ th {
                         }
                     }
 
-                    $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" onchange="handleStartTimeChange()">
+                    $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" name="mstarttime" onchange="handleStartTimeChange()">
                     <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>';
 
                     $availableTimes = array(
@@ -573,9 +612,10 @@ th {
                     }
 
                     $html .= '</select></div>';
+                    
                     $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
+                    $html .= '</div>';
                     $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
-                    $html .= "<p>Court: ".$row['Court']."</p>";
                     $html .= "<p>Status: ".$row['Status']."</p>";
                     $html .= "<p>Amount: ".$row['Amount']."</p>";
                     $html .= "<button type='submit' class='btn' name='update'>Update Appointment</button>";
@@ -621,7 +661,7 @@ th {
         if(isset($_POST["update"])){
             $mid=$_POST["mid"]; 
             $mdate=$_POST["mdate"]; 
-            $mstarttime=$_POST["mstarttime"]; 
+            $mstarttime=$_POST["mstarttime"] ?? null; 
             $mendtime=$_POST["mendtime"];
 
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
@@ -722,11 +762,32 @@ th {
     }
 
     // Attach event listeners to the relevant input fields
-    document.getElementById("start-time").addEventListener("input", handleStartTimeChange);
-    document.getElementById("duration").addEventListener("input", handleStartTimeChange);
+    document.getElementById("start-time").addEventListener("click", handleStartTimeChange);
+    document.getElementById("duration").addEventListener("click", handleStartTimeChange);
 
     // Initially calculate and set the end time based on start time and duration
     handleStartTimeChange();
+
+    
+
+function showTime(courtValue, dateValue) {
+    console.log(courtValue);
+    console.log(dateValue);
+
+    var container = document.getElementById("time-select-container");
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    }
+
+    // Include both parameters in the URL
+    xmlhttp.open("GET", "getavailable.php?court=" + courtValue + "&date=" + dateValue);
+    xmlhttp.send();
+    container.style.display = "none";
+    }
+
 </script>
 
 </body>
