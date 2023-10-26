@@ -610,8 +610,9 @@ th {
                         }
 
                         $disabled = $isDisabled ? 'disabled' : '';
+                        $colorStyle = $isDisabled ? 'style="color: red;"' : '';
 
-                        $html .= '<option value="' . $timeValue . '" ' . $disabled . '>' . $timeLabel . '</option>';
+                        $html .= '<option value="' . $timeValue . '" ' . $disabled . ' ' . $colorStyle . '>' . $timeLabel . '</option>';
                     }
 
                     $html .= '</select></div>';
@@ -666,9 +667,10 @@ th {
             $mdate=$_POST["mdate"]; 
             $mstarttime=$_POST["mstarttime"] ?? null; 
             $mendtime=$_POST["mendtime"];
+            $mcourt=$_POST["court"];
 
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime' WHERE Book_ID='$mid'";
+            $sql="update booking set Book_Date='$mdate', Book_StartTime='$mstarttime', Book_EndTime='$mendtime', Court='$mcourt' WHERE Book_ID='$mid'";
             $result=mysqli_query($con, $sql);
             echo "<br><div class='success'><center><b>Record Updated.</b></center></div>";
             if (mysqli_query($con, $sql)) {
