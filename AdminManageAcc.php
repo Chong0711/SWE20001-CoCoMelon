@@ -21,6 +21,7 @@ session_start();
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
+                <a href="adminhome.php">Admin Homepage</a>
                 <a href="addbooking.php">Add Booking</a>
                 <a href="editbooking.php">Check Booking</a>
                 <a href="membership.php">Membership Management</a>
