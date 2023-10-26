@@ -27,11 +27,14 @@ if (!$con) {
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
+                <a href="adminhome.php">Homepage</a>
                 <a href="addbooking.php">Add Booking</a>
                 <a href="editbooking.php">Check Booking</a>
                 <a href="membership.php">Membership Management</a>
                 <a href="adminedittimetablestatus.php">Trainer Timetable</a>
                 <a href="adminmanageacc.php">Manage Account</a>
+                <a href="adminrefund.php">Refund Request</a>
+                <a href="adminfeedback.php">View Feedback</a>
             </div>
         </div>
 
@@ -201,7 +204,7 @@ body{
 /*Dropdown Menu*/
 /*navigation bar*/
 .btn{
-    width: 35%;
+    width: 200px;
     height: 45px;
     background: #44561c;
     border: none;
@@ -214,6 +217,23 @@ body{
     margin-top: 20px;
 }
 
+.btn.cancel {
+  background-color: #D92121;
+  width: 200px;
+}
+/* Button used to open the contact form - fixed at the bottom of the page */
+.editbtn {
+    width: 100%;
+    height: 45px;
+    background: #44561c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
 .search-container {
     padding: 100px 0px 0px 0px;
     display: flex;
@@ -271,20 +291,6 @@ th {
     background-color: #f2f2f2;
 }
 /* table view */
-
-/* Button used to open the contact form - fixed at the bottom of the page */
-.editbtn {
-    width: 100%;
-    height: 45px;
-    background: #44561c;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    color: #fff;
-    font-weight: 500;
-}
 
 .heading{
     text-align: center;
@@ -391,7 +397,8 @@ label{
                 <option value="phone">Phone Number</option>
             </select>
             <input type="text" name="search_query" id="search_query" class="search-option">
-            <center><button type="submit" class="btn" a href="#result">Search</button></center>
+            <center><button type="submit" class="btn" a href="#result">Search</button>
+            <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Back To Home</button></center>
         </form>
     </div>
     </section>
@@ -586,6 +593,11 @@ function closeForm() {
 
 // Call the function when the page loads to initialize table visibility
 window.onload = toggleTables;
+</script>
+<script type="text/javascript">
+    document.getElementById("cancelbtn").onclick = function () {
+        location.href = "adminhome.php";
+    };
 </script>
 </body>
 </html>

@@ -67,11 +67,14 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
                         echo "<div class='dropdown'>";
                         echo "<button class='dropbtn'><b>Services</b></button>";
                         echo "<div class='dropdown-content'>";
+                        echo "<a href='adminhome.php'>Homepage</a>";
                         echo "<a href='addbooking.php'>Add Booking</a>";
                         echo "<a href='editbooking.php'>Check Booking</a>";
                         echo "<a href='membership.php'>Membership Management</a>";
                         echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
-                        echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                        echo "<a href='adminmanageacc.php'>Manage Account</a>";
+                        echo "<a href='adminrefund.php'>Refund Request</a>";
+                        echo "<a href='adminfeedback.php'>View Feedback</a></div></div>";
                     }
                 echo "<div class='dropdown'>
                 <button class='dropbtn'><b>".$row['Name']."</b></button>
