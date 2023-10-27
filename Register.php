@@ -20,6 +20,7 @@ session_start();
         <a href="homepage.php#home"><b>Home</b></a>
         <a href="homepage.php#about"><b>About</b></a>
         <a href="homepage.php#contact"><b>Contact</b></a>
+        <a href="FeedbackForm.php"><b>Feedback</b></a>
     </nav>
 </header>
 
