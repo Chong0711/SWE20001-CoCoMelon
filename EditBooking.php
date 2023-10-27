@@ -36,6 +36,7 @@ $bookingNotFound = false; // Initialize a flag to check if booking is not found
             echo "<a href='homepage.php#home'><b>Home</b></a>";
             echo "<a href='homepage.php#about'><b>About</b></a>";
             echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+            echo "<a href='FeedbackForm.php'><b>Feedback</b></a>";
             echo "<div class='dropdown'>";
             echo "<button class='dropbtn'><b>Services</b></button>";
             echo "<div class='dropdown-content'>";
