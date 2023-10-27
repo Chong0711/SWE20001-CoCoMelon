@@ -35,7 +35,6 @@ if (!$con) {
                 <a href="customertimetable.php">Trainer Timetable</a>
                 <a href="addbooking.php">Book Court Now!</a>
                 <a href="editbooking.php">Any Changes To Bookings</a>
-                <a href='FeedbackForm.php'><b>Feedback</b></a>
             </div>
         </div>
         <?php 
@@ -146,8 +145,8 @@ body{
 /*Dropdown Menu*/
 /* Dropdown container */
 
-.navigation a:nth-child(3) {
-   margin-right: 40px; /* Adjust the margin value as needed */
+.navigation a:nth-child(4) {
+   margin-right: 30px; 
 }
 
 .dropdown {
