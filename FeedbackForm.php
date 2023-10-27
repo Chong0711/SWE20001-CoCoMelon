@@ -5,9 +5,14 @@ $username = "root";
 $password = null;
 $dbname = "cocomelon";
 $con = new mysqli($servername, $username, $password, $dbname);
-$query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
-$result = mysqli_query($con, $query);
-$row = mysqli_fetch_assoc($result);
+
+if (isset($_SESSION['User_ID'])) {
+    $query = "SELECT * FROM personal_details WHERE User_ID = '" . $_SESSION['User_ID'] . "'";
+    $result = mysqli_query($con, $query);
+    $row = mysqli_fetch_assoc($result);
+} else {
+
+}
 ?>
 
 <!DOCTYPE html>
