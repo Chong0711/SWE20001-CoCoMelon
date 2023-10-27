@@ -28,6 +28,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
             echo "<a href='homepage.php#home'><b>Home</b></a>";
             echo "<a href='homepage.php#about'><b>About</b></a>";
             echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+            echo "<a href='FeedbackForm.php'><b>Feedback</b></a>";
             echo "<div class='dropdown'>";
             echo "<button class='dropbtn'><b>Services</b></button>";
             echo "<div class='dropdown-content'>";
@@ -180,8 +181,8 @@ body{
 
 /*Dropdown Menu*/
 /* Dropdown container*/
-.navigation a:nth-child(3) {
-   margin-right: 40px;
+.navigation a:nth-child(4) {
+   margin-right: 30px;
 }
 
 .dropdown {
