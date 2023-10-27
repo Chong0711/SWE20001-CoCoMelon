@@ -447,6 +447,7 @@ section{
                     <a href='addbooking.php'>Book Court Now!</a>
                 </div>
             </div>";
+                echo "<a href='FeedbackForm.php'><b>Feedback</b></a>";
                 echo "<a href='login.php'><b>Login</b></a>";
             }else{
                 $servername = "localhost";
