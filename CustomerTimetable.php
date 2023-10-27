@@ -26,7 +26,8 @@ if (!$con) {
     <nav class="navigation">
         <a href="homepage.php#home"><b>Home</b></a>
         <a href="homepage.php#about"><b>About</b></a>
-        <a href="homepage.php#contact"><b>Contact</b></a>  
+        <a href="homepage.php#contact"><b>Contact</b></a>
+        <a href='FeedbackForm.php'><b>Feedback</b></a>
         <div class="dropdown">
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
@@ -34,6 +35,7 @@ if (!$con) {
                 <a href="customertimetable.php">Trainer Timetable</a>
                 <a href="addbooking.php">Book Court Now!</a>
                 <a href="editbooking.php">Any Changes To Bookings</a>
+                <a href='FeedbackForm.php'><b>Feedback</b></a>
             </div>
         </div>
         <?php 
