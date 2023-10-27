@@ -463,6 +463,7 @@ section{
                         <a href='customertimetable.php'>Trainer Timetable</a>
                         <a href='addbooking.php'>Book Court Now!</a>
                         <a href='editbooking.php'>Any Changes To Bookings</a>
+                        <a href='refundform.php'>Refund</a>
                     </div>
                 </div>";
                 echo "<div class='dropdown'>
