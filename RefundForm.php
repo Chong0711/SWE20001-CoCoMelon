@@ -431,8 +431,8 @@ body{
                 $bank_acc_number = $_POST['bank_acc_number'];
                 $bank_acc_name = $_POST['bank_acc_name'];
 
-                $insert_query = "INSERT INTO refund (User_ID, Book_ID, Bank, Bank_Name, Bank_Acc) 
-                            VALUES ('$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number')";
+                $insert_query = "INSERT INTO refund (User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date) 
+                            VALUES ('$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW())";
 
                 if ($con->query($insert_query) === TRUE) {
                     echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
