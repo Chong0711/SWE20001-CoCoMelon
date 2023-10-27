@@ -33,12 +33,14 @@ session_start();
                     echo "<a href='homepage.php#home'><b>Home</b></a>";
                     echo "<a href='homepage.php#about'><b>About</b></a>";
                     echo "<a href='homepage.php#contact'><b>Contact</b></a>";
+                    echo "<a href='FeedbackForm.php'><b>Feedback</b></a>";
                     echo "<div class='dropdown'>";
                     echo "<button class='dropbtn'><b>Services</b></button>";
                     echo "<div class='dropdown-content'>";
                     echo "<a href='customertimetable.php'>Trainer Timetable</a>";
                     echo "<a href='addbooking.php'>Book Court Now!</a>";
                     echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
+                    echo "<a href='refundform.php'>Refund</a>";
                     echo "</div></div>";
                 }else if($row['Roles'] == 'trainer'){
                     echo "<a href='trainerhome.php#home' class='t'><b>Home</b></a>";
