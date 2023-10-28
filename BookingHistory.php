@@ -30,6 +30,7 @@ $con = new mysqli($servername, $username, $password, $dbname);
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
+                <a href="faq.php">FAQ</a>
                 <a href="customertimetable.php">Trainer Timetable</a>
                 <a href="addbooking.php">Book Court Now!</a>
                 <a href="editbooking.php">Any Changes To Bookings</a>
@@ -228,7 +229,7 @@ body{
 }
 
 .btn{
-    width: 150px;
+    width: 200px;
     height: 45px;
     background: #44561c;
     border: none;
@@ -240,6 +241,10 @@ body{
     font-weight: 500;
     margin-top: 20px;
 }
+.btn.cancel{
+    background: #264B56;
+}
+
 /* table view */
 table {
     width: 100%;
@@ -433,7 +438,7 @@ select.search-option{
                             echo "<div class='search-results'>$html</div>";
                         } else {
                             // No results found, display a message
-                            echo "<div class='search-results msg'><br><b>No members found.</b></div>";
+                            echo "<div class='search-results msg'><br><b>No records found.</b></div>";
                         }
                     } else {
                         echo "Error: " . mysqli_error($con);
@@ -444,7 +449,7 @@ select.search-option{
         ?>
 
     <section>
-        <center><button class="btn" onclick="location.href='homepage.php'">Back to Home</button></center>
+        <center><button class="btn cancel" onclick="location.href='homepage.php'">Back to Home</button></center>
     </section>
 </div>
 </section>
