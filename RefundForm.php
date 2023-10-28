@@ -434,24 +434,29 @@ body{
                 $bank_acc_number = $_POST['bank_acc_number'];
                 $bank_acc_name = $_POST['bank_acc_name'];
 
-                $insert_query = "INSERT INTO refund (Refund_ID, User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date, Status) 
-                            VALUES ('','$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW(), 'pending')";
+                $sql = "INSERT INTO refund (Refund_ID, User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date, Status) 
+                        VALUES ('','$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW(), 'pending'); 
+                        UPDATE refund SET Refund_ID = concat( Refund_Str, Refund_No ) ";
 
-                $updatequery = "UPDATE refund SET Refund_ID = CONCAT(Refund_Str, Refund_No";
-                if ($con->query($insert_query) === TRUE) {
-                   $last_insert_id = $con->insert_id;
-
-                    // Update the Refund_ID using a subquery
-                    $updatequery = "UPDATE refund SET Refund_ID = CONCAT('Refund_Str', '$last_insert_id') WHERE Refund_ID = '$last_insert_id'";
-                    if ($con->query($updatequery) === TRUE) {
-                        echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
-                    } else {
-                        echo "Error updating Refund_ID: " . $con->error;
+                    if (mysqli_multi_query($con, $sql)) {
+                        do {
+                            /* store first result set */
+                            if ($result = mysqli_store_result($con)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                }
+                                mysqli_free_result($con);
+                            }
+                            /* print divider */
+                            if (mysqli_more_results($con)) {
+                            }
+                        } while (mysqli_next_result($con));
+                            echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
                     }
-                } else {
-                    echo "Error: " . $con->error;
+                    else
+                    {
+                        echo "Error: " . $con->error;
+                    }
                 }
-              }
             ?>
 
             <div class="input-userid">
@@ -501,8 +506,4 @@ body{
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 </body>
-</html>
-
-
-    </body>
 </html>

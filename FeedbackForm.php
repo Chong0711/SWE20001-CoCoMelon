@@ -415,15 +415,46 @@ body{
                     $phone_num = $_POST['phone_num'];
                     $subject = $_POST['subject'];
                     $description = $_POST['description'];
+                    $user_id = $_SESSION['User_ID'] ?? null;
 
-                     $insert_query = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date) 
-                    VALUES ('$email', '$phone_num', '$subject', '$description', NOW())";
+                    if($user_id != null){
+                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date, User_ID) 
+                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW(), '$user_id'); 
+                                UPDATE feedback SET Feedback_ID = concat( Feedback_Str, Feedback_No ) ";
+                    }
+                    else{
+                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date) 
+                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW()); 
+                                UPDATE feedback SET Feedback_ID = concat( Feedback_Str, Feedback_No ) ";
+                    }
 
-                    if ($con->query($insert_query) === TRUE) {
-                        echo "<div class='success'><center><b>Feedback submitted successfully.</b></center></div>";
-                    } else {
+                    if (mysqli_multi_query($con, $sql)) {
+                        do {
+                            /* store first result set */
+                            if ($result = mysqli_store_result($con)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                }
+                                mysqli_free_result($con);
+                            }
+                            /* print divider */
+                            if (mysqli_more_results($con)) {
+                            }
+                        } while (mysqli_next_result($con));
+                            echo "<div class='success'><center><b>Feedback submitted successfully.</b></center></div>";
+                    }
+                    else
+                    {
                         echo "Error: " . $con->error;
                     }
+
+                    //  $insert_query = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date) 
+                    // VALUES ('$email', '$phone_num', '$subject', '$description', NOW())";
+
+                    // if ($con->query($insert_query) === TRUE) {
+                    //     echo "<div class='success'><center><b>Feedback submitted successfully.</b></center></div>";
+                    // } else {
+                    //     echo "Error: " . $con->error;
+                    // }
               }
             ?>
 
