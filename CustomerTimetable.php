@@ -32,9 +32,11 @@ if (!$con) {
         <button class="dropbtn"><b>Services</b></button>
             <div class="dropdown-content">
                 <!-- Add links or content for the dropdown here -->
+                <a href="faq.php">FAQ</a>
                 <a href="customertimetable.php">Trainer Timetable</a>
                 <a href="addbooking.php">Book Court Now!</a>
                 <a href="editbooking.php">Any Changes To Bookings</a>
+                <a href="refundform.php">Refund</a>
             </div>
         </div>
         <?php 
@@ -199,7 +201,7 @@ body{
 /*Dropdown Menu*/
 /*navigation bar*/
 .btn{
-    width: 100%;
+    width: 200px;
     height: 45px;
     background: #44561c;
     border: none;
@@ -345,7 +347,7 @@ html{
                 }
             ?>
         </select>
-
+        <br>
         <button type="submit" class="btn">Search</button>
 </form>
 </div>
