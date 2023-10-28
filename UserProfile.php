@@ -55,7 +55,7 @@ session_start();
                     echo "<a href='editbooking.php'>Check Booking</a>";
                     echo "<a href='membership.php'>Membership Management</a>";
                     echo "<a href='adminedittimetablestatus.php'>Trainer Timetable</a>";
-                    echo "<a href='adminmanageacc.php'>Manage Account</a></div></div>";
+                    echo "<a href='adminmanageacc.php'>Manage Account</a>";
                     echo "<a href='adminrefund.php'>Refund Request</a>";
                     echo "<a href='adminfeedback.php'>View Feedback</a></div></div>";
                 }
