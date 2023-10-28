@@ -445,6 +445,7 @@ section{
                 echo "<div class='dropdown'>
             <button class='dropbtn'><b>Services</b></button>
                 <div class='dropdown-content'>
+                    <a href='faq.php'>FAQ</a>
                     <a href='addbooking.php'>Book Court Now!</a>
                 </div></div>";
                 echo "<a href='login.php'><b>Login</b></a>";
@@ -460,6 +461,7 @@ section{
                 echo "<div class='dropdown'>
                 <button class='dropbtn'><b>Services</b></button>
                     <div class='dropdown-content'>
+                        <a href='faq.php'>FAQ</a>
                         <a href='customertimetable.php'>Trainer Timetable</a>
                         <a href='addbooking.php'>Book Court Now!</a>
                         <a href='editbooking.php'>Any Changes To Bookings</a>
