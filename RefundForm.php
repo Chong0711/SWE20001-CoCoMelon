@@ -434,11 +434,20 @@ body{
                 $bank_acc_number = $_POST['bank_acc_number'];
                 $bank_acc_name = $_POST['bank_acc_name'];
 
-                $insert_query = "INSERT INTO refund (User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date) 
-                            VALUES ('$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW())";
+                $insert_query = "INSERT INTO refund (Refund_ID, User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date, Status) 
+                            VALUES ('','$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW(), 'pending')";
 
+                $updatequery = "UPDATE refund SET Refund_ID = CONCAT(Refund_Str, Refund_No";
                 if ($con->query($insert_query) === TRUE) {
-                    echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
+                   $last_insert_id = $con->insert_id;
+
+                    // Update the Refund_ID using a subquery
+                    $updatequery = "UPDATE refund SET Refund_ID = CONCAT('Refund_Str', '$last_insert_id') WHERE Refund_ID = '$last_insert_id'";
+                    if ($con->query($updatequery) === TRUE) {
+                        echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
+                    } else {
+                        echo "Error updating Refund_ID: " . $con->error;
+                    }
                 } else {
                     echo "Error: " . $con->error;
                 }
