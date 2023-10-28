@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                 <form action='adminrefund.php' method='post'><table>";
                 $html .= "<tr><th>Feedback ID</th>
                           <th>Feedback Date</th>
-                          <th>User ID</th>
                           <th>Email</th>
                           <th>Phone Number</th>
                           <th>Subject</th>
@@ -41,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                     $html .= "<tr>";
                     $html .= "<td>{$row['Feedback_ID']}</td>";
                     $html .= "<td>{$row['Feedback_Date']}</td>";
-                    $html .= "<td>{$row['User_ID']}</td>";
                     $html .= "<td>{$row['Email']}</td>";
                     $html .= "<td>{$row['Phone_Num']}</td>";
                     $html .= "<td>{$row['Subject']}</td>";
