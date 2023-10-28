@@ -218,7 +218,7 @@ body{
 }
 
 .btn.cancel {
-  background-color: #D92121;
+  background-color: #264B56;
   width: 200px;
 }
 /* Button used to open the contact form - fixed at the bottom of the page */
