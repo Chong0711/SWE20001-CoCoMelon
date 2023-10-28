@@ -60,6 +60,7 @@ $bookingResult = mysqli_query($con, $query1);
                         echo "<a href='customertimetable.php'>Trainer Timetable</a>";
                         echo "<a href='addbooking.php'>Book Court Now!</a>";
                         echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
+                        echo "<a href='refundform.php'>Refund</a>";
                         echo "</div></div>";
                     }else if($row['Roles'] == 'trainer'){
                         echo "<a href='trainerhome.php#home'><b>Home</b></a>";
@@ -293,7 +294,7 @@ body{
 /*Dropdown Menu*/
 /* Dropdown container */
 
-.navigation a:nth-child(3) {
+.navigation a:nth-child(4) {
    margin-right: 40px; /* Adjust the margin value as needed */
 }
 
