@@ -439,15 +439,14 @@ section{
         <a href="#home"><b>Home</b></a>
         <a href="#about"><b>About</b></a>
         <a href="#contact"><b>Contact</b></a>  
+       <a href='FeedbackForm.php'><b>Feedback</b></a>
             <?php 
             if(!ISSET($_SESSION['User_ID'])){
                 echo "<div class='dropdown'>
             <button class='dropbtn'><b>Services</b></button>
                 <div class='dropdown-content'>
                     <a href='addbooking.php'>Book Court Now!</a>
-                </div>
-            </div>";
-                echo "<a href='FeedbackForm.php'><b>Feedback</b></a>";
+                </div></div>";
                 echo "<a href='login.php'><b>Login</b></a>";
             }else{
                 $servername = "localhost";
