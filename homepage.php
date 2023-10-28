@@ -360,7 +360,7 @@ section{
     text-align: center;
 }
 
-.navigation a:nth-child(3) {
+.navigation a:nth-child(4) {
     margin-right: 40px; /* Adjust the margin value as needed */
  }
 
@@ -439,7 +439,7 @@ section{
         <a href="#home"><b>Home</b></a>
         <a href="#about"><b>About</b></a>
         <a href="#contact"><b>Contact</b></a>  
-       <a href='FeedbackForm.php'><b>Feedback</b></a>
+       <a href="FeedbackForm.php"><b>Feedback</b></a>
             <?php 
             if(!ISSET($_SESSION['User_ID'])){
                 echo "<div class='dropdown'>
