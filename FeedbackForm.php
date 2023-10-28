@@ -40,6 +40,7 @@ if (isset($_SESSION['User_ID'])) {
             echo "<div class='dropdown'>";
             echo "<button class='dropbtn'><b>Services</b></button>";
             echo "<div class='dropdown-content'>";
+            echo "<a href='faq.php'>FAQ</a>";
             echo "<a href='addbooking.php'>Book Court Now!</a>";
             echo "</div></div>";
             echo "<a href='login.php'><b>Login</b></a>";
@@ -57,6 +58,7 @@ if (isset($_SESSION['User_ID'])) {
                         echo "<div class='dropdown'>";
                         echo "<button class='dropbtn'><b>Services</b></button>";
                         echo "<div class='dropdown-content'>";
+                        echo "<a href='faq.php'>FAQ</a>";
                         echo "<a href='customertimetable.php'>Trainer Timetable</a>";
                         echo "<a href='addbooking.php'>Book Court Now!</a>";
                         echo "<a href='editbooking.php'>Any Changes To Bookings</a>";
