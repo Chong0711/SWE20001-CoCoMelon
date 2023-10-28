@@ -374,7 +374,7 @@ th {
 }
 
 .btn.cancel {
-  background-color: #D92121;
+  background-color: #264B56;
   width: 200px;
 }
 
