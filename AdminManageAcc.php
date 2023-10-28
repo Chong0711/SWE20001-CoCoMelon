@@ -1,12 +1,5 @@
 <?php
 session_start();
-// this con is used to connect with the database
-$con=mysqli_connect("localhost", "root", null, "cocomelon");
-
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +15,7 @@ if (!$con) {
 
 <!-- Website Navigation -->
 <header>
-    <img src="Greenlogo1.png" style="width:270px;height:270px;" class="logo">
+    <h2 class="logo"><img src="Greenlogo1.png" style="width:270px;height:270px;"></h2>
     <nav class="navigation">
         <div class="dropdown">
         <button class="dropbtn"><b>Services</b></button>
@@ -72,6 +65,7 @@ if (!$con) {
         };
     </script>
 </header>
+
 <style>
 * {
     margin: 0;
@@ -92,6 +86,7 @@ header{
     align-items: center;
     justify-content: space-between;
     font-size: 1em;
+
 }
 
 body{
@@ -100,16 +95,17 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url(Background_SWE2.jpg)no-repeat;
-    background-size: 1550px 1200px;
-    background-position: center;*/
+    background-size: 1550px 1000px;
+    background-position: center;
 
 }
 
 .logo{
-    margin-right: 100px;
+    font-size: 2em;
+    color: #44561c;
+    user-select: none;
     justify-content: space-between;
 }
-
 /*navigation bar*/
 .navigation a{
     position: relative;
@@ -212,9 +208,126 @@ body{
    display: block;
 }
 /*Dropdown Menu*/
-/*navigation bar*/
+.wrapper {
+    position: relative;
+    width: 400px;
+    height: auto; /*changed the form box's height as auto*/
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform .5s ease, height .2s ease;
+    margin: 120px 0px 20px 0px;
+}
+
+.wrapper.active{
+    height: 520px;
+}
+
+.wrapper .form-box{
+    width: 100%;
+    padding: 40px;
+}
+
+
+.wrapper .form-box.login{
+    transition: transform .18s ease;
+    transform: translateX(0);
+}
+
+
+.wrapper.active .form-box.login{
+    transition: none;
+    transform: translateX(-400px);
+}
+
+.form-box h2{
+    font-size: 2em;
+    color:#44561c ;
+    text-align: center;
+}
+
+.input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #44561c;
+    margin: 30px 0;  
+}
+
+.input-box label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-180%);
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+
+}
+
+.input-box .icon{
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #44561c;
+    line-height: 57px;
+
+}
+
+.input-roles{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 40px 0;
+}
+
+.input-roles label{
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-180%);
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-roles select{
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    border: 2px solid #44561c;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #44561c;
+    font-size: 1em;
+    padding: 5px;
+}
+
 .btn{
-    width: 200px;
+    width: 100%;
     height: 45px;
     background: #44561c;
     border: none;
@@ -224,365 +337,198 @@ body{
     font-size: 1em;
     color: #fff;
     font-weight: 500;
-    margin-top: 20px;
 }
 .btn.cancel {
   background-color: #D92121;
-  width: 200px;
 }
-/* Button used to open the contact form - fixed at the bottom of the page */
-.editbtn {
-    width: 100%;
-    height: 45px;
-    background: #44561c;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    color: #fff;
-    font-weight: 500;
+.btn.return{
+    background-color: #264B56;
 }
-
-.search-container {
-    padding: 0px 0px 0px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    overflow: auto;
-    margin-bottom: 20px; /* Add margin at the bottom to separate from search results */
-}
-.search-result
-{
-    width: 100%; /* Ensure the table takes the full width of the container */
-    overflow-x: auto; /* Enable horizontal scrolling if the table is too wide */
-    margin-top: 20px;
-}
-.search-option
-{
-    width: auto;
-    height: 45px;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    margin-top: 20px;
-    padding-left: 10px;
-}
-/* table view */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ccc;
-}
-
-th, td {
+.error {
+    color: #D8000C;
+    border-radius: 5px;
     padding: 10px;
-    text-align: left;
     text-align: center;
 }
 
-th {
-    background-color: #f2f2f2;
+.success {
+    color: green;
+    border-radius: 5px;
+    padding: 10px;
 }
-/* table view */
-
-/*pop out form*/
-
-/* The form */
-.form-popup {
-  display: none;
-  position: absolute;
-  margin-bottom: 0px;
-  right: 570px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  z-index: 9;
-  width: 400px; /* Set the width to match Part B */
-  background: transparent; /* Change background to match Part B */
+section{
+    padding: 10px 0px 0px 0px;
+    overflow: auto;
 }
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 100%; /* Set max-width to 100% to match Part B */
-  padding: 20px; /* Adjust padding */
-  background-color: transparent; /* Change background to match Part B */
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  width: 100%;
-  height: 45px;
-  background: #44561c;
-  border: none;
-  outline: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1em;
-  color: #fff;
-  font-weight: 500;
-  margin-top: 10px; /* Adjust margin-top */
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: #D92121;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
-}
-
-.form-container label{
-    font-size: 1em;
-    color: #44561c;
-    margin-right: 10px;
-}
-
-.form-popup h1{
-    text-align: center;
-    margin-top: 30px;
-}
-
-/*pop out form*/
-
-.section{
-    padding: 2rem 0%;
-}
-
-
-.search-container {
-    padding: 20px;
-    text-align: center;
-}
-
-.search-container label {
-    font-size: 1.2em;
-    margin-right: 10px;
-}
-
-.search-container input[select="trainer_name"]{
-    width: 200px;
-    height: 30px;
-    font-size: 1em;
-    margin-right: 10px;
-}
-
-/* Style the search results table */
-.search-results {
-    margin-top: -30px;
-    padding: 20px;
-    text-align: center;
-}
-
-.search-results h1 {
-    font-size: 1.5em;
-    margin-bottom: -10px;
-}
-
-.search-container label{
-    font-size: 1em;
-    color: #44561c;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-/*Scroll smooth*/
-html{
-    scroll-padding-top: 6rem;
-}
-
-@media(max-width:991px){
-
-
-    html{
-        font-size: 55%;
-    }
-    header{
-        padding:2rem;
-    }
-
-}
-
-@media(max-width:991px){
-
-
-    html{
-        font-size: 50%;
-    }
-}
-/*Scroll smooth*/
 </style>
-<section>
 
-<section>
-<div class="search-container">
-    <h2>Search Trainers</h2><br>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <label for="trainer_name">Trainer Name:</label>
-            <select name="trainer_name" id="trainer_name" class="search-option">
-                <option value="">Select a Trainer</option>
-                <?php
-                    // Removed the duplicate database connection since it's already established at the beginning
-                    $query = "SELECT * FROM personal_details WHERE Roles='trainer'";
-                    $result = mysqli_query($con, $query);
-                    while($row = mysqli_fetch_array($result)) {
-                        echo "<option value='" . $row['User_ID'] . "'>" . $row['Name'] . "</option>";
-                    }
-                ?>
-            </select>
+<div class="wrapper">
+    <div class="form-box register">
+        <h2>Account Management</h2><br>
+        <?php
+        if(isset($_POST["signup"]))
+        {
+            $servername = "localhost";
+            $username = "root";
+            $password = null;
+            $dbname = "cocomelon";
 
-            <!-- Add a date input field -->
-            <label for="training_date">Training Date:</label>
-            <input type="date" name="training_date" id="training_date" class="search-option">
-
-            <center>
-            <button type="submit" class="btn" name="search">Search</button>
-            <button type="button" class="btn cancel" id="cancelbtn" onclick="closeForm()">Back To Home</button>
-            </center>
-        </form>
-
-</div>
-</section>
-
-<section>
-    <div class='search-results' id='result'>
-        <?php $html?>
-    </div>
-</section>
-
-<?php
-// Handle the search based on the selected trainer name
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search"])) {
-    $trainer_name = $_POST["trainer_name"];
-    $training_date = $_POST["training_date"];
-
-    if (!empty($trainer_name)) {
-
-        $formatted_training_date = date("Y-m-d", strtotime($training_date));
-
-        // Modify the SQL query to search for trainers with the selected name
-        $sql = "SELECT Trainer_ID, Trainer_Name, Date, From_Time, To_Time, Status FROM Timetable WHERE Trainer_ID = '$trainer_name'";
-
-    if (!empty($training_date)) {
-                    $sql .= " AND Date = '$training_date'";
-                }
-        $result = mysqli_query($con, $sql);
-
-        if ($result) {
-            // Check if there are any rows in the result set
-            if (mysqli_num_rows($result) > 0) {
-                // Start creating the HTML for the results
-                $html = "<div class='heading'><h1>Trainer Availability</h1></div><br><table>";
-                $html .= "<tr><th>Trainer ID</th><th>Trainer Name</th><th>Date</th><th>From (Time)</th><th>To (Time)</th><th>Status</th><th>Action</th></tr>";
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $html .= "<tr>";
-                    $html .= "<td>{$row['Trainer_ID']}</td>";
-                    $html .= "<td>{$row['Trainer_Name']}</td>";
-                    $html .= "<td>{$row['Date']}</td>";
-                    $html .= "<td>{$row['From_Time']}</td>";
-                    $html .= "<td>{$row['To_Time']}</td>";
-                    $html .= "<td>{$row['Status']}</td>";
-                    $html .= "<td><button class='editbtn' onclick='openForm(\"{$row['Trainer_ID']}\", \"{$row['Status']}\", \"{$row['Trainer_Name']}\", \"{$row['Date']}\")'>Edit</button></td>";
-                    $html .= "</tr>";
-                }
-                $html .= "</table>";
-
-                // Display the HTML in the search-results container
-                echo "<div class='search-results' id='result'>$html</div>";
-            } else {
-                // No results found, display a message
-                echo "<div class='search-results' id='result'>Did not find any results.</div>";
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
             }
-        } else {
-            echo "Error: " . mysqli_error($con);
+
+            $name=$_POST["name"]; 
+            $email=$_POST["email"]; 
+            $hpnum=$_POST["hpnum"]; 
+            $psw=$_POST["pass"];
+            $roles=$_POST["roles"];
+            // Check if the password meets the conditions
+
+            // Validate password strength
+            $uppercase = preg_match('@[A-Z]@', $psw);
+            $lowercase = preg_match('@[a-z]@', $psw);
+            $number    = preg_match('@[0-9]@', $psw);
+
+            if(!$uppercase || !$lowercase || !$number || strlen($psw) < 8) {
+            echo '<div class="error">Password should be at least 8 characters in length and should include at least one uppercase letter, lowercase letter and one number.</div>';
+            } else {
+                try {
+                // Insert the new user into the personal_details table
+                    $insertSql = "INSERT INTO personal_details (Name, Email, Phone_Num, Password, Roles, Profile_Pic)
+                                  VALUES ('$name', '$email', '$hpnum', '$psw', '$roles', '')";
+
+                    if ($conn->query($insertSql) === TRUE) {
+                        $lastInsertId = $conn->insert_id;
+                        // Generate the User_ID by combining User_Str and the last insert ID
+                        $updateSql = "UPDATE personal_details SET User_ID = CONCAT(User_Str, $lastInsertId)
+                                      WHERE ID = $lastInsertId";
+
+                        if ($conn->query($updateSql) === TRUE) {
+                            $activedate = date("Y-m-d");
+                            $enddate = date('Y-m-d', strtotime('+1 years'));
+                            $query = "SELECT User_ID FROM personal_details WHERE Email = '$email'";
+                            $result = mysqli_query($conn, $query);
+                            $row = mysqli_fetch_assoc($result);
+                            $user_id = $row['User_ID'];
+                            $membersql = "INSERT INTO membership (User_ID, Status, Active_Date, End_Date)
+                            VALUES ('$user_id','Active', '$activedate','$enddate')";
+                            $result = mysqli_query($conn, $membersql);
+                            echo "<div class='success'><center><b>Successfully Registered</b></center></div>";
+                        } else {
+                            echo "Error updating User_ID: " . $conn->error;
+                        }
+                    } else {
+                        echo "Error inserting user: " . $conn->error;
+                    }
+                } catch (mysqli_sql_exception $e) {
+                    echo "<div class='error'><center><b>Error: $e</b></center></div>";
+                }
+            }
         }
-    }
-}
 
-// Handle editing trainer availability
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
-    $trainer_id = $_POST["trainer_id"];
-    $edit_status = $_POST["edit_status"];
-    $edit_trainer_name = $_POST["edit_trainer_name"];
-    $edit_training_date = $_POST["edit_training_date"];
+        if (isset($_POST["delete"])) {
 
-    // Modify the SQL query to update the status based on trainer name and date
-    $update_sql = "UPDATE Timetable SET Status = '$edit_status' WHERE Trainer_ID = '$trainer_id' AND Trainer_Name = '$edit_trainer_name' AND Date = '$edit_training_date'";
+            $email = $_POST["email"];
+            $roles = $_POST["roles"];
 
-    if (mysqli_query($con, $update_sql)) {
-        echo "<script>alert('Availability updated successfully.');</script>";
-    } else {
-        echo "Error updating availability: " . mysqli_error($con);
-    }
-}
+            // Construct the SQL DELETE statement with a WHERE clause
+            $deleteSql = "DELETE FROM personal_details WHERE email = '$email' AND roles = '$roles'";
 
-// Close the database connection
-mysqli_close($con);
-?>
+            if ($conn->query($deleteSql) === TRUE) {
+                echo "<div class='success'><center><b>Data delete seccessfully!</b></center></div>";
+            } else {
+                echo "<div class='error'><center><b>Error deleting data: " . $conn->error. "</b></center></div>";
+            }
+             $conn->close();
+        }
+        ?>
 
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <?php 
+            if(ISSET($_SESSION['User_ID']))
+                {
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = null;
+                    $dbname = "cocomelon";
 
-<!-- The form -->
-<div class="form-popup" id="myForm">
-    <h1>Edit Trainer Availability</h1>
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-container">
+                    // Create connection
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    // Check connection
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
 
-    <!-- Add hidden fields for User ID and Trainer ID -->
-    <input type="hidden" id="user_id" name="user_id" value="">
-    <input type="hidden" id="trainer_id" name="trainer_id" value="">
-    <input type="hidden" id="edit_trainer_name" name="edit_trainer_name" value="">
-    <input type="hidden" id="edit_training_date" name="edit_training_date" value="">
+                    $queryroles = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
+                    $resultroles = mysqli_query($conn, $queryroles);
+                    $rowroles = mysqli_fetch_assoc($resultroles);
 
+                    if($rowroles['Roles'] == "head" || $rowroles['Roles'] == "Head")
+                    {
+                        echo '<div class="input-roles">';
+                        echo '<label>Roles</label>';
+                        echo '<select id="roles" name="roles">';
+                        echo '<option value="head">Head</option>';
+                        echo '<option value="staff">Staff</option>';
+                        echo '<option value="trainer">Trainer</option>';
+                        echo '<option value="member">Member</option> ';
+                        echo '</select></div>';
+                    }else{
+                        echo '<div class="input-roles">';
+                        echo '<label>Roles</label>';
+                        echo '<select id="roles" name="roles">';
+                        echo '<option value="member">Member</option> ';
+                        echo '</select></div>';
+                    }
+                }
+                    ?>
 
-    <label for="status"><b>Status:</b></label>
-    <input type="text" placeholder="Enter Status" name="edit_status" id="edit_status"class="search-option" required>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="person-circle"></ion-icon></span>
+                <input type="text" name="name" required>
+                <label>Name</label>
+            </div>
 
-    <button type="submit" class="btn" name="update">Update</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+            <div class="input-box">
+                <span class="icon"><ion-icon name="mail-open"></ion-icon></span>
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+            
+            <div class="input-box">
+                <span class="icon"><ion-icon name="phone-portrait-outline"></ion-icon></span>
+                <input type="text" name="hpnum" required>
+                <label>Phone Number</label>
+            </div>
+            
+            <div class="input-box">
+                <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                <input type="password" name="pass" required>
+                <label>Password</label>            
+            </div>
+            <section>
+            <div>
+                <section>
+                    <button type="submit" class="btn" name="signup">Create</button>
+                </section>
+                <section>
+                    <button type="submit" class="btn cancel" name="delete">Delete</button>
+                </section>
+                <section>
+                    <button type="button" class="btn return" id="cancelbtn" onclick="closeForm()">Back to Home</button>
+                </section>
+            </div>
+            </section>
+        </form>
+    </div>
 </div>
-</section>
 
-<script>
-function openForm(trainerId, trainerStatus, trainerName, trainingDate) {
-  // Populate the hidden fields and form fields with trainer information
-  document.getElementById("user_id").value = trainerId;
-  document.getElementById("trainer_id").value = trainerId;
-  document.getElementById("edit_status").value = trainerStatus;
-  document.getElementById("edit_trainer_name").value = trainerName;
-  document.getElementById("edit_training_date").value = trainingDate;
-
-  // Display the form
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  // Reset the form fields to their initial state
-  document.getElementById("user_id").value = "";
-  document.getElementById("trainer_id").value = "";
-  document.getElementById("edit_status").value = "";
-  document.getElementById("edit_trainer_name").value = "";
-  document.getElementById("edit_training_date").value = "";
-
-  // Hide the form
-  document.getElementById("myForm").style.display = "none";
-}
-
-// Call the function when the page loads to initialize table visibility
-window.onload = toggleTables;
-</script>
+<script src="script.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script type="text/javascript">
     document.getElementById("cancelbtn").onclick = function () {
         location.href = "adminhome.php";
