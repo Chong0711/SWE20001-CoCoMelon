@@ -103,6 +103,18 @@ body{
     transform: rotate(90deg);
     transition: 0.5s;
 }
+.btn.return{
+    background-color: #264B56;
+    width: 200px;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
   </style>
   
 <body>
@@ -219,7 +231,10 @@ body{
 
         </ul>
     </section>
-
+    <section><center>
+        <button type="button" class="btn return" id="cancelbtn" onclick="closeForm()">Back to Home</button>
+    </center></section>
+<br>
    
 </body>
 <script src="script.js"></script>
@@ -237,4 +252,10 @@ for(let i=0; i<q.length; i++){
     arr[i].classList.toggle('arrow-rotated');
   });
 }
+</script>
+
+<script type="text/javascript">
+    document.getElementById("cancelbtn").onclick = function () {
+        location.href = "homepage.php";
+    };
 </script>
