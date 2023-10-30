@@ -504,106 +504,81 @@ th {
                     // Sample start and end times (in the format 'Y-m-d H:i:s')
                     $startTimeStamp = strtotime($row['Book_StartTime']);
                     $endTimeStamp = strtotime($row['Book_EndTime']);
-                    if ($startTimeStamp === false || $endTimeStamp === false) {
-                        echo "Invalid time format.";
-                    } else {
-                        // Calculate the time difference in seconds
-                        $timeDifferenceInSeconds = $endTimeStamp - $startTimeStamp;
+                    if (strtotime($row['Book_Date']) < strtotime(date('Y-m-d'))) {
+                        echo "<br><p><center><b>Your booking is in the past.</b></center></p>";
+                    }else{
+                        if ($startTimeStamp === false || $endTimeStamp === false) {
+                            echo "Invalid time format.";
+                        } else {
+                            // Calculate the time difference in seconds
+                            $timeDifferenceInSeconds = $endTimeStamp - $startTimeStamp;
 
-                        // Convert the time difference to hours
-                        $durationInHours = $timeDifferenceInSeconds / 3600; // 3600 seconds in an hour
-                    }
-
-                    $html = "<div class='wrapper edit'>";
-                    $html .= "<div class='form-box reschedule'>";
-                    $html .= "<h2>Booking Details</h2><br>";
-                    $html .= "<form action=editbooking.php method=post>";
-                    $html .= "<input type=hidden name=mid value=".$row['Book_ID'].">";
-                    $html .= "<p>Booking ID: ".$row['Book_ID']."</p>";
-                    $html .= "<p>Customer ID: ".$row['Cust_ID']."</p>";
-                    $html .= "<p>Customer Name: ".$row['Name']."</p>";
-                    $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
-                    //$html .= "<p>Court: ".$row['Court']."</p>";
-                    /*$html .='<div class="input-court">
-                <label>Court No:</label>
-                <select id="court" name="court">
-                <option value="' . $row['Court'] . '">' . $row['Court'] . '</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option> 
-                    <option value="3">3</option> 
-                    <option value="4">4</option> 
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option> 
-                    <option value="8">8</option> 
-                    <option value="9">9</option> 
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option> 
-                    <option value="13">13</option> 
-                    <option value="14">14</option> 
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option> 
-                    <option value="18">18</option> 
-                    <option value="19">19</option> 
-                    <option value="20">20</option>
-                </select>
-            </div>';*/
-                    $html .= '<div class="input-court">
-                    <label>Court No:</label>
-                    <select id="court" name="court">';
-
-                    // Loop to generate the options
-                    for ($i = 1; $i <= 20; $i++) {
-                        $selected = ($i == $row['Court']) ? 'selected' : '';
-                        $html .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
-                    }
-
-                    $html .= '</select></div>';
-                    $html .= '<p>Date: <input type="date" name="mdate" id="edit-date" value="' . $row['Book_Date'] . '" onchange="showTime(document.getElementById(\'court\').value, this.value)"></p>';
-                    //$html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']." ></p>";
-                    $html .= '<div id="txtHint"></div>';
-                    //$html .= '<p id="selectedDateInfo"></p>';
-                    //$html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
-                    $html .= '<div id="time-select-container">';
-                    $startTime = $row['Book_StartTime'];
-                    $print_startTime = date('h:i A', strtotime($startTime));
-                    $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."'";
-                    $resultBookedTimes = mysqli_query($con, $queryBookedTimes);
-                    $bookedTimeRanges = array();
-
-                    if ($resultBookedTimes) {
-                        while ($rowBookedTime = mysqli_fetch_assoc($resultBookedTimes)) {
-                            $bookedTimeRanges[] = [
-                                'start' => $rowBookedTime['Book_StartTime'],
-                                'end' => $rowBookedTime['Book_EndTime']
-                            ];
+                            // Convert the time difference to hours
+                            $durationInHours = $timeDifferenceInSeconds / 3600; // 3600 seconds in an hour
                         }
-                    }
 
-                    $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" name="mstarttime" onchange="handleStartTimeChange()">
-                    <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>';
+                        $html = "<div class='wrapper edit'>";
+                        $html .= "<div class='form-box reschedule'>";
+                        $html .= "<h2>Booking Details</h2><br>";
+                        $html .= "<form action=editbooking.php method=post>";
+                        $html .= "<input type=hidden name=mid value=".$row['Book_ID'].">";
+                        $html .= "<p>Booking ID: ".$row['Book_ID']."</p>";
+                        $html .= "<p>Customer ID: ".$row['Cust_ID']."</p>";
+                        $html .= "<p>Customer Name: ".$row['Name']."</p>";
+                        $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
+                        $html .= '<div class="input-court">
+                        <label>Court No:</label>
+                        <select id="court" name="court">';
 
-                    $availableTimes = array(
-                        "08:00:00" => "08:00 AM",
-                        "09:00:00" => "09:00 AM",
-                        "10:00:00" => "10:00 AM",
-                        "11:00:00" => "11:00 AM",
-                        "12:00:00" => "12:00 PM",
-                        "13:00:00" => "01:00 PM",
-                        "14:00:00" => "02:00 PM",
-                        "15:00:00" => "03:00 PM",
-                        "16:00:00" => "04:00 PM",
-                        "17:00:00" => "05:00 PM",
-                        "18:00:00" => "06:00 PM",
-                        "19:00:00" => "07:00 PM",
-                        "20:00:00" => "08:00 PM",
-                        "21:00:00" => "09:00 PM",
-                        "22:00:00" => "10:00 PM",
-                    );
+                        // Loop to generate the options
+                        for ($i = 1; $i <= 20; $i++) {
+                            $selected = ($i == $row['Court']) ? 'selected' : '';
+                            $html .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+                        }
 
-                    foreach ($availableTimes as $timeValue => $timeLabel) {
+                        $html .= '</select></div>';
+                        $html .= '<p>Date: <input type="date" name="mdate" id="edit-date" value="' . $row['Book_Date'] . '" onchange="showTime(document.getElementById(\'court\').value, this.value)"></p>';
+                        //$html .= "<p>Date: <input type=date name=mdate id=edit-date value=".$row['Book_Date']." ></p>";
+                        $html .= '<div id="txtHint"></div>';
+                        //$html .= '<p id="selectedDateInfo"></p>';
+                        //$html .= "<p>Start Time: <input type=time name=mstarttime id='start-time' value=".$row['Book_StartTime']." onchange='handleStartTimeChange()'></p>";
+                        $html .= '<div id="time-select-container">';
+                        $startTime = $row['Book_StartTime'];
+                        $print_startTime = date('h:i A', strtotime($startTime));
+                        $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."'";
+                        $resultBookedTimes = mysqli_query($con, $queryBookedTimes);
+                        $bookedTimeRanges = array();
+
+                        if ($resultBookedTimes) {
+                            while ($rowBookedTime = mysqli_fetch_assoc($resultBookedTimes)) {
+                                $bookedTimeRanges[] = [
+                                    'start' => $rowBookedTime['Book_StartTime'],
+                                    'end' => $rowBookedTime['Book_EndTime']
+                                ];
+                            }
+                        }
+
+                        $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" name="mstarttime" onchange="handleStartTimeChange()">
+                        <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>';
+
+                        $availableTimes = array(
+                            "08:00:00" => "08:00 AM",
+                            "09:00:00" => "09:00 AM",
+                            "10:00:00" => "10:00 AM",
+                            "11:00:00" => "11:00 AM",
+                            "12:00:00" => "12:00 PM",
+                            "13:00:00" => "01:00 PM",
+                            "14:00:00" => "02:00 PM",
+                            "15:00:00" => "03:00 PM",
+                            "16:00:00" => "04:00 PM",
+                            "17:00:00" => "05:00 PM",
+                            "18:00:00" => "06:00 PM",
+                            "19:00:00" => "07:00 PM",
+                            "20:00:00" => "08:00 PM",
+                            "21:00:00" => "09:00 PM",
+                            "22:00:00" => "10:00 PM",
+                        );
+                        foreach ($availableTimes as $timeValue => $timeLabel) {
                         // Check if the time or its adjacent hour is booked
                         $isDisabled = false;
 
@@ -632,6 +607,7 @@ th {
                     $html .= "</form></div></div>";
                     echo "<div class='search-results'>$html</div>";
                     mysqli_close($con);
+                }
             }
         }elseif(isset($_POST["searchByDate"])){
             $date=$_POST["date"];
