@@ -403,6 +403,29 @@ body{
     padding: 10px;
 }
 
+.input-court label{
+    position: absolute;
+    top: 50%;
+    font-size: 1em;
+    color: #44561c;
+    font-weight: 500;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-court select{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: transparent;
+    font-size: 1em;
+    outline: none;
+    color: #44561c;
+    font-weight: 600;
+}
+
 </style>
 
 <div class="wrapper">
@@ -416,15 +439,16 @@ body{
                     $subject = $_POST['subject'];
                     $description = $_POST['description'];
                     $user_id = $_SESSION['User_ID'] ?? null;
+                    $category = $_POST['category'];
 
                     if($user_id != null){
-                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date, User_ID) 
-                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW(), '$user_id'); 
+                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date, User_ID, Category) 
+                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW(), '$user_id', '$category'); 
                                 UPDATE feedback SET Feedback_ID = concat( Feedback_Str, Feedback_No ) ";
                     }
                     else{
-                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date) 
-                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW()); 
+                        $sql = "INSERT INTO feedback (Email, Phone_Num, Subject, Description, Feedback_Date, Category) 
+                                VALUES ('$email', '$phone_num', '$subject', '$description', NOW(), '$category'); 
                                 UPDATE feedback SET Feedback_ID = concat( Feedback_Str, Feedback_No ) ";
                     }
 
@@ -474,6 +498,17 @@ body{
                 <span class="icon"><ion-icon name="document-text"></ion-icon></span>
                 <input type="text" name="subject" required>
                 <label>Subject</label>
+            </div>
+
+            <div class="input-court">
+                <label>Category</label>
+                <select name="category">
+                    <option value="">Select Category</option>
+                    <option value="classes">Classes</option>
+                    <option value="coaches">Coaches</option>
+                    <option value="facilities">Facilities</option>
+                    <option value="others">Others</option>
+                </select>
             </div>
 
             <div class="input-des">

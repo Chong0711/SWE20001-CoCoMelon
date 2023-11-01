@@ -8,7 +8,7 @@ if (!$con) {
 }
 
 mysqli_select_db($con,"cocomelon");
-$sql = "SELECT * FROM booking WHERE Court = '".$court."' AND Book_Date = '".$date."'";
+$sql = "SELECT * FROM booking WHERE Court = '".$court."' AND Book_Date = '".$date."' AND Status = 'Booked'";
 $result = mysqli_query($con,$sql);
 
     $resultBookedTimes = mysqli_query($con, $sql);

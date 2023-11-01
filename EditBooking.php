@@ -545,7 +545,7 @@ th {
                         $html .= '<div id="time-select-container">';
                         $startTime = $row['Book_StartTime'];
                         $print_startTime = date('h:i A', strtotime($startTime));
-                        $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."'";
+                        $queryBookedTimes = "SELECT * FROM booking WHERE Court = '".$row['Court']."' AND Book_Date = '".$row['Book_Date']."' AND Status = 'Booked'";
                         $resultBookedTimes = mysqli_query($con, $queryBookedTimes);
                         $bookedTimeRanges = array();
 
