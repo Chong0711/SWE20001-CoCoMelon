@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                           <th>Feedback Date</th>
                           <th>Email</th>
                           <th>Phone Number</th>
+                          <th>Category</th>
                           <th>Subject</th>
                           <th>Description</th></tr>";
 
@@ -42,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                     $html .= "<td>{$row['Feedback_Date']}</td>";
                     $html .= "<td>{$row['Email']}</td>";
                     $html .= "<td>{$row['Phone_Num']}</td>";
+                    $html .= "<td>{$row['Category']}</td>";
                     $html .= "<td>{$row['Subject']}</td>";
                     $html .= "<td>{$row['Description']}</td>";
                     $html .= "</tr>";
