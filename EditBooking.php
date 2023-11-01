@@ -558,8 +558,8 @@ th {
                             }
                         }
 
-                        $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" name="mstarttime" onchange="handleStartTimeChange()">
-                        <option value="'.$row['Book_StartTime'].'">'.$print_startTime.'</option>';
+                        $html .= '<div class="input-court"><label> Start Time: </label><select id="start-time" name="mstarttime" onchange="handleStartTimeChange()">';
+                        
 
                         $availableTimes = array(
                             "08:00:00" => "08:00 AM",
@@ -591,8 +591,9 @@ th {
 
                         $disabled = $isDisabled ? 'disabled' : '';
                         $colorStyle = $isDisabled ? 'style="color: red;"' : '';
+                        $selected = ($timeValue == $row['Book_StartTime']) ? 'selected' : '';
 
-                        $html .= '<option value="' . $timeValue . '" ' . $disabled . ' ' . $colorStyle . '>' . $timeLabel . '</option>';
+                        $html .= '<option value="' . $timeValue . '" ' . $disabled . ' ' . $colorStyle . ' ' . $selected . '>' . $timeLabel . '</option>';
                     }
 
                     $html .= '</select></div>';
