@@ -434,27 +434,34 @@ body{
                 $bank_acc_number = $_POST['bank_acc_number'];
                 $bank_acc_name = $_POST['bank_acc_name'];
 
-                $sql = "INSERT INTO refund (Refund_ID, User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date, Status) 
-                        VALUES ('','$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW(), 'pending'); 
-                        UPDATE refund SET Refund_ID = concat( Refund_Str, Refund_No ) ";
+                $check_query = "SELECT * FROM refund WHERE User_ID = '$user_id' AND Book_ID = '$booking_id'";
+                $check_result = mysqli_query($con, $check_query);
 
-                    if (mysqli_multi_query($con, $sql)) {
-                        do {
-                            /* store first result set */
-                            if ($result = mysqli_store_result($con)) {
-                                while ($row = mysqli_fetch_row($result)) {
+                if (mysqli_num_rows($check_result) > 0) {
+                    echo "<div class='error'><center><b>You have already requested a refund for this booking.</b></center></div>";
+                } else {
+                    $sql = "INSERT INTO refund (Refund_ID, User_ID, Book_ID, Bank, Bank_Name, Bank_Acc, Refund_Date, Status) 
+                            VALUES ('','$user_id', '$booking_id', '$bank_name', '$bank_acc_name', '$bank_acc_number', NOW(), 'pending'); 
+                            UPDATE refund SET Refund_ID = concat( Refund_Str, Refund_No ) ";
+
+                        if (mysqli_multi_query($con, $sql)) {
+                            do {
+                                /* store first result set */
+                                if ($result = mysqli_store_result($con)) {
+                                    while ($row = mysqli_fetch_row($result)) {
+                                    }
+                                    mysqli_free_result($con);
                                 }
-                                mysqli_free_result($con);
-                            }
-                            /* print divider */
-                            if (mysqli_more_results($con)) {
-                            }
-                        } while (mysqli_next_result($con));
-                            echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
-                    }
-                    else
-                    {
-                        echo "Error: " . $con->error;
+                                /* print divider */
+                                if (mysqli_more_results($con)) {
+                                }
+                            } while (mysqli_next_result($con));
+                                echo "<div class='success'><center><b>Refund request submitted successfully.</b></center></div>";
+                        }
+                        else
+                        {
+                            echo "Error: " . $con->error;
+                        }
                     }
                 }
             ?>
