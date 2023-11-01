@@ -8,7 +8,7 @@ $con = new mysqli($servername, $username, $password, $dbname);
 $query = "SELECT * FROM personal_details WHERE User_ID = '".$_SESSION['User_ID']."'" ;
 $result = mysqli_query($con, $query);
 $row = mysqli_fetch_assoc($result);
-$query1 = "SELECT * FROM booking WHERE Cust_ID = '".$_SESSION['User_ID']."' AND Book_Date > CURDATE()";
+$query1 = "SELECT * FROM booking WHERE Cust_ID = '" . $_SESSION['User_ID'] . "' AND Book_Date > CURDATE() AND Status = 'Cancelled'";
 $bookingResult = mysqli_query($con, $query1);
 
 ?>
