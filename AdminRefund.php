@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
     $date = $_POST["date"];
 
     if (!empty($date)) {
-        $sql = "SELECT r.Refund_ID, r.Book_ID, b.User_ID, r.Bank, r.Bank_Name, r.Bank_Acc, r.Status, r.Refund_Date, b.Book_Date
+        $sql = "SELECT r.Refund_ID, r.Book_ID, b.Cust_ID, r.Bank, r.Bank_Name, r.Bank_Acc, r.Status AS Refund_Status, r.Refund_Date, b.Book_Date, b.Status AS Booking_Status, u.Email
                 FROM refund r
                 JOIN booking b ON r.Book_ID = b.Book_ID
                 JOIN personal_details u ON r.User_ID = u.User_ID
@@ -34,24 +34,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["date"])) {
                 $html .= "<tr><th>Refund ID</th>
                           <th>Book ID</th>
                           <th>User ID</th>
+                          <th>User Email</th>
                           <th>Book Date</th>
+                          <th>Booking Status</th>
                           <th>Request Date</th>
                           <th>Bank</th>
                           <th>Name of Bank</th>
                           <th>Bank Account</th>
-                          <th>Status</th></tr>";
+                          <th>Request Status</th></tr>";
 
                 while ($row = mysqli_fetch_assoc($result)) {
                     $html .= "<tr>";
                     $html .= "<td><input type='text' class='rid' name='rid' value='" . $row['Refund_ID'] . "' readonly></td>";
                     $html .= "<td>{$row['Book_ID']}</td>";
-                    $html .= "<td>{$row['User_ID']}</td>";
+                    $html .= "<td>{$row['Cust_ID']}</td>";
+                    $html .= "<td>{$row['Email']}</td>";
                     $html .= "<td>{$row['Book_Date']}</td>";
+                    $html .= "<td>{$row['Booking_Status']}</td>";
                     $html .= "<td>{$row['Refund_Date']}</td>";
                     $html .= "<td>{$row['Bank']}</td>";
                     $html .= "<td>{$row['Bank_Name']}</td>";
                     $html .= "<td>{$row['Bank_Acc']}</td>";
-                    $html .= "<td><input type='text' name='nstatus' id='edit-status' class='rstatus' value='" . $row['Status'] . "'></td>";
+                    $html .= "<td><input type='text' name='nstatus' id='edit-status' class='rstatus' value='" . $row['Refund_Status'] . "'></td>";
                     $html .= "</tr>";
                 }
 
