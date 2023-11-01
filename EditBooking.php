@@ -695,9 +695,9 @@ th {
         if(isset($_POST["delete"])){
             $del=$_POST["mid"];
             $con=mysqli_connect("localhost", "root", null, "cocomelon");
-            $query="delete from booking where Book_ID='$del'";
+            $query="update booking set Status='Cancelled' WHERE Book_ID='$del'";
             $result=mysqli_query($con, $query);
-            echo "<br><center><p>Booking for ID <b>$del</b> has been deleted.</p></center>";
+            echo "<br><center><p>Booking for ID <b>$del</b> has been cancelled.</p></center>";
             function sendEmail($to, $subject, $message) {
                 $headers = 'From: cocomelonswe@gmail.com' . "\r\n" .
                     'Reply-To: cocomelonswe@gmail.com' . "\r\n" .
