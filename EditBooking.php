@@ -501,7 +501,7 @@ th {
             if(mysqli_num_rows($result)==0) echo "<br><p><center><b>No record.</b></center></p>";
             else {
                 $row=mysqli_fetch_array($result); 
-                if($row['Status']="Cancelled")
+                if($row['Status']=="Cancelled")
                 {
                     echo"<br><p><center><b>The booking is cancelled</b></center></p>";
                 }else{
