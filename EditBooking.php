@@ -501,6 +501,10 @@ th {
             if(mysqli_num_rows($result)==0) echo "<br><p><center><b>No record.</b></center></p>";
             else {
                 $row=mysqli_fetch_array($result); 
+                if($row['Status']="Cancelled")
+                {
+                    echo"<br><p><center><b>The booking is cancelled</b></center></p>";
+                }else{
                     // Sample start and end times (in the format 'Y-m-d H:i:s')
                     $startTimeStamp = strtotime($row['Book_StartTime']);
                     $endTimeStamp = strtotime($row['Book_EndTime']);
@@ -579,35 +583,36 @@ th {
                             "22:00:00" => "10:00 PM",
                         );
                         foreach ($availableTimes as $timeValue => $timeLabel) {
-                        // Check if the time or its adjacent hour is booked
-                        $isDisabled = false;
+                            // Check if the time or its adjacent hour is booked
+                            $isDisabled = false;
 
-                        foreach ($bookedTimeRanges as $bookedTimeRange) {
-                            if ($timeValue >= $bookedTimeRange['start'] && $timeValue < $bookedTimeRange['end']) {
-                                $isDisabled = true;
-                                break;
+                            foreach ($bookedTimeRanges as $bookedTimeRange) {
+                                if ($timeValue >= $bookedTimeRange['start'] && $timeValue < $bookedTimeRange['end']) {
+                                    $isDisabled = true;
+                                    break;
+                                }
                             }
+
+                            $disabled = $isDisabled ? 'disabled' : '';
+                            $colorStyle = $isDisabled ? 'style="color: red;"' : '';
+                            $selected = ($timeValue == $row['Book_StartTime']) ? 'selected' : '';
+
+                            $html .= '<option value="' . $timeValue . '" ' . $disabled . ' ' . $colorStyle . ' ' . $selected . '>' . $timeLabel . '</option>';
                         }
 
-                        $disabled = $isDisabled ? 'disabled' : '';
-                        $colorStyle = $isDisabled ? 'style="color: red;"' : '';
-                        $selected = ($timeValue == $row['Book_StartTime']) ? 'selected' : '';
-
-                        $html .= '<option value="' . $timeValue . '" ' . $disabled . ' ' . $colorStyle . ' ' . $selected . '>' . $timeLabel . '</option>';
+                        $html .= '</select></div>';
+                        
+                        $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
+                        $html .= '</div>';
+                        $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
+                        $html .= "<p>Status: ".$row['Status']."</p>";
+                        $html .= "<p>Amount: ".$row['Amount']."</p>";
+                        $html .= "<button type='submit' class='btn' name='update'>Update Appointment</button>";
+                        $html .= "<button type='submit' class='btn cancel' name='delete'>Delete Appointment</button>";
+                        $html .= "</form></div></div>";
+                        echo "<div class='search-results'>$html</div>";
+                        mysqli_close($con);
                     }
-
-                    $html .= '</select></div>';
-                    
-                    $html .= "<p>End Time: <input type=time name=mendtime id='end-time' value=".$row['Book_EndTime']." readonly></p>";
-                    $html .= '</div>';
-                    $html .= "<p>Duration (hour): <input type=number name=duration id='duration' value=$durationInHours required readonly>";
-                    $html .= "<p>Status: ".$row['Status']."</p>";
-                    $html .= "<p>Amount: ".$row['Amount']."</p>";
-                    $html .= "<button type='submit' class='btn' name='update'>Update Appointment</button>";
-                    $html .= "<button type='submit' class='btn cancel' name='delete'>Delete Appointment</button>";
-                    $html .= "</form></div></div>";
-                    echo "<div class='search-results'>$html</div>";
-                    mysqli_close($con);
                 }
             }
         }elseif(isset($_POST["searchByDate"])){
