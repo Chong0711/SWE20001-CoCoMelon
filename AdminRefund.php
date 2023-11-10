@@ -392,19 +392,22 @@ label{
     font-size: 20px;
 }
 
-.search-results.msg, .updatemsg, .errormsg{
+.search-results.msg, .success, .errormsg{
     width: auto;
     height: 40px;
     text-align: center;
     padding: 10px 0px 0px 0px;
 }
 
-.updatemsg{
+.success {
     color: green;
+    border-radius: 5px;
+    padding: 10px;
 }
-
 .errormsg{
     color: red;
+    border-radius: 5px;
+    padding: 10px;
 }
 </style>
 <section>
@@ -428,6 +431,20 @@ label{
         </div>
     </section>
 <?php
+// Function to send an email
+function sendEmail($to, $subject, $message) {
+    $headers = 'From: cocomelonswe@gmail.com' . "\r\n" .
+        'Reply-To: cocomelonswe@gmail.com' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+
+    // You should use a proper SMTP library or service to send emails.
+    // The example below uses the built-in mail function.
+    if (mail($to, $subject, $message, $headers)) {
+        return true; // Email sent successfully
+    } else {
+        return false; // Email sending failed
+    }
+}
 
 // Handle editing trainer availability
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
@@ -437,8 +454,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
     // Modify the SQL query to update the status based on Refund_ID
     $updatesql = "UPDATE refund SET Status='$newstatus' WHERE Refund_ID='$refundid'";
     $result = mysqli_query($con, $updatesql);
+
     if ($result) {
-        echo "<br><div class='updatemsg'><center><b>Record Updated.</b></center></div>";
+        echo "<br><div class='success'><center><b>Record Updated.</b></center></div>";
+
+        // Fetch necessary information for the email
+        $getUserInfoSQL = "SELECT r.Refund_ID, r.Book_ID, pd.Name, b.Amount, r.Status AS Refund_Status, pd.Email, b.Book_Date, r.Refund_Date
+                            FROM refund r
+                            JOIN booking b ON r.Book_ID = b.Book_ID
+                            JOIN personal_details pd ON r.User_ID = pd.User_ID
+                            WHERE r.Refund_ID='$refundid'";
+        $userInfoResult = mysqli_query($con, $getUserInfoSQL);
+
+        if ($userInfoResult) {
+            $userInfo = mysqli_fetch_assoc($userInfoResult);
+            $to = $userInfo['Email'];
+            $subject = "Your Refund Request Status Has Been Updated";
+            $message = "Hello {$userInfo['Name']},\n\n";
+            $message .= "Here is your refund request with some information:\n";
+            $message .= "Booking ID: {$userInfo['Book_ID']}\n";
+            $message .= "Booking Date: {$userInfo['Book_Date']}\n";
+            $message .= "Request Date: {$userInfo['Refund_Date']}\n";
+            $message .= "Status: $newstatus\n";
+            $message .= "Total: {$userInfo['Amount']}\n";
+            if($newstatus == "approve" || $newstatus =="Approve"){
+                $message .= "Your refund request has been successfully processed. The refunded amount will be credited to your bank account within the next 7 to 14 business days. We appreciate your understanding and thank you for your cooperation.\n";
+            }else{
+                $message .= "Regrettably, your eligibility criteria for a refund have not been fulfilled. We appreciate your understanding in this matter. Thank you for your cooperation.\n";
+            }
+            
+
+            // Send the email
+            if (sendEmail($to, $subject, $message)) {
+                echo "<div class='success'><center><b>Refund email sent successfully.</b></center></div>";
+            } else {
+                echo "<div class='errormsg'><center><b>Refund email could not be sent.</b></center></div>";
+            }
+        } else {
+            echo "<div class='errormsg'><center><b>Error fetching user information: " . mysqli_error($con) . "</b></center></div>";
+        }
     } else {
         echo "<br><div class='errormsg'><center><b>Error updating record: " . mysqli_error($con) . "</b></center></div>";
     }
