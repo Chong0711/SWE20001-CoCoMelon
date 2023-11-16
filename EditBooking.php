@@ -532,7 +532,7 @@ th {
                         $html .= "<p>Trainer ID: ".$row['Trainer_ID']."</p>";
                         $html .= '<div class="input-court">
                         <label>Court No:</label>
-                        <select id="court" name="court">';
+                        <select id="court" name="court" onchange="showTime(this.value, document.getElementById(\'edit-date\').value)">';
 
                         // Loop to generate the options
                         for ($i = 1; $i <= 20; $i++) {
