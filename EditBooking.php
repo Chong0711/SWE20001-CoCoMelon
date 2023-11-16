@@ -721,7 +721,9 @@ th {
             $to = $row['Email'];
             $subject = "Your Booking Has Been Canceled";
             $message = "Hello {$row['Name']},\n\n";
-            $message .= "We regret to inform you that your booking (ID: $del) has been canceled.";
+            $message .= "We would like to inform you that your booking with ID: $del has been canceled.\n";
+            $message .= "You can review the details of your canceled booking in the Booking History section on our website.\n";
+            $message .= "Thank you for your understanding and cooperation.\n";
 
             // Send the email
             if (sendEmail($to, $subject, $message)) {
